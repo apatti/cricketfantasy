@@ -1,0 +1,29 @@
+{
+  "resourceName": "iplFantasyRolePics",
+  "policyUUID": "cdf7c82b",
+  "bucketName": "rolepics",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "READ"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {
+    "FantasyAdmin": [
+      "CREATE_AND_UPDATE",
+      "READ"
+    ],
+    "LeagueAdmin": [
+      "CREATE_AND_UPDATE",
+      "READ"
+    ],
+    "FantasyUsers": [
+      "READ"
+    ],
+    "Backend": [
+      "READ"
+    ]
+  }
+}

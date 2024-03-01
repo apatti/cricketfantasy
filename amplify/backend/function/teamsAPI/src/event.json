@@ -1,0 +1,11 @@
+{
+  "httpMethod": "POST",
+  "path": "/iplTeams",
+  "queryStringParameters": {
+    "limit": "10"
+  },
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "body": "{\"name\": \"Delhi Capitals\",\"shortName\": \"DC\",\"profile\": \"https://www.espncricinfo.com/team/delhi-capitals-335975\",\"icon\": \"https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_160,q_50/lsci/db/PICTURES/CMS/313400/313422.logo.png\"}"
+}

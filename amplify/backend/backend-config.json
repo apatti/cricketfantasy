@@ -1,0 +1,444 @@
+{
+  "api": {
+    "AdminQueries": {
+      "authorizationType": "AMAZON_COGNITO_USER_POOLS",
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "iplfantasy"
+        },
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "AdminQueries4d05af00"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
+    "fantasyapi": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "playersAPI"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "teamsAPI"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "fantasyUsersAPI"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "tournamentAPI"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "fantasyTeamAPI"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "leagueAPI"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
+    "iplFantasy": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "iplfantasy"
+        }
+      ],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            },
+            {
+              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+              "userPoolConfig": {
+                "userPoolId": "authiplfantasy"
+              }
+            }
+          ],
+          "defaultAuthentication": {
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 30,
+              "description": "api key description"
+            },
+            "authenticationType": "API_KEY"
+          }
+        }
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync"
+    }
+  },
+  "auth": {
+    "iplfantasy": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "iplfantasyPostConfirmation",
+          "triggerProvider": "Cognito"
+        }
+      ],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyCharacters": [],
+          "passwordPolicyMinLength": 8
+        },
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "serviceType": "managed"
+    },
+    "userPoolGroups": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId",
+            "AppClientIDWeb",
+            "AppClientID",
+            "IdentityPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "iplfantasy"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito-UserPool-Groups"
+    }
+  },
+  "function": {
+    "AdminQueries4d05af00": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "iplfantasy"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "fantasyTeamAPI": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "fantasyUsersAPI": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "iplfantasyPostConfirmation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "leagueAPI": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "playersAPI": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "teamsAPI": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "tournamentAPI": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "hosting": {
+    "amplifyhosting": {
+      "providerPlugin": "awscloudformation",
+      "service": "amplifyhosting",
+      "type": "manual"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_AdminQueries4d05af00_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AdminQueries4d05af00"
+        }
+      ]
+    },
+    "AMPLIFY_function_AdminQueries4d05af00_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AdminQueries4d05af00"
+        }
+      ]
+    },
+    "AMPLIFY_function_fantasyTeamAPI_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fantasyTeamAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_fantasyTeamAPI_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fantasyTeamAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_fantasyUsersAPI_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fantasyUsersAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_fantasyUsersAPI_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fantasyUsersAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_iplfantasyPostConfirmation_GROUP": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "iplfantasyPostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_iplfantasyPostConfirmation_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "iplfantasyPostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_iplfantasyPostConfirmation_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "iplfantasyPostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_leagueAPI_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "leagueAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_leagueAPI_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "leagueAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_playersAPI_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "playersAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_playersAPI_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "playersAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_teamsAPI_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "teamsAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_teamsAPI_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "teamsAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_tournamentAPI_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "tournamentAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_tournamentAPI_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "tournamentAPI"
+        }
+      ]
+    },
+    "AMPLIFY_hosting_amplifyhosting_appId": {
+      "usedBy": [
+        {
+          "category": "hosting",
+          "resourceName": "amplifyhosting"
+        }
+      ]
+    },
+    "AMPLIFY_hosting_amplifyhosting_type": {
+      "usedBy": [
+        {
+          "category": "hosting",
+          "resourceName": "amplifyhosting"
+        }
+      ]
+    }
+  },
+  "storage": {
+    "cricketTeam": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
+    "fantasyTeam": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
+    "iplFantasyRolePics": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "iplfantasy"
+        },
+        {
+          "attributes": [
+            "FantasyAdminGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "LeagueAdminGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "FantasyUsersGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "BackendGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
+    },
+    "iplPlayer": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
+    "league": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
+    "tournament": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    }
+  }
+}

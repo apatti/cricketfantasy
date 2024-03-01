@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "paths": {
+    "/players": {
+      "name": "/players",
+      "lambdaFunction": "playersAPI",
+      "permissions": {
+        "setting": "protected",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ],
+        "guest": [
+          "read"
+        ]
+      }
+    },
+    "/iplTeams": {
+      "name": "/iplTeams",
+      "lambdaFunction": "teamsAPI",
+      "permissions": {
+        "setting": "protected",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ],
+        "guest": [
+          "read"
+        ]
+      }
+    },
+    "/users": {
+      "name": "/users",
+      "lambdaFunction": "fantasyUsersAPI",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
+    },
+    "/tournament": {
+      "name": "/tournament",
+      "lambdaFunction": "tournamentAPI",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
+    },
+    "/fantasyTeams": {
+      "name": "/fantasyTeams",
+      "lambdaFunction": "fantasyTeamAPI",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
+    },
+    "/league": {
+      "name": "/league",
+      "lambdaFunction": "leagueAPI",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
+    }
+  }
+}

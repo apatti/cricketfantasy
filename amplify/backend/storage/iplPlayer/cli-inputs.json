@@ -1,0 +1,37 @@
+{
+  "resourceName": "iplPlayer",
+  "tableName": "iplPlayer",
+  "partitionKey": {
+    "fieldName": "id",
+    "fieldType": "string"
+  },
+  "sortKey": {
+    "fieldName": "team",
+    "fieldType": "string"
+  },
+  "gsi": [
+    {
+      "name": "byName",
+      "partitionKey": {
+        "fieldName": "name",
+        "fieldType": "string"
+      },
+      "sortKey": {
+        "fieldName": "team",
+        "fieldType": "string"
+      }
+    },
+    {
+      "name": "byRole",
+      "partitionKey": {
+        "fieldName": "role",
+        "fieldType": "string"
+      },
+      "sortKey": {
+        "fieldName": "name",
+        "fieldType": "string"
+      }
+    }
+  ],
+  "triggerFunctions": []
+}

@@ -1,0 +1,77 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-iplfantasy-staging-00931-authRole",
+      "UnauthRoleArn": "arn:aws:iam::923271942752:role/amplify-iplfantasy-staging-00931-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::923271942752:role/amplify-iplfantasy-staging-00931-authRole",
+      "Region": "us-west-1",
+      "DeploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
+      "UnauthRoleName": "amplify-iplfantasy-staging-00931-unauthRole",
+      "StackName": "amplify-iplfantasy-staging-00931",
+      "StackId": "arn:aws:cloudformation:us-west-1:923271942752:stack/amplify-iplfantasy-staging-00931/d1514320-d1df-11ee-854f-0276485db513",
+      "AmplifyAppId": "d25awa6e9kq77y",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-iplfantasy-staging-00931-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-iplfantasy-staging-00931-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "function": {
+        "iplfantasyPostConfirmation": {
+          "GROUP": "FantasyUsers",
+          "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
+          "s3Key": "amplify-builds/iplfantasyPostConfirmation-45764b307a4c444b5176-build.zip"
+        },
+        "AdminQueries4d05af00": {
+          "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
+          "s3Key": "amplify-builds/AdminQueries4d05af00-685a533053384a6e442f-build.zip"
+        },
+        "fantasyTeamAPI": {
+          "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
+          "s3Key": "amplify-builds/fantasyTeamAPI-5979474c672b6f56304d-build.zip"
+        },
+        "fantasyUsersAPI": {
+          "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
+          "s3Key": "amplify-builds/fantasyUsersAPI-556a4841694e4f753535-build.zip"
+        },
+        "leagueAPI": {
+          "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
+          "s3Key": "amplify-builds/leagueAPI-446235574571596d4a66-build.zip"
+        },
+        "playersAPI": {
+          "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
+          "s3Key": "amplify-builds/playersAPI-75692f794845772f6c42-build.zip"
+        },
+        "teamsAPI": {
+          "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
+          "s3Key": "amplify-builds/teamsAPI-6e746763437173783332-build.zip"
+        },
+        "tournamentAPI": {
+          "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
+          "s3Key": "amplify-builds/tournamentAPI-6b594a2f344e5a7a6455-build.zip"
+        }
+      },
+      "auth": {
+        "iplfantasy": {},
+        "userPoolGroups": {}
+      },
+      "storage": {
+        "cricketTeam": {},
+        "fantasyTeam": {},
+        "iplPlayer": {},
+        "league": {},
+        "tournament": {},
+        "iplFantasyRolePics": {}
+      },
+      "api": {
+        "fantasyapi": {},
+        "AdminQueries": {},
+        "iplFantasy": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d25awa6e9kq77y",
+          "type": "manual"
+        }
+      }
+    }
+  }
+}

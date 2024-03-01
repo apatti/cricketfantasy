@@ -1,0 +1,14 @@
+{
+  "resourceName": "cricketTeam",
+  "tableName": "cricketTeam",
+  "partitionKey": {
+    "fieldName": "id",
+    "fieldType": "string"
+  },
+  "sortKey": {
+    "fieldName": "shortName",
+    "fieldType": "string"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}
