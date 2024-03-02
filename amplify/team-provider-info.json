@@ -18,35 +18,35 @@
         "iplfantasyPostConfirmation": {
           "GROUP": "FantasyUsers",
           "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
-          "s3Key": "amplify-builds/iplfantasyPostConfirmation-45764b307a4c444b5176-build.zip"
+          "s3Key": "amplify-builds/iplfantasyPostConfirmation-3068496e777577454971-build.zip"
         },
         "AdminQueries4d05af00": {
           "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
-          "s3Key": "amplify-builds/AdminQueries4d05af00-685a533053384a6e442f-build.zip"
+          "s3Key": "amplify-builds/AdminQueries4d05af00-2b78706b4c397a504541-build.zip"
         },
         "fantasyTeamAPI": {
           "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
-          "s3Key": "amplify-builds/fantasyTeamAPI-49394c524c554561656f-build.zip"
+          "s3Key": "amplify-builds/fantasyTeamAPI-50656f3475753968534f-build.zip"
         },
         "fantasyUsersAPI": {
           "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
-          "s3Key": "amplify-builds/fantasyUsersAPI-494b677135713843476f-build.zip"
+          "s3Key": "amplify-builds/fantasyUsersAPI-41756f48347053493872-build.zip"
         },
         "leagueAPI": {
           "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
-          "s3Key": "amplify-builds/leagueAPI-723872744f5142516970-build.zip"
+          "s3Key": "amplify-builds/leagueAPI-4c776b5843775142696a-build.zip"
         },
         "playersAPI": {
           "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
-          "s3Key": "amplify-builds/playersAPI-504353586d4e2f547676-build.zip"
+          "s3Key": "amplify-builds/playersAPI-6271754c3665465a4266-build.zip"
         },
         "teamsAPI": {
           "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
-          "s3Key": "amplify-builds/teamsAPI-6933774b543937536c4a-build.zip"
+          "s3Key": "amplify-builds/teamsAPI-732b704142764a375450-build.zip"
         },
         "tournamentAPI": {
           "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
-          "s3Key": "amplify-builds/tournamentAPI-705847377166674b4669-build.zip"
+          "s3Key": "amplify-builds/tournamentAPI-325170554a6e49665872-build.zip"
         }
       },
       "auth": {

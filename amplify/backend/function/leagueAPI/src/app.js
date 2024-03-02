@@ -13,7 +13,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
 const dynamodb = new AWS.DynamoDB.DocumentClient();
-var tableName = "league";
+var tableName = "iplfantasy-league";
 // declare a new express app
 const app = express()
 app.use(bodyParser.json())
@@ -26,10 +26,6 @@ app.use(function(req, res, next) {
   next()
 });
 
-if (process.env.ENV && process.env.ENV !== "NONE") {
-  tableName = tableName + '-' + process.env.ENV;
-}
-
 /**********************
  * Example get method *
  **********************/
@@ -41,7 +37,9 @@ app.get('/league', function(req, res) {
 
 app.get('/league/*', async function(req, res) {
   // Add your code here
-  let params = { TableName: tableName, Key: { id: req.params[0] }};
+  let params = { TableName: tableName, 
+                  Key: { id: req.params[0]},
+                  AttributesToGet: ["name", "benchCount", "maxPlayers", "maxTeamCount", "currentTeamCount", "commissioner", "leagueKey"]};
   let league = await dynamodb.get(params).promise();
   res.json({ statusCode: 200, url: req.url, league: league.Item });
 });

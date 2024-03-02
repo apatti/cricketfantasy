@@ -1,7 +1,7 @@
 'use client'
 import { ThemeProvider, Divider, Flex } from '@aws-amplify/ui-react';
 import { TournamentCard } from '@/ui-components';
-
+import { useNavigateAction } from '../ui-components/utils';
 
 export default function Home() {
   return (
@@ -16,7 +16,12 @@ export default function Home() {
       <Divider />
       <Flex
         padding="24px 32px 24px 32px">
-        <TournamentCard overrides={{"image":{"objectFit":"fill"},"Create League":{"isDisabled":true}}} />
+        <TournamentCard 
+          overrides={{
+            "image":{"objectFit":"fill"},
+            "Create League":{"isDisabled":true},
+            "Join League":{"onClick":useNavigateAction({ type: "url", url: "/leagues/joinLeague" })},
+            }} />
       </Flex>
     </ThemeProvider>
   );

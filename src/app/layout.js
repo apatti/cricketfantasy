@@ -29,7 +29,6 @@ export default function RootLayout({ children }) {
     const fetchUserData = async () => {
       try{
         const { username, userId, signInDetails } = await getCurrentUser();
-        console.log(signInDetails);
         setUser({username, userId, signInDetails})
       }
       catch(err){
