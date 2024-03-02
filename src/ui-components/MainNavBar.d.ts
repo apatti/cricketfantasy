@@ -5,9 +5,9 @@
  **************************************************************************/
 
 import * as React from "react";
-import { FlexProps, ImageProps, TextProps, ViewProps } from "@aws-amplify/ui-react";
-import { LoggedInUserProps } from "./LoggedInUser";
+import { FlexProps, ImageProps, ViewProps } from "@aws-amplify/ui-react";
 import { ButtondefaultfalselinkProps } from "./Buttondefaultfalselink";
+import { LoggedInUserProps } from "./LoggedInUser";
 import { SyntheticEvent } from "react";
 export declare type EscapeHatchProps = {
     [elementHierarchy: string]: Record<string, unknown>;
@@ -25,12 +25,11 @@ export declare type MainNavBarOverridesProps = {
     Logo?: PrimitiveOverrideProps<FlexProps>;
     dukeslogo?: PrimitiveOverrideProps<ImageProps>;
     navItems?: PrimitiveOverrideProps<FlexProps>;
-    Home?: PrimitiveOverrideProps<TextProps>;
-    Leagues?: PrimitiveOverrideProps<TextProps>;
-    Team?: PrimitiveOverrideProps<TextProps>;
-    Players?: PrimitiveOverrideProps<TextProps>;
-    Rules?: PrimitiveOverrideProps<TextProps>;
-    Scoring?: PrimitiveOverrideProps<TextProps>;
+    Home?: ButtondefaultfalselinkProps;
+    Leagues?: ButtondefaultfalselinkProps;
+    Team?: ButtondefaultfalselinkProps;
+    Players?: ButtondefaultfalselinkProps;
+    Rules?: ButtondefaultfalselinkProps;
     profileItems?: PrimitiveOverrideProps<ViewProps>;
     LoggedInUser?: LoggedInUserProps;
     loginBtnName?: ButtondefaultfalselinkProps;
@@ -46,6 +45,7 @@ export declare type MainNavBarProps = React.PropsWithChildren<Partial<FlexProps>
     displayLoggedInUserModal?: String;
     loginBtnOnClick?: (event: SyntheticEvent) => void;
     src?: String;
+    homeBtnOnClick?: (event: SyntheticEvent) => void;
 } & {
     overrides?: MainNavBarOverridesProps | undefined | null;
 }>;

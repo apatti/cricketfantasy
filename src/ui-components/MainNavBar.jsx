@@ -6,10 +6,10 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { getOverrideProps, useNavigateAction } from "./utils";
-import { Flex, Image, Text, View } from "@aws-amplify/ui-react";
-import LoggedInUser from "./LoggedInUser";
+import { getOverrideProps } from "./utils";
+import { Flex, Image, View } from "@aws-amplify/ui-react";
 import Buttondefaultfalselink from "./Buttondefaultfalselink";
+import LoggedInUser from "./LoggedInUser";
 export default function MainNavBar(props) {
   const {
     userImg,
@@ -22,11 +22,10 @@ export default function MainNavBar(props) {
     displayLoggedInUserModal = "none",
     loginBtnOnClick,
     src = "/logo/dukesIPL.jpeg",
+    homeBtnOnClick,
     overrides,
     ...rest
   } = props;
-  const homeOnClick = useNavigateAction({ type: "url", url: "/" });
-  const playersOnClick = useNavigateAction({ type: "url", url: "/players" });
   return (
     <Flex
       gap="50px"
@@ -84,144 +83,76 @@ export default function MainNavBar(props) {
         padding="0px 0px 0px 0px"
         {...getOverrideProps(overrides, "navItems")}
       >
-        <Text
-          fontFamily="Inter"
-          fontSize="16px"
-          fontWeight="400"
-          color="rgba(0,0,0,1)"
-          lineHeight="24px"
-          textAlign="center"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          letterSpacing="0.01px"
+        <Buttondefaultfalselink
+          display="flex"
+          gap="10px"
+          direction="row"
           width="unset"
           height="unset"
-          gap="unset"
-          alignItems="unset"
+          justifyContent="center"
+          alignItems="center"
           shrink="0"
           position="relative"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="Home"
-          onClick={() => {
-            homeOnClick();
-          }}
+          padding="8px 16px 8px 16px"
+          label="Home"
           {...getOverrideProps(overrides, "Home")}
-        ></Text>
-        <Text
-          fontFamily="Inter"
-          fontSize="16px"
-          fontWeight="400"
-          color="rgba(0,0,0,1)"
-          lineHeight="24px"
-          textAlign="center"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          letterSpacing="0.01px"
+        ></Buttondefaultfalselink>
+        <Buttondefaultfalselink
+          display="flex"
+          gap="10px"
+          direction="row"
           width="unset"
           height="unset"
-          gap="unset"
-          alignItems="unset"
+          justifyContent="center"
+          alignItems="center"
           shrink="0"
           position="relative"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="Leagues"
+          padding="8px 16px 8px 16px"
+          label="Leagues"
           {...getOverrideProps(overrides, "Leagues")}
-        ></Text>
-        <Text
-          fontFamily="Inter"
-          fontSize="16px"
-          fontWeight="400"
-          color="rgba(0,0,0,1)"
-          lineHeight="24px"
-          textAlign="left"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          letterSpacing="0.01px"
+        ></Buttondefaultfalselink>
+        <Buttondefaultfalselink
+          display={loginBtnLabel == "Sign In" ? "none" : "inline-flex"}
+          gap="10px"
+          direction="row"
           width="unset"
           height="unset"
-          gap="unset"
-          alignItems="unset"
+          justifyContent="center"
+          alignItems="center"
           shrink="0"
           position="relative"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="Team"
+          padding="8px 16px 8px 16px"
+          label="Team"
           {...getOverrideProps(overrides, "Team")}
-        ></Text>
-        <Text
-          fontFamily="Inter"
-          fontSize="16px"
-          fontWeight="400"
-          color="rgba(0,0,0,1)"
-          lineHeight="24px"
-          textAlign="left"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          letterSpacing="0.01px"
+        ></Buttondefaultfalselink>
+        <Buttondefaultfalselink
+          display="flex"
+          gap="10px"
+          direction="row"
           width="unset"
           height="unset"
-          gap="unset"
-          alignItems="unset"
+          justifyContent="center"
+          alignItems="center"
           shrink="0"
           position="relative"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="Players"
-          onClick={() => {
-            playersOnClick();
-          }}
+          padding="8px 16px 8px 16px"
+          label="Players"
           {...getOverrideProps(overrides, "Players")}
-        ></Text>
-        <Text
-          fontFamily="Inter"
-          fontSize="16px"
-          fontWeight="400"
-          color="rgba(0,0,0,1)"
-          lineHeight="24px"
-          textAlign="left"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          letterSpacing="0.01px"
+        ></Buttondefaultfalselink>
+        <Buttondefaultfalselink
+          display="flex"
+          gap="10px"
+          direction="row"
           width="unset"
           height="unset"
-          gap="unset"
-          alignItems="unset"
+          justifyContent="center"
+          alignItems="center"
           shrink="0"
           position="relative"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="Rules"
+          padding="8px 16px 8px 16px"
+          label="Rules"
           {...getOverrideProps(overrides, "Rules")}
-        ></Text>
-        <Text
-          fontFamily="Inter"
-          fontSize="16px"
-          fontWeight="400"
-          color="rgba(0,0,0,1)"
-          lineHeight="24px"
-          textAlign="left"
-          display="block"
-          direction="column"
-          justifyContent="unset"
-          letterSpacing="0.01px"
-          width="unset"
-          height="unset"
-          gap="unset"
-          alignItems="unset"
-          shrink="0"
-          position="relative"
-          padding="0px 0px 0px 0px"
-          whiteSpace="pre-wrap"
-          children="Scoring"
-          {...getOverrideProps(overrides, "Scoring")}
-        ></Text>
+        ></Buttondefaultfalselink>
       </Flex>
       <View
         width="128px"

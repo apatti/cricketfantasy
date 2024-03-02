@@ -7,13 +7,13 @@ const inter = Inter({ subsets: ["latin"] });
 import { Amplify } from "aws-amplify";
 import awsExports from "../aws-exports";
 
-import "@aws-amplify/ui-react/styles.css";
 import { Flex, ThemeProvider,Link, Authenticator } from '@aws-amplify/ui-react';
 
 import { getCurrentUser } from 'aws-amplify/auth';
 
 import { useState, useEffect } from 'react';
 import { handleSignOut } from "./util";
+import { useNavigateAction } from "../ui-components/utils";
 
 
 Amplify.configure({ ...awsExports, ssr: true });
@@ -73,12 +73,17 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <ThemeProvider theme={studioTheme}>
+        <ThemeProvider>
           <MainNavBar loginBtnLabel={user.username} 
             overrides={{
               "MainNavBar":{"justifyContent":"space-evenly",
               "padding":"24px 5x 24px 5px"},
-              "loginBtnName":{"onClick":loginBtnOnClick},
+              "Home":{style:{cursor:"grab"}, "onClick":useNavigateAction({ type: "url", url: "/" })},
+              "Players":{style:{cursor:"grab"}, "onClick":useNavigateAction({ type: "url", url: "/players" })},
+              "Leagues":{style:{cursor:"grab"}, "onClick":useNavigateAction({ type: "url", url: "/leagues" })},
+              "Team":{style:{cursor:"grab"}, "onClick":useNavigateAction({ type: "url", url: "/team" })},
+              "Rules":{style:{cursor:"grab"}, "onClick":useNavigateAction({ type: "url", url: "/rules" })},
+              "loginBtnName":{style:{cursor:"grab"},"onClick":loginBtnOnClick},
               "LoggedInUser":{"userName":user.username,overrides:{
                                           "SignOut":{"onClick":signOutButtonOnClick},
                                           "Icon/close":{"onClick":loggedUserModalCloseOnClick}}}
