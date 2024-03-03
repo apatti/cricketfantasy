@@ -13,7 +13,13 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
 const dynamodb = new AWS.DynamoDB.DocumentClient();
+
 var tableName = "iplfantasy-league";
+var fantasyTeamTable = "fantasyTeam";
+if (process.env.ENV && process.env.ENV !== "NONE") {
+  fantasyTeamTable = fantasyTeamTable + '-' + process.env.ENV;
+}
+
 // declare a new express app
 const app = express()
 app.use(bodyParser.json())
@@ -33,6 +39,22 @@ app.use(function(req, res, next) {
 app.get('/league', function(req, res) {
   // Add your code here
   res.json({success: 'get call succeed!', url: req.url});
+});
+
+app.get('/league/standings/*', async function(req, res) {
+  // Add your code here
+  let params = { TableName: fantasyTeamTable,
+                  IndexName: "league-index",
+                  KeyConditionExpression: "league = :v_league", 
+                  ExpressionAttributeValues: {
+                    ":v_league": req.params[0]
+                  },
+                  ProjectionExpression: "teamName,manager,id,teamSlogan",
+                  "ScanIndexForward": false
+                };
+  let league = await dynamodb.query(params).promise();
+  console.log(league);
+  res.json({ statusCode: 200, url: req.url, standings: league.Items });
 });
 
 app.get('/league/*', async function(req, res) {

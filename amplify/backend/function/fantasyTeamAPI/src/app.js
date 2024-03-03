@@ -14,7 +14,7 @@ const bodyParser = require('body-parser')
 const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
-var tableName = "iplfantasy-league";
+var leagueTable = "iplfantasy-league";
 
 // declare a new express app
 const app = express()
@@ -22,12 +22,9 @@ app.use(bodyParser.json())
 app.use(awsServerlessExpressMiddleware.eventContext())
 
 var tableName = "fantasyTeam";
-var leagueKey = "";
+
 if (process.env.ENV && process.env.ENV !== "NONE") {
   tableName = tableName + '-' + process.env.ENV;
-}
-if(process.env.LEAGUE_KEY && process.env.LEAGUE_KEY !== "NONE"){
-  leagueKey = process.env.LEAGUE_KEY;
 }
 
 // Enable CORS for all methods
@@ -65,21 +62,58 @@ app.post('/fantasyTeams/*', async function(req, res) {
   // Add your code here
   let teamRequest = req.body;
 
-  if(leagueKey === "" || !teamRequest.leagueKey || teamRequest.leagueKey !== leagueKey){
+  let leagueParams = { TableName: leagueTable, 
+    Key: { id: req.params[0]},
+    AttributesToGet: ["maxTeamCount", "currentTeamCount", "leagueKey"]};
+  
+  let league = await dynamodb.get(leagueParams).promise();
+  if(!league.Item){
+    res.json({ statusCode: 404, url: req.url, body: "League not found" });
+    return;
+  }
+  if(league.Item.currentTeamCount >= league.Item.maxTeamCount){ //league is full   
+    res.json({ statusCode: 400, url: req.url, body: "League is full" });
+    return;
+  }
+
+  if(!teamRequest.leagueKey || teamRequest.leagueKey !== league.Item.leagueKey){
     res.json({ statusCode: 403, url: req.url, body: "Invalid league key" });
     return;
   }
 
+  //wrong choice of sort key name
   let team = {
-    
+    ...teamRequest,
+    owner: "meta",
+    league: req.params[0],
   }
   
   let params = {
     TableName: tableName,
     Item: team
   };
-  await dynamodb.put(params).promise();
-  res.json({ statusCode: 200, url: req.url, body: req.body });
+  dynamodb.put(params,async function(err,data){
+    if(err){
+      console.log("Unable to add team", teamRequest.teamName, ". Error JSON:", JSON.stringify(err, null, 2));
+      res.json({ statusCode: 500, error: err.message, url: req.url });
+      return;
+    } else {
+      let leagueUpdate = await dynamodb.update({
+        TableName: leagueTable,
+        Key: { id: req.params[0] },
+        UpdateExpression: "SET currentTeamCount = currentTeamCount + :currentTeamChange",
+        ExpressionAttributeValues: {
+          ":currentTeamChange": 1
+        },
+        ReturnValues: "ALL_NEW"
+      }).promise();
+      team.currentTeamCount = leagueUpdate.Attributes.currentTeamCount;
+      console.log(leagueUpdate);
+      console.log("PutItem succeeded:", teamRequest.teamName);
+      res.json({ statusCode: 200, url: req.url, body: team });
+    }
+  });
+  //res.json({ statusCode: 200, url: req.url, body: req.body });
   
 });
 
