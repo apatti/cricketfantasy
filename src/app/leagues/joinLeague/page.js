@@ -63,6 +63,7 @@ export default function Home() {
                 console.log(response);
                 //Alert.success('Team added to the league successfully');
                 setTeamCreationError("success");
+                useNavigateAction({ type: "url", url: "/league" })
             } catch (error) {
                 setTeamCreationError(error.message);
                 console.log(error);
