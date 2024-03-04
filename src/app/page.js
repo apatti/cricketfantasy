@@ -13,7 +13,7 @@ export default function Home() {
         Draft time: 12pm
         <p>Best of luck!!</p>
       </Flex>
-      <Divider />
+      <Divider width="100%"/>
       <Flex
         padding="24px 32px 24px 32px">
         <TournamentCard 

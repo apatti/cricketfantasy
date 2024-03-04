@@ -4,7 +4,7 @@ import { Button, Divider, Flex, Heading, Label,Input, Text, View, Grid, Authenti
 import { post } from '@aws-amplify/api-rest';
 import useSWR from 'swr';
 import { useState } from 'react';
-import { useNavigateAction } from "../ui-components/utils";
+import { useNavigateAction } from "../../../ui-components/utils";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
@@ -117,7 +117,7 @@ export default function Home() {
                         isDismissible={true} 
                         hasIcon={true} 
                         heading="Success" 
-                        onDismiss={()=>{userNavigation({ type: "url", url: "/league" })}}>
+                        onDismiss={()=>{useNavigateAction({ type: "url", url: "/league" })}}>
                             Team added to the league successfully
                 </Message>}
             <Divider />
