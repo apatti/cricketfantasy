@@ -72,13 +72,15 @@ export default function Home() {
         >
             <Heading level={2}>Welcome to {data.league.name}</Heading>
             <Divider label="League details" size="large"/>
-            <View>  Tournament Type: Draft</View>
-            <View>  Draft date: 03/17/2024 </View>
-            <View>  Draft time: 12pm </View>
-            <View>  Max fantasy teams: {data.league.maxTeamCount}</View>
-            <View>  Max players per team: {data.league.maxPlayers}</View>
-            <View>  Total players on bench: {data.league.benchCount}</View>
-            <View>  Teams registered: {data.league.currentTeamCount}</View>
+            <View>  Tournament Type: <b>Draft</b></View>
+            <View>  Draft date: <b>03/17/2024</b> </View>
+            <View>  Draft time: <b>12pm</b> </View>
+            <View>  Max fantasy teams: <b>{data.league.maxTeamCount}</b></View>
+            <View>  Max players per team: <b>{data.league.maxPlayers}</b></View>
+            <View>  Total players on bench: <b>{data.league.benchCount}</b></View>
+            <View>  Free Agent Budget: <b>${data.league.faBudget}</b></View>
+            <View>  Minimum Free Agent Bid Amount: <b>${data.league.minFABidAmount}</b></View>
+            <View>  Teams registered: <b>{data.league.currentTeamCount}</b></View>
             <Divider label="Team details" size="large"/>
             <Flex direction="column" gap="1rem">
                 <Label htmlFor="team_name">

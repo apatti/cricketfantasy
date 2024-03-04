@@ -61,7 +61,7 @@ app.get('/league/*', async function(req, res) {
   // Add your code here
   let params = { TableName: tableName, 
                   Key: { id: req.params[0]},
-                  AttributesToGet: ["name", "benchCount", "maxPlayers", "maxTeamCount", "currentTeamCount", "commissioner", "leagueKey"]};
+                  AttributesToGet: ["name", "benchCount", "maxPlayers", "maxTeamCount", "currentTeamCount", "commissioner", "leagueKey","faBudget","minFABidAmount"]};
   let league = await dynamodb.get(params).promise();
   res.json({ statusCode: 200, url: req.url, league: league.Item });
 });
