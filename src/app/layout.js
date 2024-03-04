@@ -89,7 +89,6 @@ export default function RootLayout({ children }) {
             }} 
             displayLoggedInUserModal={displayLoggedInUserModal}
             displayLoginBtn={displayLoginBtn}
-
           />
           <div>{
               (showAuthenticationWindow) && <Authenticator variation="modal">

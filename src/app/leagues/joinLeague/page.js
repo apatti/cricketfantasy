@@ -3,7 +3,8 @@
 import { Button, Divider, Flex, Heading, Label,Input, Text, View, Grid, Authenticator, Alert, Loader, Message } from '@aws-amplify/ui-react';
 import { post } from '@aws-amplify/api-rest';
 import useSWR from 'swr';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useNavigateAction } from "../ui-components/utils";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
@@ -111,7 +112,14 @@ export default function Home() {
                 <Loader variation="linear"/>
             }
             {(teamCreationError !== "" && teamCreationError!=="success") && <Alert variation="error" isDismissible={true} hasIcon={true} heading="Error">{teamCreationError}</Alert>}
-            {(teamCreationError === "success") && <Message variation="success" isDismissible={true} hasIcon={true} heading="Success">Team added to the league successfully</Message>}
+            {(teamCreationError === "success") && 
+                <Message variation="success" 
+                        isDismissible={true} 
+                        hasIcon={true} 
+                        heading="Success" 
+                        onDismiss={()=>{userNavigation({ type: "url", url: "/league" })}}>
+                            Team added to the league successfully
+                </Message>}
             <Divider />
         </Grid>}
         </Flex>
