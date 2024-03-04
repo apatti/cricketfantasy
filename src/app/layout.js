@@ -75,7 +75,7 @@ export default function RootLayout({ children }) {
         <ThemeProvider>
           <MainNavBar loginBtnLabel={user.username} 
             overrides={{
-              "MainNavBar":{"justifyContent":"space-evenly",
+              "MainNavBar":{"justifyContent":"space-between",
               "padding":"24px 5x 24px 5px"},
               "Home":{style:{cursor:"grab"}, "onClick":useNavigateAction({ type: "url", url: "/" })},
               "Players":{style:{cursor:"grab"}, "onClick":useNavigateAction({ type: "url", url: "/players" })},
