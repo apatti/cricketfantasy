@@ -87,6 +87,8 @@ app.post('/fantasyTeams/*', async function(req, res) {
     owner: "meta",
     league: req.params[0],
   }
+
+  let entryTime = new Date();
   
   let initialTeam = ["FA1","FA2","FA3","FA4","FA5"];
 
@@ -104,27 +106,31 @@ app.post('/fantasyTeams/*', async function(req, res) {
         league: req.params[0],
         owner: "v0-team",
         teamPayload: JSON.stringify(initialTeam),
-        team: dynamodb.createSet(initialTeam)
+        team: dynamodb.createSet(initialTeam),
+        id: teamRequest.id,
+        entryTime: entryTime.toISOString()
       }
     }
   },{
     PutRequest:{
       Item: {
         league: req.params[0],
-        owner: "v1-team",
+        owner: entryTime.toISOString()+"#team",
         teamPayload: JSON.stringify(initialTeam),
-        team: dynamodb.createSet(initialTeam)
+        team: dynamodb.createSet(initialTeam),
+        id:teamRequest.id,
+        entryTime: entryTime.toISOString()
       }
     }
   }
-]
+];
 
   let params = {
     RequestItems: {
       [tableName]: requests
     }
   };
-
+  
   dynamodb.batchWrite(params,async function(err,data){
     if(err){
       console.log("Unable to add team", teamRequest.teamName, ". Error JSON:", JSON.stringify(err, null, 2));

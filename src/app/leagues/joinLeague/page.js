@@ -4,7 +4,6 @@ import { Button, Divider, Flex, Heading, Label,Input, Text, View, Grid, Authenti
 import { post } from '@aws-amplify/api-rest';
 import useSWR from 'swr';
 import { useState } from 'react';
-import { useNavigateAction } from "../../../ui-components/utils";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
@@ -63,7 +62,7 @@ export default function Home() {
                 console.log(response);
                 //Alert.success('Team added to the league successfully');
                 setTeamCreationError("success");
-                useNavigateAction({ type: "url", url: "/league" })
+                window.open("/leagues", "_self", "noopener noreferrer");
             } catch (error) {
                 setTeamCreationError(error.message);
                 console.log(error);
@@ -120,7 +119,7 @@ export default function Home() {
                         isDismissible={true} 
                         hasIcon={true} 
                         heading="Success" 
-                        onDismiss={()=>{useNavigateAction({ type: "url", url: "/league" })}}>
+                        >
                             Team added to the league successfully
                 </Message>}
             <Divider />
