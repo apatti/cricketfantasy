@@ -88,10 +88,66 @@ app.post('/fantasyTeams/*', async function(req, res) {
     league: req.params[0],
   }
   
+  let initialTeam = ["FA1","FA2","FA3","FA4","FA5"];
+
+  const requests = [{
+    PutRequest:{
+      Item: {
+        league: req.params[0],
+        owner: "meta",
+        ...teamRequest
+      }
+    }
+  },{
+    PutRequest:{
+      Item: {
+        league: req.params[0],
+        owner: "v0-team",
+        teamPayload: JSON.stringify(initialTeam),
+        team: dynamodb.createSet(initialTeam)
+      }
+    }
+  },{
+    PutRequest:{
+      Item: {
+        league: req.params[0],
+        owner: "v1-team",
+        teamPayload: JSON.stringify(initialTeam),
+        team: dynamodb.createSet(initialTeam)
+      }
+    }
+  }
+]
+
   let params = {
-    TableName: tableName,
-    Item: team
+    RequestItems: {
+      [tableName]: requests
+    }
   };
+
+  dynamodb.batchWrite(params,async function(err,data){
+    if(err){
+      console.log("Unable to add team", teamRequest.teamName, ". Error JSON:", JSON.stringify(err, null, 2));
+      res.json({ statusCode: 500, error: err.message, url: req.url });
+      return;
+    } else {
+      let leagueUpdate = await dynamodb.update({
+        TableName: leagueTable,
+        Key: { id: req.params[0] },
+        UpdateExpression: "SET currentTeamCount = currentTeamCount + :currentTeamChange",
+        ExpressionAttributeValues: {
+          ":currentTeamChange": 1
+        },
+        ReturnValues: "ALL_NEW"
+      }).promise();
+      team.currentTeamCount = leagueUpdate.Attributes.currentTeamCount;
+      console.log(leagueUpdate);
+      console.log("PutItem succeeded:", teamRequest.teamName);
+      res.json({ statusCode: 200, url: req.url, body: team });
+    }
+  })
+
+  /*
   dynamodb.put(params,async function(err,data){
     if(err){
       console.log("Unable to add team", teamRequest.teamName, ". Error JSON:", JSON.stringify(err, null, 2));
@@ -113,6 +169,7 @@ app.post('/fantasyTeams/*', async function(req, res) {
       res.json({ statusCode: 200, url: req.url, body: team });
     }
   });
+  */
   //res.json({ statusCode: 200, url: req.url, body: req.body });
   
 });
