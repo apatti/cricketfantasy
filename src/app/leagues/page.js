@@ -3,11 +3,14 @@
 import { Divider, Flex, Heading, TableRow,TableCell, Text, TableBody, Authenticator, Table, Loader, Message, TableHead } from '@aws-amplify/ui-react';
 import { get } from '@aws-amplify/api-rest';
 
+import { useRouter } from 'next/navigation'
+
 import { useState, useEffect } from 'react';
 
 export default function Home() {
     const [isLoading, setIsLoading] = useState(true);
     const [standings, setStandings] = useState([]);
+    const router = useRouter()
 
     const getStandings = async () => {
         try {
@@ -51,7 +54,7 @@ export default function Home() {
                 </TableHead>
                 <TableBody>
                     {standings.map((standing, index) => (
-                        <TableRow key={standing.teamName}>
+                        <TableRow key={standing.teamName} onClick={()=>router.push(`/team/${standing.manager}`)}>
                             <TableCell>{index+1}</TableCell>
                             <TableCell>{standing.teamName}</TableCell>
                             <TableCell>{standing.manager}</TableCell>

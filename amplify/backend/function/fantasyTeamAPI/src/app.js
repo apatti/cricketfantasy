@@ -1,4 +1,8 @@
-/*
+/* Amplify Params - DO NOT EDIT
+	AUTH_IPLFANTASY_USERPOOLID
+	ENV
+	REGION
+Amplify Params - DO NOT EDIT *//*
 Copyright 2017 - 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at
     http://aws.amazon.com/apache2.0/
@@ -10,16 +14,16 @@ See the License for the specific language governing permissions and limitations 
 
 const AWS = require('aws-sdk')
 const express = require('express')
-const bodyParser = require('body-parser')
-const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
+const applyMiddleware = require('./middleware').applyMiddleware;
+
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 var leagueTable = "iplfantasy-league";
 
 // declare a new express app
 const app = express()
-app.use(bodyParser.json())
-app.use(awsServerlessExpressMiddleware.eventContext())
+applyMiddleware(app);
+
 
 var tableName = "fantasyTeam";
 
@@ -44,11 +48,33 @@ app.get('/fantasyTeams', function(req, res) {
   res.json({success: 'get call succeed!', url: req.url});
 });
 
-app.get('/fantasyTeams/*', function(req, res) {
+app.get('/fantasyTeams/*', async function(req, res) {
+  let pathParam = req.apiGateway.event.pathParameters.proxy;
+  if(!pathParam){
+    res.json({success:'no param',data:[]});
+    return;
+  }
+
+  const PARAM_REGEX = /(.*)\/(.*)/;
+  const [, lid, tid] = pathParam.match(PARAM_REGEX);
+
+  let params = { TableName: tableName, 
+    Key: { 
+      id: tid,
+      owner: 'v0-team'
+    }
+  };
+  let team = await dynamodb.get(params).promise();
+res.json({ statusCode: 200, url: req.url, team: team.Item });
   // Add your code here
-  res.json({success: 'get call succeed!', url: req.url});
 });
 
+app.get('/fantasyTeams/{proxy+}',function(req, res) {
+  // Add your code here
+  let lid = req.params.lid;
+  let tid = req.params.tid;
+  res.json({success: 'get call succeed!', url: req.url,lid,tid});
+});
 /****************************
 * Example post method *
 ****************************/
@@ -57,6 +83,42 @@ app.post('/fantasyTeams', function(req, res) {
   // Add your code here
   res.json({success: 'post call succeed!', url: req.url, body: req.body})
 });
+
+app.post('/fantasyTeams/{lid}/{tid}/freeAgency', function(req, res) {
+  // Add your code here
+  
+  //PK: PlayerID
+  //SK: FA#MMDD
+  //Fields: PTA#PTR, Value:$$
+
+  let faAddRequest = req.body;
+  let entryTime = new Date(); 
+  
+  let params = {
+      TableName : tableName,
+      Item: {
+        id:req.params[1],
+        league:req.params[0],
+        owner:`FA#${entryTime.getMonth()+1}${entryTime.getDate()}`,
+        ...faAddRequest
+      }
+  };
+  
+  try{
+    dynamodb.put(params, function(err, data) {
+      if (err) {
+        res.json({ statusCode: 500, error: err.message, url: req.url });
+      } else {
+        res.json({ statusCode: 201, url: req.url, body: JSON.stringify(params.Item) })
+        //console.log("PutItem succeeded:", name);
+      }
+    });
+  }
+  catch(err){
+    res.json({ statusCode: 500, error: "Exception:"+err.message, url: req.url });
+  }
+}
+);
 
 app.post('/fantasyTeams/*', async function(req, res) {
   // Add your code here
@@ -90,7 +152,13 @@ app.post('/fantasyTeams/*', async function(req, res) {
 
   let entryTime = new Date();
   
-  let initialTeam = ["FA1","FA2","FA3","FA4","FA5"];
+  let initialTeam = [
+    "FA1#Empty Spot 2#Player#IPL#https://fantasyrolepics.s3.us-west-1.amazonaws.com/dukesFA1.jpeg",
+    "FA2#Empty Spot 2#Player#IPL#https://fantasyrolepics.s3.us-west-1.amazonaws.com/dukesFA1.jpeg",
+    "FA3#Empty Spot 2#Player#IPL#https://fantasyrolepics.s3.us-west-1.amazonaws.com/dukesFA1.jpeg",
+    "FA4#Empty Spot 2#Player#IPL#https://fantasyrolepics.s3.us-west-1.amazonaws.com/dukesFA1.jpeg",
+    "FA5#Empty Spot 2#Player#IPL#https://fantasyrolepics.s3.us-west-1.amazonaws.com/dukesFA1.jpeg",
+    "FA6#Empty Spot 2#Player#IPL#https://fantasyrolepics.s3.us-west-1.amazonaws.com/dukesFA1.jpeg"];
 
   const requests = [{
     PutRequest:{
@@ -105,9 +173,10 @@ app.post('/fantasyTeams/*', async function(req, res) {
       Item: {
         league: req.params[0],
         owner: "v0-team",
-        teamPayload: JSON.stringify(initialTeam),
         team: dynamodb.createSet(initialTeam),
         id: teamRequest.id,
+        captain: teamRequest.captain,
+        vice: teamRequest.vice,
         entryTime: entryTime.toISOString()
       }
     }
@@ -116,9 +185,10 @@ app.post('/fantasyTeams/*', async function(req, res) {
       Item: {
         league: req.params[0],
         owner: entryTime.toISOString()+"#team",
-        teamPayload: JSON.stringify(initialTeam),
         team: dynamodb.createSet(initialTeam),
         id:teamRequest.id,
+        captain: teamRequest.captain,
+        vice: teamRequest.vice,
         entryTime: entryTime.toISOString()
       }
     }
@@ -179,7 +249,6 @@ app.post('/fantasyTeams/*', async function(req, res) {
   //res.json({ statusCode: 200, url: req.url, body: req.body });
   
 });
-
 /****************************
 * Example put method *
 ****************************/

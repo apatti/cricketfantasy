@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "function": {
+      "fantasyTeamAPI": [
+        "read",
+        "update"
+      ],
+      "playersAPI": [
+        "read",
+        "update"
+      ]
+    },
+    "storage": {
+      "iplPlayer": [
+        "read",
+        "update"
+      ]
+    }
+  },
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "faEnabled",
+      "environmentVariableName": "FA_ENABLED"
+    },
+    {
+      "cloudFormationParameterName": "readOnly",
+      "environmentVariableName": "READ_ONLY"
+    }
+  ],
+  "secretNames": [
+    "admin_fa_key"
+  ]
+}

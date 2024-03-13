@@ -16,6 +16,8 @@ export default function PlayerCard(props) {
     status = "Free Agent",
     profilePic,
     profileLink,
+    addBtnLabel = "Replace",
+    addBtnVisible = "",
     overrides,
     ...rest
   } = props;
@@ -181,7 +183,8 @@ export default function PlayerCard(props) {
         size="large"
         isDisabled={false}
         variation="primary"
-        children="Add"
+        display={addBtnVisible}
+        children={addBtnLabel}
         {...getOverrideProps(overrides, "AddDropBtn")}
       ></Button>
     </Flex>

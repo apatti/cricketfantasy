@@ -55,6 +55,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     },
+    "freeAgency": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "iplfantasyPostConfirmation": {
       "Arn": "string",
       "LambdaExecutionRole": "string",

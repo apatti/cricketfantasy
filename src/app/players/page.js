@@ -36,6 +36,7 @@ export default function Home() {
           teamName={item.team}
           profilePic={item.icon}
           profileLink={item.profile}
+          addBtnVisible="none"
         ></PlayerCard>
       )}
     </Collection>

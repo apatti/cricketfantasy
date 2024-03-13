@@ -181,11 +181,50 @@
     },
     "fantasyTeamAPI": {
       "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "iplfantasy"
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
     "fantasyUsersAPI": {
       "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "freeAgency": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "fantasyTeamAPI"
+        },
+        {
+          "attributes": [
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "playersAPI"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn",
+            "StreamArn"
+          ],
+          "category": "storage",
+          "resourceName": "iplPlayer"
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
@@ -270,6 +309,46 @@
         {
           "category": "function",
           "resourceName": "fantasyUsersAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_freeAgency_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "freeAgency"
+        }
+      ]
+    },
+    "AMPLIFY_function_freeAgency_faEnabled": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "freeAgency"
+        }
+      ]
+    },
+    "AMPLIFY_function_freeAgency_readOnly": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "freeAgency"
+        }
+      ]
+    },
+    "AMPLIFY_function_freeAgency_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "freeAgency"
+        }
+      ]
+    },
+    "AMPLIFY_function_freeAgency_secretsPathAmplifyAppId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "freeAgency"
         }
       ]
     },

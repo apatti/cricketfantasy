@@ -35,6 +35,8 @@ export declare type PlayerCardProps = React.PropsWithChildren<Partial<FlexProps>
     status?: String;
     profilePic?: String;
     profileLink?: String;
+    addBtnLabel?: String;
+    addBtnVisible?: String;
 } & {
     overrides?: PlayerCardOverridesProps | undefined | null;
 }>;
