@@ -73,7 +73,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <ThemeProvider>
-          <MainNavBar loginBtnLabel={user.username} 
+          <MainNavBar loginBtnLabel={user.username} suppressHydrationWarning
             overrides={{
               "MainNavBar":{"justifyContent":"space-between",
               "padding":"24px 5x 24px 5px"},

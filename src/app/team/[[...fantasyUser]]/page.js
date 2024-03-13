@@ -51,7 +51,7 @@ export default function Home({params}) {
                     role:teamMeta[2],
                     team:teamMeta[3],
                     profilePic:teamMeta.length>4?teamMeta[4]:'',
-                    profileLink:teamMeta.length>5?teamMeta[5]:''
+                    profileLink:teamMeta.length>5?teamMeta[5]:'/'
                 }
             });
             setTeamRoster(teamRoster);
