@@ -61,6 +61,25 @@ app.get('/players', async function(req, res) {
   
 }); 
 
+app.get('/players/freeAgents',async function(req, res) {
+  // Add your code here
+  let players = [];
+  let params = { TableName: tableName,
+                  FilterExpression: "attribute_not_exists(playerIcon) or playerIcon = :null or playerIcon = :undefined",
+                  ExpressionAttributeValues: {
+                  ':null': null,
+                  ':undefined':'undefined'
+                }};
+    let items;
+    do {
+      items = await dynamodb.scan(params).promise();
+      items.Items.forEach((item) => players.push(item));
+      params.ExclusiveStartKey = items.LastEvaluatedKey;
+  } while (typeof items.LastEvaluatedKey != "undefined");
+  res.json({ statusCode: 200, url: req.url, players: players })
+  
+}); 
+
 app.get('/players/*', function(req, res) {
   // Add your code here
   res.json({success: 'get call succeed!', url: req.url});

@@ -2,9 +2,10 @@
 
 import { Flex, Authenticator, Loader, TableHead,TableCell,TableRow,TableBody,TableFoot,Table, Heading,SelectField,Divider,Grid, Label,Text, SwitchField, Input,Button } from '@aws-amplify/ui-react';
 import { get } from '@aws-amplify/api-rest';
-import { PlayerCard } from '@/ui-components';
+
 import { getCurrentUserName } from '@/app/util';
 import { useRouter } from 'next/navigation'
+
 
 
 import { useState, useEffect } from 'react';
@@ -77,12 +78,30 @@ export default function Home({params}) {
             console.log('GET call failed: ', e);
           }
     }
+
+    const getFAs = async () => {
+        setIsLoading(true);
+        const restOperation = get({ 
+            apiName: 'fantasyapi',
+            path: '/players/freeAgents'
+          });
+          const response = await restOperation.response;
+          const faResponse = await response.body.json()
+          //data.players 
+          setFAList(faResponse.players);
+          setIsLoading(false);
+    }
+
     useEffect( () => {
         getUserName();
     }, []);
     useEffect(()=>{
         getTeam();
     },[userName])
+
+    const editSubmit = (e) =>{
+        alert("TBD");
+    }
 
     return(
         <Authenticator.Provider>
@@ -95,6 +114,7 @@ export default function Home({params}) {
                 alignItems="flex-start"
                 wrap ="nowrap"
                 gap="1rem"
+                onSubmit={(e)=>editSubmit(e)}
              >
                 <Heading width="auto" level={3}>{teamDetails.id}</Heading>
                 <Divider/>
@@ -106,6 +126,9 @@ export default function Home({params}) {
                     size="large"
                     isChecked={isEditMode}
                     onChange={(e)=>{
+                        if(e.target.checked==true){
+                            getFAs();
+                        }
                         setEditMode(e.target.checked);
                     }}
                     ></SwitchField>
@@ -172,20 +195,35 @@ export default function Home({params}) {
                                 <TableCell>{player.name}</TableCell>
                                 <TableCell>{player.role}</TableCell>
                                 <TableCell>{player.team}</TableCell>
-                                {isEditMode&&<TableCell>Replacement Player</TableCell>}
-                                {isEditMode&&<TableCell><Input name="faAmount" isRequired={true} inputMode="numeric" hasError={faAmountHasError} onChange={(e)=>{
-                                    if(e.currentTarget.value<=0 || e.currentTarget.value>teamDetails.fa){
-                                        setFaAmountHasError(true);
-                                        return;
-                                    }
-                                    setFABudgetVariation(false);
-                                }}/></TableCell>}
+                                {isEditMode&&<TableCell>
+                                        <SelectField
+                                            name={player.name+"_replacement"}
+                                            placeholder="Select replacement player"
+                                            >
+                                                {faList.map((player, index) => (
+                                                    <option value={player.id}>{player.name}</option>
+                                                ))}
+                                        </SelectField>
+                                    </TableCell>}
+                                {isEditMode&&<TableCell>
+                                        <Input name="faAmount" inputMode="numeric" hasError={faAmountHasError} onChange={(e)=>{
+                                        if(e.currentTarget.value<=0 || e.currentTarget.value>teamDetails.fa){
+                                            setFaAmountHasError(true);
+                                            return;
+                                        }
+                                        setFABudgetVariation(false);
+                                        }}/>
+                                    </TableCell>}
                             </TableRow>
                         ))}
                     </TableBody>
                     <TableFoot>
                         <TableRow>
-                            <TableCell colspan="6"><Button variation="primary" colorTheme="error" isFullWidth={true} isDisabled={!isEditMode}>Save</Button></TableCell>
+                            <TableCell colSpan="6">
+                                <Button type="submit" 
+                                        variation="primary" 
+                                        colorTheme="error" isFullWidth={true} isDisabled={!isEditMode}>Save</Button>
+                            </TableCell>
                         </TableRow>
                     </TableFoot>
                 </Table>
