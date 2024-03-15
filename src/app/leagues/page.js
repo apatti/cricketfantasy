@@ -1,6 +1,6 @@
 'use client'
 
-import { Divider, Flex, Heading, TableRow,TableCell, Text, TableBody, Authenticator, Table, Loader, Message, TableHead } from '@aws-amplify/ui-react';
+import { Divider, Flex, Heading, TableRow,TableCell, TableBody, Table, Loader, TableHead } from '@aws-amplify/ui-react';
 import { get } from '@aws-amplify/api-rest';
 
 import { useRouter } from 'next/navigation'

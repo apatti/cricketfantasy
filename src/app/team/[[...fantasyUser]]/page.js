@@ -1,9 +1,10 @@
 'use client'
 
-import { Flex, Authenticator, Loader, Collection, Modal } from '@aws-amplify/ui-react';
+import { Flex, Authenticator, Loader, TableHead,TableCell,TableRow,TableBody,TableFoot,Table, Heading,SelectField,Divider,Grid, Label,Text, SwitchField, Input,Button } from '@aws-amplify/ui-react';
 import { get } from '@aws-amplify/api-rest';
 import { PlayerCard } from '@/ui-components';
 import { getCurrentUserName } from '@/app/util';
+import { useRouter } from 'next/navigation'
 
 
 import { useState, useEffect } from 'react';
@@ -11,18 +12,26 @@ import { useState, useEffect } from 'react';
 export default function Home({params}) {
     const [isLoading, setIsLoading] = useState(true);
     const [teamRoster, setTeamRoster] = useState([]);
+    const [teamDetails, setTeamDetails] = useState({});
+    const [teamCaptain,setTeamCaptain]=useState("TBD#TBD");
+    const [teamViceCaptain,setTeamViceCaptain]=useState("TBD#TBD");
     const [faList,setFAList] = useState([]);
+    const [faBudgetVariation,setFABudgetVariation]=useState("success");
+    const [isCaptainError,setCaptainError]=useState(false)
     const [userName,setUserName] = useState("");
-    const [addBtnVisible,setAddBtnVisible] = useState("none");
+    const [enableEdit,setEnableEdit] = useState(false)
+    const [isEditMode,setEditMode] = useState(false);
+    const [faAmountHasError,setFaAmountHasError] = useState(false)
+    const router = useRouter()
 
     const getUserName = async() =>{
         const username = await getCurrentUserName();
         setUserName(username);
         if(!params.fantasyUser || username==params.fantasyUser){
-            setAddBtnVisible("");
+            setEnableEdit(true);
         }
         else{
-            setAddBtnVisible("none");
+            setEnableEdit(false);
         }
     }
 
@@ -54,6 +63,15 @@ export default function Home({params}) {
                     profileLink:teamMeta.length>5?teamMeta[5]:'/'
                 }
             });
+            setTeamDetails(teamResponse.team);
+            if(teamResponse.team.fa>50&&teamResponse.team.fa<100){
+                setFABudgetVariation("warning")
+            }
+            if(teamResponse.team.fa<50){
+                setFABudgetVariation("error");
+            }
+            setTeamCaptain(teamResponse.team.captain);
+            setTeamViceCaptain(teamResponse.team.vicecaptain);
             setTeamRoster(teamRoster);
           } catch (e) {
             console.log('GET call failed: ', e);
@@ -70,32 +88,108 @@ export default function Home({params}) {
         <Authenticator.Provider>
         <Flex padding="24px 32px 24px 32px">
             {(isLoading) && <Loader width="5rem" height="5rem"/>}
-            <Collection
-                type="grid"
-                isSearchable={false}
-                isPaginated={true}
-                searchPlaceholder="Search for player"
-                itemsPerPage={8}
-                templateColumns="1fr 1fr 1fr"
-                autoFlow="row"
-                alignItems="stretch"
-                justifyContent="stretch"
-                items={teamRoster || []}
-            >
-            {(item, index) => (
-                <PlayerCard
-                margin="5px 5px 5px 5px"
-                key={item.id}
-                playerName={item.name}
-                role={item.role}
-                teamName={item.team}
-                profilePic={item.profilePic}
-                profileLink={item.profileLink}
-                addBtnLabel="Replace"
-                addBtnVisible={addBtnVisible}
-                ></PlayerCard>
-                )}
-            </Collection>
+            <Grid
+                as="form"
+                padding="24px 32px 24px 32px"
+                direction="column"
+                alignItems="flex-start"
+                wrap ="nowrap"
+                gap="1rem"
+             >
+                <Heading width="auto" level={3}>{teamDetails.id}</Heading>
+                <Divider/>
+                <SwitchField
+                    isDisabled={!enableEdit}
+                    label="Edit Mode:"
+                    labelPosition="start"
+                    trackCheckedColor='red'
+                    size="large"
+                    isChecked={isEditMode}
+                    onChange={(e)=>{
+                        setEditMode(e.target.checked);
+                    }}
+                    ></SwitchField>
+                <SelectField
+                    name="captain"
+                    label="Captain"
+                    isDisabled={!isEditMode}
+                    value={teamCaptain.split('#')[0]}
+                    hasError={isCaptainError}
+                    errorMessage="Captain and Vice-captain can't be same player"
+                    onChange={(e) => {
+                        if(e.target.value==teamViceCaptain.split[0]){
+                            setCaptainError(true);
+                            return;
+                        }
+                        setTeamCaptain(e.target.value);
+                    }}
+                    >
+                        {teamRoster.map((player, index) => (
+                            <option value={player.id}>{player.name}</option>
+                        ))}
+                </SelectField>
+                <SelectField
+                    name="vicecaptain"
+                    label="Vice-Captain"
+                    isDisabled={!isEditMode}
+                    value={teamViceCaptain.split('#')[0]}
+                    hasError={isCaptainError}
+                    errorMessage="Captain and Vice-captain can't be same player"
+                    onChange={(e) => {
+                        if(e.target.value==teamCaptain.split[0]){
+                            setCaptainError(true);
+                            return;
+                        }
+                        setTeamViceCaptain(e.target.value);
+                    }}
+                    >
+                        {teamRoster.map((player, index) => (
+                            <option value={player.id}>{player.name}</option>
+                        ))}
+                </SelectField>
+                <Label htmlFor="fa_amount">FA Budget:</Label>
+                <Text id="fa_amount" 
+                    variation={faBudgetVariation}>${teamDetails.fa}</Text>
+                
+                <Table
+                    highlightOnHover={true}
+                    variation="striped"
+                    padding="10x">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>#</TableCell>
+                            <TableCell>Name</TableCell>
+                            <TableCell>Role</TableCell>
+                            <TableCell>Team</TableCell>
+                            {isEditMode&&<TableCell>Replacement Player</TableCell>}
+                            {isEditMode&&<TableCell>FA Amount</TableCell>}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {teamRoster.map((player, index) => (
+                            <TableRow key={player.id}>
+                                <TableCell>{index+1}</TableCell>
+                                <TableCell>{player.name}</TableCell>
+                                <TableCell>{player.role}</TableCell>
+                                <TableCell>{player.team}</TableCell>
+                                {isEditMode&&<TableCell>Replacement Player</TableCell>}
+                                {isEditMode&&<TableCell><Input name="faAmount" isRequired={true} inputMode="numeric" hasError={faAmountHasError} onChange={(e)=>{
+                                    if(e.currentTarget.value<=0 || e.currentTarget.value>teamDetails.fa){
+                                        setFaAmountHasError(true);
+                                        return;
+                                    }
+                                    setFABudgetVariation(false);
+                                }}/></TableCell>}
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                    <TableFoot>
+                        <TableRow>
+                            <TableCell colspan="6"><Button variation="primary" colorTheme="error" isFullWidth={true} isDisabled={!isEditMode}>Save</Button></TableCell>
+                        </TableRow>
+                    </TableFoot>
+                </Table>
+            </Grid>
         </Flex>
         </Authenticator.Provider>
       );

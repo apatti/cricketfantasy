@@ -69,12 +69,6 @@ res.json({ statusCode: 200, url: req.url, team: team.Item });
   // Add your code here
 });
 
-app.get('/fantasyTeams/{proxy+}',function(req, res) {
-  // Add your code here
-  let lid = req.params.lid;
-  let tid = req.params.tid;
-  res.json({success: 'get call succeed!', url: req.url,lid,tid});
-});
 /****************************
 * Example post method *
 ****************************/
@@ -153,12 +147,12 @@ app.post('/fantasyTeams/*', async function(req, res) {
   let entryTime = new Date();
   
   let initialTeam = [
-    "FA1#Empty Spot 2#Player#IPL#https://fantasyrolepics.s3.us-west-1.amazonaws.com/dukesFA1.jpeg",
+    "FA1#Empty Spot 1#Player#IPL#https://fantasyrolepics.s3.us-west-1.amazonaws.com/dukesFA1.jpeg",
     "FA2#Empty Spot 2#Player#IPL#https://fantasyrolepics.s3.us-west-1.amazonaws.com/dukesFA1.jpeg",
-    "FA3#Empty Spot 2#Player#IPL#https://fantasyrolepics.s3.us-west-1.amazonaws.com/dukesFA1.jpeg",
-    "FA4#Empty Spot 2#Player#IPL#https://fantasyrolepics.s3.us-west-1.amazonaws.com/dukesFA1.jpeg",
-    "FA5#Empty Spot 2#Player#IPL#https://fantasyrolepics.s3.us-west-1.amazonaws.com/dukesFA1.jpeg",
-    "FA6#Empty Spot 2#Player#IPL#https://fantasyrolepics.s3.us-west-1.amazonaws.com/dukesFA1.jpeg"];
+    "FA3#Empty Spot 3#Player#IPL#https://fantasyrolepics.s3.us-west-1.amazonaws.com/dukesFA1.jpeg",
+    "FA4#Empty Spot 4#Player#IPL#https://fantasyrolepics.s3.us-west-1.amazonaws.com/dukesFA1.jpeg",
+    "FA5#Empty Spot 5#Player#IPL#https://fantasyrolepics.s3.us-west-1.amazonaws.com/dukesFA1.jpeg",
+    "FA6#Empty Spot 6#Player#IPL#https://fantasyrolepics.s3.us-west-1.amazonaws.com/dukesFA1.jpeg"];
 
   const requests = [{
     PutRequest:{
@@ -175,8 +169,9 @@ app.post('/fantasyTeams/*', async function(req, res) {
         owner: "v0-team",
         team: dynamodb.createSet(initialTeam),
         id: teamRequest.id,
-        captain: teamRequest.captain,
-        vice: teamRequest.vice,
+        captain: teamRequest.captain?teamRequest.captain:"FA1#Empty Spot 1",
+        vicecaptain: teamRequest.vicecaptain?teamRequest.vicecaptain:"FA2#Empty Spot 2",
+        fa:200,
         entryTime: entryTime.toISOString()
       }
     }
@@ -187,8 +182,9 @@ app.post('/fantasyTeams/*', async function(req, res) {
         owner: entryTime.toISOString()+"#team",
         team: dynamodb.createSet(initialTeam),
         id:teamRequest.id,
-        captain: teamRequest.captain,
-        vice: teamRequest.vice,
+        captain: teamRequest.captain?teamRequest.captain:"FA1#Empty Spot 1",
+        vicecaptain: teamRequest.vicecaptain?teamRequest.vicecaptain:"FA2#Empty Spot 2",
+        fa:200,
         entryTime: entryTime.toISOString()
       }
     }

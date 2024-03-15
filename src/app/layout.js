@@ -20,7 +20,7 @@ Amplify.configure({ ...awsExports, ssr: true });
 import { MainNavBar,Footer, studioTheme, LoggedInUser } from "@/ui-components";
 
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children,modal }) {
   const [showAuthenticationWindow, setShowAuthenticationWindow] = useState(false);
   const [displayLoggedInUserModal, setDisplayLoggedInUserModal] = useState("none");
   const [displayLoginBtn, setDisplayLoginBtn] = useState("inline-flex");
@@ -101,6 +101,7 @@ export default function RootLayout({ children }) {
             <Flex
               backgroundColor="rgba(255,255,255,1)">
               {children}
+              {modal}
             </Flex>
             
           <Footer overrides={{"margin-top":"auto"}}/>

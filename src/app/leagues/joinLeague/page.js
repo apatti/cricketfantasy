@@ -4,6 +4,7 @@ import { Button, Divider, Flex, Heading, Label,Input, Text, View, Grid, Authenti
 import { post } from '@aws-amplify/api-rest';
 import useSWR from 'swr';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation'
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
@@ -12,6 +13,7 @@ export default function Home() {
     const [league, setLeague] = useState({});
     const [teamCreationError, setTeamCreationError] = useState("");
     const [creatingTeam, setCreatingTeam] = useState(false);
+    const router = useRouter()
 
   const { data, error,isLoading } = useSWR('https://ps7uojduq2.execute-api.us-west-1.amazonaws.com/staging/league/ZHVrZXMgaXBsIGZhbnRhc3kgMjAyNA==', fetcher)
   if(error){
@@ -62,7 +64,7 @@ export default function Home() {
                 console.log(response);
                 //Alert.success('Team added to the league successfully');
                 setTeamCreationError("success");
-                window.open("/leagues", "_self", "noopener noreferrer");
+                router.push("/leagues");
             } catch (error) {
                 setTeamCreationError(error.message);
                 console.log(error);
