@@ -26,7 +26,7 @@
         },
         "fantasyTeamAPI": {
           "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
-          "s3Key": "amplify-builds/fantasyTeamAPI-5862766f2f3762703654-build.zip"
+          "s3Key": "amplify-builds/fantasyTeamAPI-345677546a5947766778-build.zip"
         },
         "fantasyUsersAPI": {
           "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
@@ -53,7 +53,7 @@
           "readOnly": "false",
           "secretsPathAmplifyAppId": "d25awa6e9kq77y",
           "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
-          "s3Key": "amplify-builds/freeAgency-3148646c344a454a5a2f-build.zip"
+          "s3Key": "amplify-builds/freeAgency-68502b74357245373846-build.zip"
         }
       },
       "auth": {
