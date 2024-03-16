@@ -100,6 +100,8 @@ export default function Home({params}) {
     },[userName])
 
     const editSubmit = (e) =>{
+        e.preventDefault();
+        console.log(e);
         alert("TBD");
     }
 
@@ -197,7 +199,7 @@ export default function Home({params}) {
                                 <TableCell>{player.team}</TableCell>
                                 {isEditMode&&<TableCell>
                                         <SelectField
-                                            name={player.name+"_replacement"}
+                                            name={index+"_replacement"}
                                             placeholder="Select replacement player"
                                             >
                                                 {faList.map((player, index) => (
@@ -206,7 +208,7 @@ export default function Home({params}) {
                                         </SelectField>
                                     </TableCell>}
                                 {isEditMode&&<TableCell>
-                                        <Input name="faAmount" inputMode="numeric" hasError={faAmountHasError} onChange={(e)=>{
+                                        <Input name={index+"_faAmount"} inputMode="numeric" hasError={faAmountHasError} onChange={(e)=>{
                                         if(e.currentTarget.value<=0 || e.currentTarget.value>teamDetails.fa){
                                             setFaAmountHasError(true);
                                             return;

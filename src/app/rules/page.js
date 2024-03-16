@@ -1,5 +1,5 @@
 'use client'
-import { Tabs, Authenticator, Table, TableBody,TableCell,TableHead,TableRow, View, TableFoot, Flex } from "@aws-amplify/ui-react";
+import { Tabs, Authenticator, Table, TableBody,TableCell,TableHead,TableRow, View, TableFoot, Flex, Accordion } from "@aws-amplify/ui-react";
 
 
 export default function Home() {
@@ -23,7 +23,217 @@ export default function Home() {
     }
 
     const scoringContent = ()=>{
-        
+        return(
+            <Table
+                highlightOnHover={true}
+                padding={"10x"}
+                variation="bordered"
+            >
+                <TableHead>
+                    <TableRow>
+                        <TableCell textAlign={"center"}>Category</TableCell>
+                        <TableCell>Points</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    <TableRow>
+                        <TableCell colSpan={2} textAlign={"center"}>MOM</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Official Man of the Match</TableCell>
+                        <TableCell>50</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={2} textAlign={"center"} >Batting</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Run scored</TableCell>
+                        <TableCell>1</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>6 Run Bonus</TableCell>
+                        <TableCell>2</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>4 Run bonus</TableCell>
+                        <TableCell>1</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={2} textAlign={"center"} >Dismissed for duck</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Exclude bowlers in dismissed for duck points</TableCell>
+                        <TableCell>Yes</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Dismissed for duck points</TableCell>
+                        <TableCell>-10</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={2} textAlign={"center"} >Negative bonus for batsman getting out within 1 to X Runs</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Exclude bowlers for negative bonus</TableCell>
+                        <TableCell>Yes</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Applicable for getting out within these runs</TableCell>
+                        <TableCell>5</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Negative bonus imposed for getting out within above mentioned runs</TableCell>
+                        <TableCell>-5</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={2} textAlign={"center"} >Run Rate Bonus</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Exclude bowlers for negative bonus</TableCell>
+                        <TableCell>No</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Minimum runs to be scored by the batsmen for scoring bonus</TableCell>
+                        <TableCell>15</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Minimum balls to be faced by the batsmen for scoring bonus</TableCell>
+                        <TableCell>0</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Between  0 and  100 runs per 100 balls:</TableCell>
+                        <TableCell>-20</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={2}></TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Minimum runs to be scored by the batsmen for scoring bonus</TableCell>
+                        <TableCell>15</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Minimum balls to be faced by the batsmen for scoring bonus</TableCell>
+                        <TableCell>0</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Between 101 and 120 runs per 100 balls:</TableCell>
+                        <TableCell>-10</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={2}></TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Minimum runs to be scored by the batsmen for scoring bonus</TableCell>
+                        <TableCell>15</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Minimum balls to be faced by the batsmen for scoring bonus</TableCell>
+                        <TableCell>0</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Between 101 and 120 runs per 100 balls:</TableCell>
+                        <TableCell>-10</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={2}></TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Minimum runs to be scored by the batsmen for scoring bonus</TableCell>
+                        <TableCell>15</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Minimum balls to be faced by the batsmen for scoring bonus</TableCell>
+                        <TableCell>0</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Between 121 and 140 runs per 100 balls:</TableCell>
+                        <TableCell>0</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={2}></TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Minimum runs to be scored by the batsmen for scoring bonus</TableCell>
+                        <TableCell>15</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Minimum balls to be faced by the batsmen for scoring bonus</TableCell>
+                        <TableCell>0</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Between 141 and 160 runs per 100 balls:</TableCell>
+                        <TableCell>10</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={2}></TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Minimum runs to be scored by the batsmen for scoring bonus</TableCell>
+                        <TableCell>15</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Minimum balls to be faced by the batsmen for scoring bonus</TableCell>
+                        <TableCell>0</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Between 161 and 180 runs per 100 balls:</TableCell>
+                        <TableCell>15</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={2}></TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Minimum runs to be scored by the batsmen for scoring bonus</TableCell>
+                        <TableCell>15</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Minimum balls to be faced by the batsmen for scoring bonus</TableCell>
+                        <TableCell>0</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Between 181 and 200 runs per 100 balls:</TableCell>
+                        <TableCell>20</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={2}></TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Minimum runs to be scored by the batsmen for scoring bonus</TableCell>
+                        <TableCell>15</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Minimum balls to be faced by the batsmen for scoring bonus</TableCell>
+                        <TableCell>0</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>200 and above runs per 100 balls:</TableCell>
+                        <TableCell>30</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={2}>Milestone bonus</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>On reaching 25 runs (Default : 25)</TableCell>
+                        <TableCell>10</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>On reaching 40 runs (Default : 40)</TableCell>
+                        <TableCell>15</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>On reaching 60 runs (Default : 60)</TableCell>
+                        <TableCell>20</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>On reaching 80 runs (Default : 80)</TableCell>
+                        <TableCell>25</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>On reaching 100 runs (Default : 100)</TableCell>
+                        <TableCell>40</TableCell>
+                    </TableRow>
+                </TableBody>
+            </Table>
+        );
     }
 
     const phasesContent = () =>{
