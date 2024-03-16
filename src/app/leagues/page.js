@@ -1,6 +1,6 @@
 'use client'
 
-import { Divider, Flex, Heading, TableRow,TableCell, TableBody, Table, Loader, TableHead } from '@aws-amplify/ui-react';
+import { Divider, Flex, Heading, TableRow,TableCell, TableBody, Table, Loader, TableHead, Link } from '@aws-amplify/ui-react';
 import { get } from '@aws-amplify/api-rest';
 
 import { useRouter } from 'next/navigation'
@@ -37,7 +37,8 @@ export default function Home() {
             <Heading level={1}>Dukes IPL Fantasy 2024</Heading>
             <Divider width="100%" />
                 Draft date: 03/17/2024 <br/>
-                Draft time: 12pm
+                Draft time: 12pm <br/>
+                <Link href="https://teams.live.com/meet/9363408312812?p=UcZ0xfNUsE0UOmTP" isExternal={true} textDecoration="underline" >Dukes IPL Draft Teams link</Link>
             <Divider width="100%" />
             <Heading level={3}>Standings</Heading>
             <Table

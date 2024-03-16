@@ -1,5 +1,5 @@
 'use client'
-import { ThemeProvider, Divider, Flex } from '@aws-amplify/ui-react';
+import { ThemeProvider, Divider, Flex, Link } from '@aws-amplify/ui-react';
 import { TournamentCard } from '@/ui-components';
 import { useNavigateAction } from '../ui-components/utils';
 
@@ -10,7 +10,8 @@ export default function Home() {
       alignItems="left">
         <h2>Welcome to Dukes IPL Fantasy 2024</h2>
         Draft date: 03/17/2024 <br/>
-        Draft time: 12pm
+        Draft time: 12pm <br/>
+        <Link href="https://teams.live.com/meet/9363408312812?p=UcZ0xfNUsE0UOmTP" isExternal={true} textDecoration="underline" >Dukes IPL Draft Teams link</Link>
         <p>Best of luck!!</p>
       </Flex>
       <Divider width="100%"/>
