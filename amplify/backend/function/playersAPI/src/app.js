@@ -57,6 +57,14 @@ app.get('/players', async function(req, res) {
       items.Items.forEach((item) => players.push(item));
       params.ExclusiveStartKey = items.LastEvaluatedKey;
   } while (typeof items.LastEvaluatedKey != "undefined");
+  players.sort((a,b) => {
+    if(a.role != b.role){
+      return a.role > b.role ? 1 : -1;
+    }
+    if(a.role === b.role){
+      return a.name > b.name ? 1 : -1;
+  }});
+    
   res.json({ statusCode: 200, url: req.url, players: players })
   
 }); 
@@ -76,6 +84,7 @@ app.get('/players/freeAgents',async function(req, res) {
       items.Items.forEach((item) => players.push(item));
       params.ExclusiveStartKey = items.LastEvaluatedKey;
   } while (typeof items.LastEvaluatedKey != "undefined");
+  players.sort((a,b) => a.name > b.name ? 1 : -1);
   res.json({ statusCode: 200, url: req.url, players: players })
   
 }); 

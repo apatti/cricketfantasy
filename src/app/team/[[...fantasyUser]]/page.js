@@ -1,7 +1,7 @@
 'use client'
 
 import { Flex, Authenticator, Loader, TableHead,TableCell,TableRow,TableBody,TableFoot,Table, Heading,SelectField,Divider,Grid, Label,Text, SwitchField, Input,Button } from '@aws-amplify/ui-react';
-import { get } from '@aws-amplify/api-rest';
+import { get,put } from '@aws-amplify/api-rest';
 
 import { getCurrentUserName } from '@/app/util';
 import { useRouter } from 'next/navigation'
@@ -12,18 +12,25 @@ import { useState, useEffect } from 'react';
 
 export default function Home({params}) {
     const [isLoading, setIsLoading] = useState(true);
-    const [teamRoster, setTeamRoster] = useState([]);
-    const [teamDetails, setTeamDetails] = useState({});
-    const [teamCaptain,setTeamCaptain]=useState("TBD#TBD");
-    const [teamViceCaptain,setTeamViceCaptain]=useState("TBD#TBD");
     const [faList,setFAList] = useState([]);
     const [faBudgetVariation,setFABudgetVariation]=useState("success");
     const [isCaptainError,setCaptainError]=useState(false)
     const [userName,setUserName] = useState("");
     const [enableEdit,setEnableEdit] = useState(false)
     const [isEditMode,setEditMode] = useState(false);
-    const [faAmountHasError,setFaAmountHasError] = useState(false)
-    const router = useRouter()
+    const [faAmountHasError,setFaAmountHasError] = useState(false);
+    const router = useRouter();
+    const [formData, setFormData] = useState({
+        id:"",
+        phaseBooster: false,
+        captain: "TBD",
+        vicecaptain: "TBD",
+        fa: 0,
+        teamRoster: [],
+        changes:{
+            faChanges:{}
+        }
+    });
 
     const getUserName = async() =>{
         const username = await getCurrentUserName();
@@ -64,16 +71,23 @@ export default function Home({params}) {
                     profileLink:teamMeta.length>5?teamMeta[5]:'/'
                 }
             });
-            setTeamDetails(teamResponse.team);
+            
             if(teamResponse.team.fa>50&&teamResponse.team.fa<100){
                 setFABudgetVariation("warning")
             }
             if(teamResponse.team.fa<50){
                 setFABudgetVariation("error");
             }
-            setTeamCaptain(teamResponse.team.captain);
-            setTeamViceCaptain(teamResponse.team.vicecaptain);
-            setTeamRoster(teamRoster);
+            
+            setFormData({
+                ...formData,
+                id:teamResponse.team.id,
+                phaseBooster: teamResponse.team.phaseBooster,
+                captain: teamResponse.team.captain,
+                vicecaptain: teamResponse.team.vicecaptain,
+                fa: teamResponse.team.fa,
+                teamRoster: teamRoster
+            });
           } catch (e) {
             console.log('GET call failed: ', e);
           }
@@ -99,10 +113,27 @@ export default function Home({params}) {
         getTeam();
     },[userName])
 
-    const editSubmit = (e) =>{
+    const editSubmit = async (e) =>{
         e.preventDefault();
         console.log(e);
-        alert("TBD");
+        if(!userName){
+            return;
+        }
+        let fantasyUser = params.fantasyUser;
+        if(!fantasyUser){
+            fantasyUser = userName;
+        }
+        const restOperation = put({ 
+          apiName: 'fantasyapi',
+          path: '/fantasyTeams/ZHVrZXMgaXBsIGZhbnRhc3kgMjAyNA==/'+fantasyUser,
+          options: {
+            body:formData.changes 
+          }
+        });
+        const response = await restOperation.response;
+        const teamResponse = await response.body.json();
+        console.log(teamResponse);
+        alert(JSON.stringify(teamResponse));
     }
 
     return(
@@ -118,7 +149,7 @@ export default function Home({params}) {
                 gap="1rem"
                 onSubmit={(e)=>editSubmit(e)}
              >
-                <Heading width="auto" level={3}>{teamDetails.id}</Heading>
+                <Heading width="auto" level={3}>{formData.id}</Heading>
                 <Divider/>
                 <SwitchField
                     isDisabled={!enableEdit}
@@ -138,18 +169,19 @@ export default function Home({params}) {
                     name="captain"
                     label="Captain"
                     isDisabled={!isEditMode}
-                    value={teamCaptain.split('#')[0]}
+                    value={formData.captain.split('#')[0]}
                     hasError={isCaptainError}
                     errorMessage="Captain and Vice-captain can't be same player"
                     onChange={(e) => {
-                        if(e.target.value==teamViceCaptain.split[0]){
+                        e.preventDefault();
+                        if(e.target.value==formData.vicecaptain.split('#')[0]){
                             setCaptainError(true);
                             return;
                         }
-                        setTeamCaptain(e.target.value);
+                        setFormData({...formData, captain:e.target.value, changes:{...formData.changes, captain:e.target.value}});
                     }}
                     >
-                        {teamRoster.map((player, index) => (
+                        {formData.teamRoster.map((player, index) => (
                             <option value={player.id}>{player.name}</option>
                         ))}
                 </SelectField>
@@ -157,24 +189,26 @@ export default function Home({params}) {
                     name="vicecaptain"
                     label="Vice-Captain"
                     isDisabled={!isEditMode}
-                    value={teamViceCaptain.split('#')[0]}
+                    value={formData.vicecaptain.split('#')[0]}
                     hasError={isCaptainError}
                     errorMessage="Captain and Vice-captain can't be same player"
                     onChange={(e) => {
-                        if(e.target.value==teamCaptain.split[0]){
+                        e.preventDefault();
+                        if(e.target.value==formData.vicecaptain.split('#')[0]){
                             setCaptainError(true);
                             return;
                         }
-                        setTeamViceCaptain(e.target.value);
+                        setFormData({...formData, vicecaptain:e.target.value, changes:{...formData.changes, vicecaptain:e.target.value}});
                     }}
                     >
-                        {teamRoster.map((player, index) => (
+                        {formData.teamRoster.map((player, index) => (
                             <option value={player.id}>{player.name}</option>
                         ))}
                 </SelectField>
                 <Label htmlFor="fa_amount">FA Budget:</Label>
                 <Text id="fa_amount" 
-                    variation={faBudgetVariation}>${teamDetails.fa}</Text>
+                    variation={faBudgetVariation}>${formData.fa}
+                </Text>
                 
                 <Table
                     highlightOnHover={true}
@@ -191,7 +225,7 @@ export default function Home({params}) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {teamRoster.map((player, index) => (
+                        {formData.teamRoster.map((player, index) => (
                             <TableRow key={player.id}>
                                 <TableCell>{index+1}</TableCell>
                                 <TableCell>{player.name}</TableCell>
@@ -201,6 +235,10 @@ export default function Home({params}) {
                                         <SelectField
                                             name={index+"_replacement"}
                                             placeholder="Select replacement player"
+                                            onChange={(e) => {
+                                                e.preventDefault();
+                                                setFormData({...formData, changes:{...formData.changes, faChanges:{...formData.changes.faChanges,[player.id]:{...formData.changes.faChanges[[player.id]],toAdd:e.target.value}} }});
+                                            }}
                                             >
                                                 {faList.map((player, index) => (
                                                     <option value={player.id}>{player.name}</option>
@@ -209,11 +247,13 @@ export default function Home({params}) {
                                     </TableCell>}
                                 {isEditMode&&<TableCell>
                                         <Input name={index+"_faAmount"} inputMode="numeric" hasError={faAmountHasError} onChange={(e)=>{
-                                        if(e.currentTarget.value<=0 || e.currentTarget.value>teamDetails.fa){
-                                            setFaAmountHasError(true);
-                                            return;
-                                        }
-                                        setFABudgetVariation(false);
+                                            e.preventDefault();
+                                            if(e.currentTarget.value<=0 || e.currentTarget.value>formData.fa){
+                                                setFaAmountHasError(true);
+                                                return;
+                                            }
+                                            setFormData({...formData, changes:{...formData.changes, faChanges:{...formData.changes.faChanges,[player.id]:{...formData.changes.faChanges[[player.id]],amount:e.currentTarget.value}} }});
+                                            setFABudgetVariation(false);
                                         }}/>
                                     </TableCell>}
                             </TableRow>

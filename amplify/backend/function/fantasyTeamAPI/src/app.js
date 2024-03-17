@@ -254,9 +254,100 @@ app.put('/fantasyTeams', function(req, res) {
   res.json({success: 'put call succeed!', url: req.url, body: req.body})
 });
 
-app.put('/fantasyTeams/*', function(req, res) {
+app.put('/fantasyTeams/*', async function(req, res) {
   // Add your code here
-  res.json({success: 'put call succeed!', url: req.url, body: req.body})
+  let pathParam = req.apiGateway.event.pathParameters.proxy;
+  if(!pathParam){
+    res.json({success:'no param',data:[]});
+    return;
+  }
+
+  const PARAM_REGEX = /(.*)\/(.*)/;
+  const [, lid, tid] = pathParam.match(PARAM_REGEX);
+  if(!req.user || req.user.Username !== tid){
+    console.log("Requestor is not the owner of the team", tid, req.user.Username);
+    res.json({ statusCode: 403, url: req.url, body: "Forbidden" });
+    return;
+  }
+
+  var changes = req.body;
+  let entryTime = new Date();
+  var {faChanges:_,...nonFa} = changes;
+  nonFa['entryTime']=entryTime.toISOString();
+  var itemKeys = Object.keys(nonFa);
+  
+  //Update V0-Team, create new currentDate#team, if needed create fA entries
+
+  let v0UpdateParams = {
+    TableName: tableName,
+    Key: {
+      id: tid,
+      owner: 'v0-team'
+    },
+    ReturnValues: "ALL_NEW",
+    UpdateExpression: `SET ${itemKeys.map((k, index) =>`#field${index} = :value${index}`).join(', ')}`,
+    ExpressionAttributeNames: itemKeys.reduce((accumulator, k, index) => ({ ...accumulator, [`#field${index}`]: k }), {}),
+    ExpressionAttributeValues: itemKeys.reduce((accumulator, k, index) => ({ ...accumulator, [`:value${index}`]: nonFa[k] }), {}),
+  }
+  
+  await dynamodb.update(v0UpdateParams, function(err, data) {
+    if (err) {
+      res.json({ statusCode: 500, error: err.message, url: req.url });
+      return;
+    } else {
+      console.log("v0-Team update succeeded:", tid);
+      //console.log(JSON.stringify(data, null, 2));
+      let params = { 
+        TableName : tableName,
+        Item: {
+          ...data.Attributes,
+          id:tid,
+          owner: entryTime.toISOString()+"#team"
+        }
+      };
+      console.log("backup:",JSON.stringify(params));
+      dynamodb.put(params,async function(err,data){
+        if(err){
+          console.log("Unable to add secondary team, error JSON:", JSON.stringify(err, null, 2));
+          res.json({ statusCode: 500, error: err.message, url: req.url });
+          return;
+        } else {
+          console.log("PutItem succeeded:", tid);
+          if("faChanges" in changes){
+            let faChanges = changes.faChanges;
+            var faKeys = Object.keys(faChanges);
+            let faUpdateParams = {
+              TableName: tableName,
+              Key: {
+                id: tid,
+                owner: `FA#${entryTime.getMonth()+1}${entryTime.getDate()}`
+              },
+              ReturnValues: "ALL_NEW",
+              UpdateExpression: `SET ${faKeys.map((k, index) =>`#field${index} = :value${index}`).join(', ')}`,
+              ExpressionAttributeNames: faKeys.reduce((accumulator, k, index) => ({ ...accumulator, [`#field${index}`]: `${faChanges[k].toAdd}#${k}` }), {}),
+              ExpressionAttributeValues: faKeys.reduce((accumulator, k, index) => ({ ...accumulator, [`:value${index}`]: faChanges[k].amount }), {}),
+            }
+            console.log(JSON.stringify(faUpdateParams));
+            await dynamodb.update(faUpdateParams, function(err, data) {
+              if (err) {
+                res.json({ statusCode: 500, error: err.message, url: req.url });
+                return;
+              } else {
+                console.log("FA update succeeded:", tid);
+                console.log(JSON.stringify(data, null, 2));
+                res.json({ statusCode: 200, url: req.url, body: data.Attributes });
+              }
+            });
+          }
+          else{
+            res.json({ statusCode: 200, url: req.url });
+          }
+        }
+      });
+    }
+  });
+
+  //res.json({success: 'put call succeed!', url: req.url, body: req.body})
 });
 
 /****************************
