@@ -1,6 +1,8 @@
 'use client'
 
-import { Flex, Authenticator, Loader, TableHead,TableCell,TableRow,TableBody,TableFoot,Table, Heading,SelectField,Divider,Grid, Label,Text, SwitchField, Input,Button } from '@aws-amplify/ui-react';
+import { Flex, Authenticator, Loader, TableHead,TableCell,TableRow,TableBody,
+        TableFoot,Table, Heading,SelectField,Divider,Grid, Label,Text, 
+        SwitchField, Input,Button, Alert,Tabs } from '@aws-amplify/ui-react';
 import { get,put } from '@aws-amplify/api-rest';
 
 import { getCurrentUserName } from '@/app/util';
@@ -19,6 +21,7 @@ export default function Home({params}) {
     const [enableEdit,setEnableEdit] = useState(false)
     const [isEditMode,setEditMode] = useState(false);
     const [faAmountHasError,setFaAmountHasError] = useState(false);
+    const [generalUserErrorMessage, setGeneralUserErrorMessage] = useState("");
     const router = useRouter();
     const [formData, setFormData] = useState({
         id:"",
@@ -123,23 +126,44 @@ export default function Home({params}) {
         if(!fantasyUser){
             fantasyUser = userName;
         }
-        const restOperation = put({ 
-          apiName: 'fantasyapi',
-          path: '/fantasyTeams/ZHVrZXMgaXBsIGZhbnRhc3kgMjAyNA==/'+fantasyUser,
-          options: {
-            body:formData.changes 
-          }
-        });
-        const response = await restOperation.response;
-        const teamResponse = await response.body.json();
-        console.log(teamResponse);
-        alert(JSON.stringify(teamResponse));
+        try{
+            const restOperation = put({ 
+            apiName: 'fantasyapi',
+            path: '/fantasyTeams/ZHVrZXMgaXBsIGZhbnRhc3kgMjAyNA==/'+fantasyUser,
+            options: {
+                body:formData.changes 
+            }
+            });
+            const response = await restOperation.response;
+            const teamResponse = await response.body.json();
+            console.log(teamResponse);
+            setEditMode(false);
+            setGeneralUserErrorMessage("Changes saved successfully");
+        } catch (e) {
+            console.log('PUT call failed: ', e);
+            console.log(JSON.parse(e.response.body));
+            const { 
+                statusCode, 
+                headers, 
+                body 
+              } = error.response;
+            setGeneralUserErrorMessage(`Error: ${statusCode} - ${body}`);
+        }
+
     }
 
     return(
         <Authenticator.Provider>
-        <Flex padding="24px 32px 24px 32px">
+        <Flex padding="24px 32px 24px 32px" direction="column">
+            <Tabs.Container defaultValue="General">
+                <Tabs.List justifyContent="center">
+                    <Tabs.Item value="Team details">Team Details</Tabs.Item>
+                    <Tabs.Item value="FA details">FA details</Tabs.Item>
+                </Tabs.List>
+                <Tabs.Panel value='Team details'>
             {(isLoading) && <Loader width="5rem" height="5rem"/>}
+            {(generalUserErrorMessage!="") && <Alert variation={generalUserErrorMessage.startsWith=="Error"?"error":"success"} isDismissible={true}
+                hasIcon={true}>{generalUserErrorMessage}</Alert>}
             <Grid
                 as="form"
                 padding="24px 32px 24px 32px"
@@ -246,7 +270,7 @@ export default function Home({params}) {
                                         </SelectField>
                                     </TableCell>}
                                 {isEditMode&&<TableCell>
-                                        <Input name={index+"_faAmount"} inputMode="numeric" hasError={faAmountHasError} onChange={(e)=>{
+                                        <Input name={index+"_faAmount"} id={index+"_faAmount"} inputMode="text" hasError={faAmountHasError} onInput={(e)=>{
                                             e.preventDefault();
                                             if(e.currentTarget.value<=0 || e.currentTarget.value>formData.fa){
                                                 setFaAmountHasError(true);
@@ -270,6 +294,11 @@ export default function Home({params}) {
                     </TableFoot>
                 </Table>
             </Grid>
+                </Tabs.Panel>
+                <Tabs.Panel value='FA details'>
+                    Draft
+                </Tabs.Panel>
+            </Tabs.Container>
         </Flex>
         </Authenticator.Provider>
       );
