@@ -2,7 +2,7 @@
 
 import { Flex, Authenticator, Loader, TableHead,TableCell,TableRow,TableBody,
         TableFoot,Table, Heading,SelectField,Divider,Grid, Label,Text, 
-        SwitchField, Input,Button, Alert,Tabs } from '@aws-amplify/ui-react';
+        SwitchField, Input,Button, Alert,Accordion } from '@aws-amplify/ui-react';
 import { get,put } from '@aws-amplify/api-rest';
 
 import { getCurrentUserName } from '@/app/util';
@@ -155,12 +155,6 @@ export default function Home({params}) {
     return(
         <Authenticator.Provider>
         <Flex padding="24px 32px 24px 32px" direction="column">
-            <Tabs.Container defaultValue="General">
-                <Tabs.List justifyContent="center">
-                    <Tabs.Item value="Team details">Team Details</Tabs.Item>
-                    <Tabs.Item value="FA details">FA details</Tabs.Item>
-                </Tabs.List>
-                <Tabs.Panel value='Team details'>
             {(isLoading) && <Loader width="5rem" height="5rem"/>}
             {(generalUserErrorMessage!="") && <Alert variation={generalUserErrorMessage.startsWith=="Error"?"error":"success"} isDismissible={true}
                 hasIcon={true}>{generalUserErrorMessage}</Alert>}
@@ -294,11 +288,30 @@ export default function Home({params}) {
                     </TableFoot>
                 </Table>
             </Grid>
-                </Tabs.Panel>
-                <Tabs.Panel value='FA details'>
-                    Draft
-                </Tabs.Panel>
-            </Tabs.Container>
+            <Divider/>
+            <Heading width="auto" level={4}>Free Agent transactions</Heading>
+            <Accordion.Container allowMultiple defaultValue={['Pending transactions', 'Completed transactions']}>
+                {enableEdit && <Accordion.Item value="Pending transactions">
+                    <Accordion.Trigger>
+                        Pending transactions
+                        <Accordion.Icon />
+                    </Accordion.Trigger>
+                    <Accordion.Content>
+                        Now when you click the first item, this item will stay open until you close it.
+                    </Accordion.Content>
+                </Accordion.Item>
+                }
+
+                <Accordion.Item value="Completed transactions">
+                    <Accordion.Trigger>
+                        Completed transactions
+                        <Accordion.Icon />
+                    </Accordion.Trigger>
+                    <Accordion.Content>
+                        Coming soon!!
+                    </Accordion.Content>
+                </Accordion.Item>
+            </Accordion.Container>
         </Flex>
         </Authenticator.Provider>
       );
