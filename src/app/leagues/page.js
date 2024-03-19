@@ -36,10 +36,6 @@ export default function Home() {
             {(isLoading) && <Loader width="5rem" height="5rem"/>}
             <Heading level={1}>Dukes IPL Fantasy 2024</Heading>
             <Divider width="100%" />
-                Draft date: 03/17/2024 <br/>
-                Draft time: 12pm <br/>
-                <Link href="https://teams.live.com/meet/9363408312812?p=UcZ0xfNUsE0UOmTP" isExternal={true} textDecoration="underline" >Dukes IPL Draft Teams link</Link>
-            <Divider width="100%" />
             <Heading level={3}>Standings</Heading>
             <Table
                 highlightOnHover={true}

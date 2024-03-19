@@ -9,9 +9,7 @@ export default function Home() {
       <Flex direction="column" justifyContent="center" gap="20px"
       alignItems="left">
         <h2>Welcome to Dukes IPL Fantasy 2024</h2>
-        Draft date: 03/17/2024 <br/>
-        Draft time: 12pm <br/>
-        <Link href="https://teams.live.com/meet/9363408312812?p=UcZ0xfNUsE0UOmTP" isExternal={true} textDecoration="underline" >Dukes IPL Draft Teams link</Link>
+        Draft results and summary would be out soon <br/>
         <p>Best of luck!!</p>
       </Flex>
       <Divider width="100%"/>
@@ -21,7 +19,7 @@ export default function Home() {
           overrides={{
             "image":{"objectFit":"fill"},
             "Create League":{"isDisabled":true},
-            "Join League":{"onClick":useNavigateAction({ type: "url", url: "/leagues/joinLeague" })},
+            "Join League":{"isDisabled":true},
             }} />
       </Flex>
     </ThemeProvider>
