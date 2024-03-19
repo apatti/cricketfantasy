@@ -84,7 +84,9 @@ app.get('/players/freeAgents',async function(req, res) {
       items.Items.forEach((item) => players.push(item));
       params.ExclusiveStartKey = items.LastEvaluatedKey;
   } while (typeof items.LastEvaluatedKey != "undefined");
+  console.log("Unsorted Players:",players[0].name);
   players.sort((a,b) => a.name > b.name ? 1 : -1);
+  console.log("Sorted Players:",players[0].name);
   res.json({ statusCode: 200, url: req.url, players: players })
   
 }); 

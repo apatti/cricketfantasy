@@ -112,8 +112,8 @@ app.get('/fantasyTeams/*', async function(req, res) {
 
   if(req.user && req.user.Username != tid){
     console.log("Requestor is not the owner of the team", tid, req.user.Username);
-    res.json({ statusCode: 403, url: req.url, body: "Forbidden" });
-    return;
+    //res.json({ statusCode: 403, url: req.url, body: "Forbidden" });
+    //return;
   }
 
   let params = { TableName: tableName, 
@@ -375,6 +375,7 @@ app.put('/fantasyTeams/*', async function(req, res) {
           console.log("PutItem succeeded:", tid);
           if("faChanges" in changes){
             let faChanges = changes.faChanges;
+            faChanges['entryTime']=entryTime.toISOString();
             var faKeys = Object.keys(faChanges);
             let faUpdateParams = {
               TableName: tableName,

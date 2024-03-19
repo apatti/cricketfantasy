@@ -26,7 +26,7 @@
         },
         "fantasyTeamAPI": {
           "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
-          "s3Key": "amplify-builds/fantasyTeamAPI-2b2f6e72436c64485671-build.zip"
+          "s3Key": "amplify-builds/fantasyTeamAPI-336f4e72694b31515755-build.zip"
         },
         "fantasyUsersAPI": {
           "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
@@ -38,7 +38,7 @@
         },
         "playersAPI": {
           "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
-          "s3Key": "amplify-builds/playersAPI-43436635566d4e446478-build.zip"
+          "s3Key": "amplify-builds/playersAPI-47454b645a385a712b52-build.zip"
         },
         "teamsAPI": {
           "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
