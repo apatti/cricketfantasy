@@ -34,6 +34,7 @@ export default function Home({params}) {
             faChanges:{}
         }
     });
+    const [pendingTransactions, setPendingTransactions] = useState([]);
 
     const getUserName = async() =>{
         const username = await getCurrentUserName();
@@ -109,11 +110,35 @@ export default function Home({params}) {
           setIsLoading(false);
     }
 
+    const getPendingTransactions = async () => {
+        if(!userName){
+            return;
+        }
+        const restOperation = get({ 
+            apiName: 'fantasyapi',
+            path: '/fantasyTeams/faTransactions/ZHVrZXMgaXBsIGZhbnRhc3kgMjAyNA==/'+userName
+          });
+          const response = await restOperation.response;
+          const pendingTransactionsResponse = await response.body.json()
+          //data.players 
+          setPendingTransactions(pendingTransactionsResponse.transactions);
+          //setIsLoading(false);
+    }
+
+    const extractTransactionPlayer = (player) =>{
+        if(player.startsWith("FA")){
+            return player;
+        }
+        let decodedPlayer = Buffer.from(player, 'base64').toString('ascii');
+        return `${decodedPlayer.split("-")[1]} (${decodedPlayer.split("-")[0]})`;
+    }
+
     useEffect( () => {
         getUserName();
     }, []);
     useEffect(()=>{
         getTeam();
+        getPendingTransactions();
     },[userName])
 
     const editSubmit = async (e) =>{
@@ -290,18 +315,39 @@ export default function Home({params}) {
             </Grid>
             <Divider/>
             <Heading width="auto" level={4}>Free Agent transactions</Heading>
-            <Accordion.Container allowMultiple defaultValue={['Pending transactions', 'Completed transactions']}>
+            <Accordion.Container allowMultiple defaultValue={['Pending transactions']}>
                 {enableEdit && <Accordion.Item value="Pending transactions">
                     <Accordion.Trigger>
                         Pending transactions
                         <Accordion.Icon />
                     </Accordion.Trigger>
                     <Accordion.Content>
-                        Now when you click the first item, this item will stay open until you close it.
+                        <Table
+                            highlightOnHover={true}
+                            variation="bordered"
+                            padding="10x" id="pendingTransactions" name="pendingTransactions">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>#</TableCell>
+                                    <TableCell>Player to add</TableCell>
+                                    <TableCell>Player to drop</TableCell>
+                                    <TableCell>Amount</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {pendingTransactions.map((transaction, index) => (
+                                    <TableRow key={index+1}>
+                                        <TableCell>{index+1}</TableCell>
+                                        <TableCell>{extractTransactionPlayer(transaction.add)}</TableCell>
+                                        <TableCell>{extractTransactionPlayer(transaction.drop)}</TableCell>
+                                        <TableCell>{transaction.amount}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
                     </Accordion.Content>
                 </Accordion.Item>
                 }
-
                 <Accordion.Item value="Completed transactions">
                     <Accordion.Trigger>
                         Completed transactions

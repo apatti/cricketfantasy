@@ -48,6 +48,58 @@ app.get('/fantasyTeams', function(req, res) {
   res.json({success: 'get call succeed!', url: req.url});
 });
 
+app.get('/fantasyTeams/faTransactions/*', async function(req, res) {
+  let pathParam = req.apiGateway.event.pathParameters.proxy;
+  if(!pathParam){
+    res.json({success:'no param',data:[]});
+    return;
+  }
+
+  const PARAM_REGEX = /faTransactions\/(.*)\/(.*)/;
+  const [, lid, tid] = pathParam.match(PARAM_REGEX);
+
+  if(req.user && req.user.Username != tid){
+    console.log("Requestor is not the owner of the team", tid, req.user.Username);
+    res.json({ statusCode: 403, url: req.url, body: "Forbidden" });
+    return;
+  }
+  var entryTime = new Date();
+  let params = { TableName: tableName, 
+    Key: { 
+      id: tid,
+      owner: `FA#${entryTime.getMonth()+1}${entryTime.getDate()}`
+    }
+  };
+  console.log(params);
+  console.log("Getting transactions for:", tid);
+  console.log("Getting transactions for sk:", params.Key.owner);
+  await dynamodb.get(params, function(err, data) {
+    if(err){
+      res.json({ statusCode: 200, error: err.message, url: req.url, transactions: [] });
+    }
+    else{
+      if(data.Item === undefined){
+        res.json({ statusCode: 200, url: req.url, transactions: [] });
+        return;
+      }
+      let item = data.Item;
+      let transactions = Object.keys(item).reduce((accumulator, key) => {
+        if(key !== "id" && key !== "owner" && key !== "league"){
+          let addedPlayer = key.split("#")[0];
+          let droppedPlayer = key.split("#")[1];
+          accumulator.push({
+            "add":Buffer.from(addedPlayer).toString("utf-8"),
+            "drop":Buffer.from(droppedPlayer).toString("utf-8"),
+            "amount":item[key]})
+        }
+        return accumulator;
+      }, []);
+      res.json({ statusCode: 200, url: req.url, transactions: transactions });
+    }
+  });
+  //res.json({ statusCode: 200, url: req.url, transactions: transactions.Item }); 
+});
+
 app.get('/fantasyTeams/*', async function(req, res) {
   let pathParam = req.apiGateway.event.pathParameters.proxy;
   if(!pathParam){
@@ -57,6 +109,12 @@ app.get('/fantasyTeams/*', async function(req, res) {
 
   const PARAM_REGEX = /(.*)\/(.*)/;
   const [, lid, tid] = pathParam.match(PARAM_REGEX);
+
+  if(req.user && req.user.Username != tid){
+    console.log("Requestor is not the owner of the team", tid, req.user.Username);
+    res.json({ statusCode: 403, url: req.url, body: "Forbidden" });
+    return;
+  }
 
   let params = { TableName: tableName, 
     Key: { 
@@ -68,6 +126,8 @@ app.get('/fantasyTeams/*', async function(req, res) {
 res.json({ statusCode: 200, url: req.url, team: team.Item });
   // Add your code here
 });
+
+
 
 /****************************
 * Example post method *
