@@ -64,6 +64,7 @@ app.get('/fantasyTeams/faTransactions/*', async function(req, res) {
     return;
   }
   var entryTime = new Date();
+  entryTime.setHours(entryTime.getHours()-7);
   let params = { TableName: tableName, 
     Key: { 
       id: tid,
@@ -147,6 +148,7 @@ app.post('/fantasyTeams/{lid}/{tid}/freeAgency', function(req, res) {
 
   let faAddRequest = req.body;
   let entryTime = new Date(); 
+  entryTime.setHours(entryTime.getHours()-7);
   
   let params = {
       TableName : tableName,
@@ -205,7 +207,7 @@ app.post('/fantasyTeams/*', async function(req, res) {
   }
 
   let entryTime = new Date();
-  
+  entryTime.setHours(entryTime.getHours()-7);
   let initialTeam = [
     "FA1#Empty Spot 1#Player#IPL#https://fantasyrolepics.s3.us-west-1.amazonaws.com/dukesFA1.jpeg",
     "FA2#Empty Spot 2#Player#IPL#https://fantasyrolepics.s3.us-west-1.amazonaws.com/dukesFA1.jpeg",
@@ -332,6 +334,7 @@ app.put('/fantasyTeams/*', async function(req, res) {
 
   var changes = req.body;
   let entryTime = new Date();
+  entryTime.setHours(entryTime.getHours()-8);
   var {faChanges:_,...nonFa} = changes;
   nonFa['entryTime']=entryTime.toISOString();
   var itemKeys = Object.keys(nonFa);
@@ -376,7 +379,7 @@ app.put('/fantasyTeams/*', async function(req, res) {
           console.log("PutItem succeeded:", tid);
           if("faChanges" in changes){
             let faChanges = changes.faChanges;
-            faChanges['entryTime']=entryTime.toISOString();
+            //faChanges['entryTime']=entryTime.toISOString();
             var faKeys = Object.keys(faChanges);
             let faUpdateParams = {
               TableName: tableName,
@@ -385,10 +388,9 @@ app.put('/fantasyTeams/*', async function(req, res) {
                 owner: `FA#${entryTime.getMonth()+1}${entryTime.getDate()}`
               },
               ReturnValues: "ALL_NEW",
-              UpdateExpression: `SET ${faKeys.map((k, index) =>`#field${index} = :value${index}`).join(', ')}`,
+              UpdateExpression: `SET ${faKeys.map((k, index) =>`#field${index} = :value${index}`).join(', ')}, entryTime = :entryTime`,
               ExpressionAttributeNames: faKeys.reduce((accumulator, k, index) => ({ ...accumulator, [`#field${index}`]: `${faChanges[k].toAdd}#${k}` }), {}),
-              ExpressionAttributeValues: faKeys.reduce((accumulator, k, index) => ({ ...accumulator, [`:value${index}`]: faChanges[k].amount }), {}),
-              ExpressionAttributeValues: faKeys.reduce((accumulator, k, index) => ({ ...accumulator, [`:value${index}`]: faChanges[k].entryTime }), {})
+              ExpressionAttributeValues: faKeys.reduce((accumulator, k, index) => ({ ...accumulator, [`:value${index}`]: faChanges[k].amount }), {'entryTime':entryTime.toISOString()})
             }
             console.log("FA Update:",JSON.stringify(faUpdateParams));
             await dynamodb.update(faUpdateParams, function(err, data) {
