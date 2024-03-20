@@ -73,9 +73,7 @@ app.get('/fantasyTeams/faTransactions/*', async function(req, res) {
       owner: `FA#${entryTime.getMonth()+1}${entryTime.getDate()}`
     }
   };
-  console.log(params);
-  console.log("Getting transactions for:", tid);
-  console.log("Getting transactions for sk:", params.Key.owner);
+
   await dynamodb.get(params, function(err, data) {
     if(err){
       res.json({ statusCode: 200, error: err.message, url: req.url, transactions: [] });
@@ -400,7 +398,7 @@ app.put('/fantasyTeams/*', async function(req, res) {
           return;
         } else {
           console.log("PutItem succeeded:", tid);
-          if("faChanges" in changes){
+          if("faChanges" in changes && Object.keys(changes.faChanges).length > 0){
             let faChanges = changes.faChanges;
             //faChanges['entryTime']=entryTime.toISOString();
             var faKeys = Object.keys(faChanges);

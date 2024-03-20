@@ -152,6 +152,14 @@ export default function Home({params}) {
             fantasyUser = userName;
         }
         try{
+            if(formData.changes.captain && ((formData.changes.captain==formData.vicecaptain)||(formData.changes.captain==formData.vicecaptain))){
+                setCaptainError(true);
+                return;
+            }
+            if(formData.changes.vicecaptain && ((formData.changes.vicecaptain==formData.captain)||(formData.changes.captain==formData.vicecaptain))){
+                setCaptainError(true);
+                return;
+            }
             const restOperation = put({ 
             apiName: 'fantasyapi',
             path: '/fantasyTeams/ZHVrZXMgaXBsIGZhbnRhc3kgMjAyNA==/'+fantasyUser,
@@ -168,6 +176,7 @@ export default function Home({params}) {
                 return;
             }
             setGeneralUserErrorMessage("Changes saved successfully");
+            setCaptainError(false);
             await getPendingTransactions();
         } catch (e) {
             console.log('PUT call failed: ', e);
@@ -227,6 +236,7 @@ export default function Home({params}) {
                             return;
                         }
                         setFormData({...formData, captain:e.target.value, changes:{...formData.changes, captain:e.target.value}});
+                        setCaptainError(false);
                     }}
                     >
                         {formData.teamRoster.map((player, index) => (
@@ -242,11 +252,12 @@ export default function Home({params}) {
                     errorMessage="Captain and Vice-captain can't be same player"
                     onChange={(e) => {
                         e.preventDefault();
-                        if(e.target.value==formData.vicecaptain.split('#')[0]){
+                        if(e.target.value==formData.captain.split('#')[0]){
                             setCaptainError(true);
                             return;
                         }
                         setFormData({...formData, vicecaptain:e.target.value, changes:{...formData.changes, vicecaptain:e.target.value}});
+                        setCaptainError(false);
                     }}
                     >
                         {formData.teamRoster.map((player, index) => (
