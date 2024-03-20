@@ -350,6 +350,7 @@ app.put('/fantasyTeams/*', async function(req, res) {
     ExpressionAttributeValues: itemKeys.reduce((accumulator, k, index) => ({ ...accumulator, [`:value${index}`]: nonFa[k] }), {}),
   }
   
+  console.log("v0-Team update:",JSON.stringify(v0UpdateParams));
   await dynamodb.update(v0UpdateParams, function(err, data) {
     if (err) {
       res.json({ statusCode: 500, error: err.message, url: req.url });
@@ -387,8 +388,9 @@ app.put('/fantasyTeams/*', async function(req, res) {
               UpdateExpression: `SET ${faKeys.map((k, index) =>`#field${index} = :value${index}`).join(', ')}`,
               ExpressionAttributeNames: faKeys.reduce((accumulator, k, index) => ({ ...accumulator, [`#field${index}`]: `${faChanges[k].toAdd}#${k}` }), {}),
               ExpressionAttributeValues: faKeys.reduce((accumulator, k, index) => ({ ...accumulator, [`:value${index}`]: faChanges[k].amount }), {}),
+              ExpressionAttributeValues: faKeys.reduce((accumulator, k, index) => ({ ...accumulator, [`:value${index}`]: faChanges[k].entryTime }), {})
             }
-            console.log(JSON.stringify(faUpdateParams));
+            console.log("FA Update:",JSON.stringify(faUpdateParams));
             await dynamodb.update(faUpdateParams, function(err, data) {
               if (err) {
                 res.json({ statusCode: 500, error: err.message, url: req.url });

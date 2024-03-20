@@ -163,6 +163,9 @@ export default function Home({params}) {
             const teamResponse = await response.body.json();
             console.log(teamResponse);
             setEditMode(false);
+            if(teamResponse.statusCode!=200){
+                setGeneralUserErrorMessage(`Error: ${teamResponse.statusCode} - ${teamResponse.error}`);    
+            }
             setGeneralUserErrorMessage("Changes saved successfully");
         } catch (e) {
             console.log('PUT call failed: ', e);
