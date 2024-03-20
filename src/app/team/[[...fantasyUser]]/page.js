@@ -165,8 +165,10 @@ export default function Home({params}) {
             setEditMode(false);
             if(teamResponse.statusCode!=200){
                 setGeneralUserErrorMessage(`Error: ${teamResponse.statusCode} - ${teamResponse.error}`);    
+                return;
             }
             setGeneralUserErrorMessage("Changes saved successfully");
+            await getPendingTransactions();
         } catch (e) {
             console.log('PUT call failed: ', e);
             console.log(JSON.parse(e.response.body));

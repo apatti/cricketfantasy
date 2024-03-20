@@ -263,6 +263,200 @@
       "type": "manual"
     }
   },
+  "parameters": {
+    "AMPLIFY_function_AdminQueries4d05af00_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AdminQueries4d05af00"
+        }
+      ]
+    },
+    "AMPLIFY_function_AdminQueries4d05af00_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AdminQueries4d05af00"
+        }
+      ]
+    },
+    "AMPLIFY_function_fantasyTeamAPI_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fantasyTeamAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_fantasyTeamAPI_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fantasyTeamAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_fantasyUsersAPI_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fantasyUsersAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_fantasyUsersAPI_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fantasyUsersAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_freeAgency_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "freeAgency"
+        }
+      ]
+    },
+    "AMPLIFY_function_freeAgency_faEnabled": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "freeAgency"
+        }
+      ]
+    },
+    "AMPLIFY_function_freeAgency_readOnly": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "freeAgency"
+        }
+      ]
+    },
+    "AMPLIFY_function_freeAgency_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "freeAgency"
+        }
+      ]
+    },
+    "AMPLIFY_function_freeAgency_secretsPathAmplifyAppId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "freeAgency"
+        }
+      ]
+    },
+    "AMPLIFY_function_iplfantasyPostConfirmation_GROUP": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "iplfantasyPostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_iplfantasyPostConfirmation_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "iplfantasyPostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_iplfantasyPostConfirmation_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "iplfantasyPostConfirmation"
+        }
+      ]
+    },
+    "AMPLIFY_function_leagueAPI_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "leagueAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_leagueAPI_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "leagueAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_playersAPI_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "playersAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_playersAPI_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "playersAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_teamsAPI_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "teamsAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_teamsAPI_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "teamsAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_tournamentAPI_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "tournamentAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_tournamentAPI_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "tournamentAPI"
+        }
+      ]
+    },
+    "AMPLIFY_hosting_amplifyhosting_appId": {
+      "usedBy": [
+        {
+          "category": "hosting",
+          "resourceName": "amplifyhosting"
+        }
+      ]
+    },
+    "AMPLIFY_hosting_amplifyhosting_type": {
+      "usedBy": [
+        {
+          "category": "hosting",
+          "resourceName": "amplifyhosting"
+        }
+      ]
+    }
+  },
   "storage": {
     "cricketTeam": {
       "providerPlugin": "awscloudformation",
