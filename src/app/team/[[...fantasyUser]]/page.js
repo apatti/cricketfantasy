@@ -186,7 +186,7 @@ export default function Home({params}) {
         <Authenticator.Provider>
         <Flex padding="24px 32px 24px 32px" direction="column">
             {(isLoading) && <Loader width="5rem" height="5rem"/>}
-            {(generalUserErrorMessage!="") && <Alert variation={generalUserErrorMessage.startsWith=="Error"?"error":"success"} isDismissible={true}
+            {(generalUserErrorMessage!="") && <Alert variation={generalUserErrorMessage.startsWith("Error")?"error":"success"} isDismissible={true}
                 hasIcon={true}>{generalUserErrorMessage}</Alert>}
             <Grid
                 as="form"

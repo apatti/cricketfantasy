@@ -37,6 +37,7 @@ export default function Home() {
           profilePic={item.icon}
           profileLink={item.profile}
           addBtnVisible="none"
+          status={item.playerIcon=="undefined"?"Free Agent":item.playerIcon}
         ></PlayerCard>
       )}
     </Collection>

@@ -19,6 +19,7 @@ const applyMiddleware = require('./middleware').applyMiddleware;
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 var leagueTable = "iplfantasy-league";
+var iplPlayerTable = "iplPlayer";
 
 // declare a new express app
 const app = express()
@@ -29,6 +30,7 @@ var tableName = "fantasyTeam";
 
 if (process.env.ENV && process.env.ENV !== "NONE") {
   tableName = tableName + '-' + process.env.ENV;
+  iplPlayerTable = iplPlayerTable + '-' + process.env.ENV;
 }
 
 // Enable CORS for all methods
@@ -84,8 +86,12 @@ app.get('/fantasyTeams/faTransactions/*', async function(req, res) {
         return;
       }
       let item = data.Item;
+      if(item.processed){
+        res.json({ statusCode: 200, url: req.url, transactions: [] });
+        return;
+      }
       let transactions = Object.keys(item).reduce((accumulator, key) => {
-        if(key !== "id" && key !== "owner" && key !== "league" && key !=="entryTime"){
+        if(key !== "id" && key !== "owner" && key !== "league" && key !=="entryTime" && key !=="processed"){
           let addedPlayer = key.split("#")[0];
           let droppedPlayer = key.split("#")[1];
           accumulator.push({
@@ -123,8 +129,25 @@ app.get('/fantasyTeams/*', async function(req, res) {
       owner: 'v0-team'
     }
   };
-  let team = await dynamodb.get(params).promise();
-res.json({ statusCode: 200, url: req.url, team: team.Item });
+  let teamObj = await dynamodb.get(params).promise();
+  let teamMeta = teamObj.Item;
+
+  let playerParams = { TableName: iplPlayerTable,
+    IndexName: "fantasyTeam-index",
+    KeyConditionExpression: "playerIcon = :v_tid", 
+    ExpressionAttributeValues: {
+      ":v_tid": tid,
+    },
+    "ScanIndexForward": false
+  };
+let teamPlayers = await dynamodb.query(playerParams).promise();
+if(teamPlayers.Items.length === 0){
+  res.json({ statusCode: 200, url: req.url, team: teamMeta });
+  return;
+}
+teamMeta.team = teamPlayers.Items.map((player) => `${player.id}#${player.name}#${player.role}#${player.team}#${player.icon}#${player.playerCost}`);
+
+res.json({ statusCode: 200, url: req.url, team: teamMeta });
   // Add your code here
 });
 
@@ -317,7 +340,7 @@ app.put('/fantasyTeams', function(req, res) {
 });
 
 app.put('/fantasyTeams/*', async function(req, res) {
-  // Add your code here
+  // Add your code heref
   let pathParam = req.apiGateway.event.pathParameters.proxy;
   if(!pathParam){
     res.json({success:'no param',data:[]});

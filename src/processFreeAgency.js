@@ -23,6 +23,7 @@ export const handler = async (event) => {
     };
 
     let entryTime = new Date();
+    entryTime.setHours(entryTime.getHours()-7);
     let faKey = `FA#${entryTime.getMonth()+1}${entryTime.getDate()}`
     let tableName = 'fantasyTeam-staging';
     let playerTableName = 'iplPlayer-staging';
@@ -72,7 +73,7 @@ export const handler = async (event) => {
         }
         let team = item.id;
         transactions = Object.keys(item).reduce((accumulator, key) => {
-            if(key !== "id" && key !== "owner" && key !== "league"){
+            if(key !== "id" && key !== "owner" && key !== "league" && key !== 'entryTime'){
                 let addedPlayer = key.split("#")[0];
                 let droppedPlayer = key.split("#")[1];
                 let entry = {team:team,drop:Buffer.from(droppedPlayer).toString("utf-8"),amount:item[key]};
