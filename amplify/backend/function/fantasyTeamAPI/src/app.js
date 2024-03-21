@@ -92,13 +92,16 @@ app.get('/fantasyTeams/faTransactions/*', async function(req, res) {
         if(key !== "id" && key !== "owner" && key !== "league" && key !=="entryTime" && key !=="processed"){
           let addedPlayer = key.split("#")[0];
           let droppedPlayer = key.split("#")[1];
+          let faEntryTime = key.split("#")[2];
           accumulator.push({
             "add":Buffer.from(addedPlayer).toString("utf-8"),
             "drop":Buffer.from(droppedPlayer).toString("utf-8"),
-            "amount":item[key]})
+            "amount":item[key],
+            "entryTime":Buffer.from(faEntryTime).toString("utf-8")})
         }
         return accumulator;
       }, []);
+      transactions.sort((a,b) => new Date(b.entryTime) - new Date(a.entryTime));
       res.json({ statusCode: 200, url: req.url, transactions: transactions });
     }
   });
@@ -150,13 +153,21 @@ app.get('/fantasyTeams/completedFATransactions/*', async function(req, res) {
         }
         let transaction = Object.keys(item).reduce((accumulator, key) => {
           if(key !== "id" && key !== "owner" && key !== "league" && key !=="entryTime" && key !=="processed"){
+            console.log(key);
             let addedPlayer = key.split("#")[0];
             let droppedPlayer = key.split("#")[1];
+            let faEntryTime = key.split("#")[2];
+            if(!faEntryTime){
+              faEntryTime = entryTime.toISOString();
+            }
+            else{
+              faEntryTime = Buffer.from(faEntryTime, 'base64').toString("utf-8");
+            }
             accumulator.push({
               "add":Buffer.from(addedPlayer).toString("utf-8"),
               "drop":Buffer.from(droppedPlayer).toString("utf-8"),
               "amount":item[key],
-              "entryTime":item.entryTime,
+              "entryTime":faEntryTime,
               "processed":item.processed})
           }
           return accumulator;
@@ -468,6 +479,7 @@ app.put('/fantasyTeams/*', async function(req, res) {
           if("faChanges" in changes && Object.keys(changes.faChanges).length > 0){
             let faChanges = changes.faChanges;
             //faChanges['entryTime']=entryTime.toISOString();
+            let faEntryTime = Buffer.from(entryTime.toISOString()).toString('base64');
             var faKeys = Object.keys(faChanges);
             let faUpdateParams = {
               TableName: tableName,
@@ -477,7 +489,7 @@ app.put('/fantasyTeams/*', async function(req, res) {
               },
               ReturnValues: "ALL_NEW",
               UpdateExpression: `SET ${faKeys.map((k, index) =>`#field${index} = :value${index}`).join(', ')}, entryTime = :entryTime`,
-              ExpressionAttributeNames: faKeys.reduce((accumulator, k, index) => ({ ...accumulator, [`#field${index}`]: `${faChanges[k].toAdd}#${k}` }), {}),
+              ExpressionAttributeNames: faKeys.reduce((accumulator, k, index) => ({ ...accumulator, [`#field${index}`]: `${faChanges[k].toAdd}#${k}#${faEntryTime}` }), {}),
               ExpressionAttributeValues: faKeys.reduce((accumulator, k, index) => ({ ...accumulator, [`:value${index}`]: faChanges[k].amount }), {':entryTime':entryTime.toISOString()})
             }
             console.log("FA Update:",JSON.stringify(faUpdateParams));

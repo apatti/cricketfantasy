@@ -341,7 +341,7 @@ export default function Home({params}) {
                                 {isEditMode&&<TableCell>
                                         <Input name={index+"_faAmount"} id={index+"_faAmount"} inputMode="text" hasError={faAmountHasError} onInput={(e)=>{
                                             e.preventDefault();
-                                            if(e.currentTarget.value<=0 || e.currentTarget.value>formData.fa){
+                                            if(e.currentTarget.value<0 || e.currentTarget.value>formData.fa){
                                                 setFaAmountHasError(true);
                                                 return;
                                             }
@@ -382,6 +382,7 @@ export default function Home({params}) {
                                     <TableCell>Player to add</TableCell>
                                     <TableCell>Player to drop</TableCell>
                                     <TableCell>Amount</TableCell>
+                                    <TableCell>Time</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -391,6 +392,7 @@ export default function Home({params}) {
                                         <TableCell>{extractTransactionPlayer(transaction.add)}</TableCell>
                                         <TableCell>{extractTransactionPlayer(transaction.drop)}</TableCell>
                                         <TableCell>{transaction.amount}</TableCell>
+                                        <TableCell>{Buffer.from(transaction.entryTime, 'base64').toString('ascii')}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -425,7 +427,7 @@ export default function Home({params}) {
                                             <TableCell>{extractTransactionPlayer(transaction.add)}</TableCell>
                                             <TableCell>{extractTransactionPlayer(transaction.drop)}</TableCell>
                                             <TableCell>{transaction.amount}</TableCell>
-                                            <TableCell>{transaction.entryTime}</TableCell>
+                                            <TableCell>{Buffer.from(transaction.entryTime, 'base64').toString('ascii')}</TableCell>
                                         </TableRow>
                                     ))))}
                             </TableBody>
