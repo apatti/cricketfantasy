@@ -92,11 +92,13 @@ app.get('/fantasyTeams/faTransactions/*', async function(req, res) {
         if(key !== "id" && key !== "owner" && key !== "league" && key !=="entryTime" && key !=="processed"){
           let addedPlayer = key.split("#")[0];
           let droppedPlayer = key.split("#")[1];
-          let faEntryTime = key.split("#")[2];
+          let faEntryTime = item[key].split("#")[1];
+          let amount = item[key].split("#")[0];
+          
           accumulator.push({
             "add":Buffer.from(addedPlayer).toString("utf-8"),
             "drop":Buffer.from(droppedPlayer).toString("utf-8"),
-            "amount":item[key],
+            "amount":amount,
             "entryTime":Buffer.from(faEntryTime).toString("utf-8")})
         }
         return accumulator;
@@ -156,7 +158,8 @@ app.get('/fantasyTeams/completedFATransactions/*', async function(req, res) {
             console.log(key);
             let addedPlayer = key.split("#")[0];
             let droppedPlayer = key.split("#")[1];
-            let faEntryTime = key.split("#")[2];
+            let faEntryTime = item[key].split("#")[1];
+            let amount = item[key].split("#")[0];
             if(!faEntryTime){
               faEntryTime = entryTime.toISOString();
             }
@@ -166,7 +169,7 @@ app.get('/fantasyTeams/completedFATransactions/*', async function(req, res) {
             accumulator.push({
               "add":Buffer.from(addedPlayer).toString("utf-8"),
               "drop":Buffer.from(droppedPlayer).toString("utf-8"),
-              "amount":item[key],
+              "amount":amount,
               "entryTime":faEntryTime,
               "processed":item.processed})
           }
