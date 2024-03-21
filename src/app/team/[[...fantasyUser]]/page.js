@@ -30,6 +30,7 @@ export default function Home({params}) {
         vicecaptain: "TBD",
         fa: 0,
         teamRoster: [],
+        phaseBooster: false,
         changes:{
             faChanges:{}
         }
@@ -130,14 +131,18 @@ export default function Home({params}) {
         if(!userName){
             return;
         }
+        let fantasyUser = params.fantasyUser;
+        if(!fantasyUser){
+            fantasyUser = userName;
+        }
         const restOperation = get({ 
             apiName: 'fantasyapi',
-            path: '/fantasyTeams/completedFATransactions/ZHVrZXMgaXBsIGZhbnRhc3kgMjAyNA==/'+userName
+            path: '/fantasyTeams/completedFATransactions/ZHVrZXMgaXBsIGZhbnRhc3kgMjAyNA==/'+fantasyUser
           });
           const response = await restOperation.response;
-          const pendingTransactionsResponse = await response.body.json()
+          const completedTransactionsResponse = await response.body.json()
           //data.players 
-          setCompletedTransactions(pendingTransactionsResponse.transactions);
+          setCompletedTransactions(completedTransactionsResponse.transactions);
           //setIsLoading(false);
     }
 
@@ -281,6 +286,18 @@ export default function Home({params}) {
                             <option value={player.id}>{player.name}</option>
                         ))}
                 </SelectField>
+                <SwitchField
+                    isDisabled={!enableEdit || formData.phaseBooster}
+                    label="Phase Booster:"
+                    labelPosition="start"
+                    trackCheckedColor='red'
+                    size="large"
+                    isChecked={formData.phaseBooster}
+                    onChange={(e)=>{
+                        e.preventDefault();
+                        setFormData({...formData, changes:{...formData.changes, phaseBooster:e.target.checked}});
+                    }}
+                    ></SwitchField>
                 <Label htmlFor="fa_amount">FA Budget:</Label>
                 <Text id="fa_amount" 
                     variation={faBudgetVariation}>${formData.fa}
@@ -397,6 +414,7 @@ export default function Home({params}) {
                                     <TableCell>Player to add</TableCell>
                                     <TableCell>Player to drop</TableCell>
                                     <TableCell>Amount</TableCell>
+                                    <TableCell>Time</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -407,6 +425,7 @@ export default function Home({params}) {
                                             <TableCell>{extractTransactionPlayer(transaction.add)}</TableCell>
                                             <TableCell>{extractTransactionPlayer(transaction.drop)}</TableCell>
                                             <TableCell>{transaction.amount}</TableCell>
+                                            <TableCell>{transaction.entryTime}</TableCell>
                                         </TableRow>
                                     ))))}
                             </TableBody>

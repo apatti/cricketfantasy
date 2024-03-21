@@ -1,6 +1,6 @@
 'use client'
 
-import { Divider, Flex, Heading, TableRow,TableCell, TableBody, Table, Loader, TableHead, Link } from '@aws-amplify/ui-react';
+import { Divider, Flex, Heading, TableRow,TableCell, TableBody, Table, Loader, TableHead, CheckboxField } from '@aws-amplify/ui-react';
 import { get } from '@aws-amplify/api-rest';
 
 import { useRouter } from 'next/navigation'
@@ -46,7 +46,11 @@ export default function Home() {
                         <TableCell>#</TableCell>
                         <TableCell>Team Name</TableCell>
                         <TableCell>Manager</TableCell>
-                        <TableCell>Slogan</TableCell>
+                        <TableCell>Captain</TableCell>
+                        <TableCell>Vice Captain</TableCell>
+                        <TableCell>Phase Booster</TableCell>
+                        <TableCell>League points</TableCell>
+                        <TableCell>Phase 1 points</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -55,7 +59,11 @@ export default function Home() {
                             <TableCell>{index+1}</TableCell>
                             <TableCell>{standing.teamName}</TableCell>
                             <TableCell>{standing.manager}</TableCell>
-                            <TableCell>{standing.teamSlogan}</TableCell>
+                            <TableCell>{standing.captain}</TableCell>
+                            <TableCell>{standing.vicecaptain}</TableCell>
+                            <TableCell>{standing.phasebooster}</TableCell>
+                            <TableCell>{standing.leaguepoints}</TableCell>
+                            <TableCell>{standing.phase1points}</TableCell>
                         </TableRow>
                     ))}
                     </TableBody>

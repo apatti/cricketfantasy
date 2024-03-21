@@ -53,11 +53,20 @@ app.get('/league/standings/*', async function(req, res) {
                   ExpressionAttributeNames:{
                     "#owner": "owner"
                   },
-                  ProjectionExpression: "teamName,manager,id,teamSlogan",
                   "ScanIndexForward": false
                 };
   let league = await dynamodb.query(params).promise();
   console.log(league);
+  league.Items.sort((a,b) => {
+    if(a.leaguepoints < b.leaguepoints){
+      return 1}
+    if(b.leaguepoints < a.leaguepoints){
+      return -1;
+    }
+    if(b.leaguepoints==a.leaguepoints){
+      return (a.phase1points < b.phase1points) ? 1 : -1;
+    } 
+  });
   res.json({ statusCode: 200, url: req.url, standings: league.Items });
 });
 

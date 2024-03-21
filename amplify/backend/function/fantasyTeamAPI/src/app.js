@@ -155,12 +155,15 @@ app.get('/fantasyTeams/completedFATransactions/*', async function(req, res) {
             accumulator.push({
               "add":Buffer.from(addedPlayer).toString("utf-8"),
               "drop":Buffer.from(droppedPlayer).toString("utf-8"),
-              "amount":item[key]})
+              "amount":item[key],
+              "entryTime":item.entryTime,
+              "processed":item.processed})
           }
           return accumulator;
         }, []);
         transactions.push(transaction);
       }
+      transactions.sort((a,b) => new Date(b[0].entryTime) - new Date(a[0].entryTime));
       res.json({ statusCode: 200, url: req.url, transactions: transactions });
     }
   });
@@ -177,8 +180,10 @@ app.get('/fantasyTeams/*', async function(req, res) {
   const PARAM_REGEX = /(.*)\/(.*)/;
   const [, lid, tid] = pathParam.match(PARAM_REGEX);
 
+  let ownerKey = "v0-team";
   if(req.user && req.user.Username != tid){
     console.log("Requestor is not the owner of the team", tid, req.user.Username);
+    ownerKey = "meta";
     //res.json({ statusCode: 403, url: req.url, body: "Forbidden" });
     //return;
   }
@@ -186,7 +191,7 @@ app.get('/fantasyTeams/*', async function(req, res) {
   let params = { TableName: tableName, 
     Key: { 
       id: tid,
-      owner: 'v0-team'
+      owner: ownerKey
     }
   };
   let teamObj = await dynamodb.get(params).promise();
