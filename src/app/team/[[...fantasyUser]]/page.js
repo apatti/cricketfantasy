@@ -35,6 +35,7 @@ export default function Home({params}) {
         }
     });
     const [pendingTransactions, setPendingTransactions] = useState([]);
+    const [completedTransactions, setCompletedTransactions] = useState([]);
 
     const getUserName = async() =>{
         const username = await getCurrentUserName();
@@ -125,6 +126,21 @@ export default function Home({params}) {
           //setIsLoading(false);
     }
 
+    const getCompletedTransactions = async () => {
+        if(!userName){
+            return;
+        }
+        const restOperation = get({ 
+            apiName: 'fantasyapi',
+            path: '/fantasyTeams/completedFATransactions/ZHVrZXMgaXBsIGZhbnRhc3kgMjAyNA==/'+userName
+          });
+          const response = await restOperation.response;
+          const pendingTransactionsResponse = await response.body.json()
+          //data.players 
+          setCompletedTransactions(pendingTransactionsResponse.transactions);
+          //setIsLoading(false);
+    }
+
     const extractTransactionPlayer = (player) =>{
         if(player.startsWith("FA")){
             return player;
@@ -139,6 +155,7 @@ export default function Home({params}) {
     useEffect(()=>{
         getTeam();
         getPendingTransactions();
+        getCompletedTransactions();
     },[userName])
 
     const editSubmit = async (e) =>{
@@ -366,11 +383,34 @@ export default function Home({params}) {
                 }
                 <Accordion.Item value="Completed transactions">
                     <Accordion.Trigger>
-                        Completed transactions
+                        Processed transactions
                         <Accordion.Icon />
                     </Accordion.Trigger>
                     <Accordion.Content>
-                        Coming soon!!
+                        <Table
+                            highlightOnHover={true}
+                            variation="bordered"
+                            padding="10x" id="completedTransactions" name="completedTransactions">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>#</TableCell>
+                                    <TableCell>Player to add</TableCell>
+                                    <TableCell>Player to drop</TableCell>
+                                    <TableCell>Amount</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {completedTransactions.map((completedTransaction, index) => (
+                                    completedTransaction.map((transaction, index) => (
+                                        <TableRow key={index+1}>
+                                            <TableCell>{index+1}</TableCell>
+                                            <TableCell>{extractTransactionPlayer(transaction.add)}</TableCell>
+                                            <TableCell>{extractTransactionPlayer(transaction.drop)}</TableCell>
+                                            <TableCell>{transaction.amount}</TableCell>
+                                        </TableRow>
+                                    ))))}
+                            </TableBody>
+                        </Table>
                     </Accordion.Content>
                 </Accordion.Item>
             </Accordion.Container>

@@ -105,6 +105,68 @@ app.get('/fantasyTeams/faTransactions/*', async function(req, res) {
   //res.json({ statusCode: 200, url: req.url, transactions: transactions.Item }); 
 });
 
+app.get('/fantasyTeams/completedFATransactions/*', async function(req, res) {
+  let pathParam = req.apiGateway.event.pathParameters.proxy;
+  if(!pathParam){
+    res.json({success:'no param',data:[]});
+    return;
+  }
+
+  const PARAM_REGEX = /completedFATransactions\/(.*)\/(.*)/;
+  const [, lid, tid] = pathParam.match(PARAM_REGEX);
+
+  var entryTime = new Date();
+  entryTime.setHours(entryTime.getHours()-7);
+
+  var params = {
+    TableName: tableName,
+    KeyConditionExpression: '#id = :hkey AND begins_with(#owner,:rkey)',
+    ExpressionAttributeValues: {
+      ':hkey': tid,
+      ':rkey': 'FA#'
+    },
+    ExpressionAttributeNames:{
+      '#id': 'id',
+      '#owner': 'owner'
+    }
+  };
+
+  await dynamodb.query(params, function(err, data) {
+    //console.log("Completed data:",JSON.stringify(data));
+    if(err){
+      res.json({ statusCode: 200, error: err.message, url: req.url, transactions: [] });
+    }
+    else{
+      if(data.Items === undefined){
+        res.json({ statusCode: 200, url: req.url, transactions: [] });
+        return;
+      }
+      let transactions = [];
+      for(let i=0;i<data.Items.length;i++){
+        let item = data.Items[i];
+        if(!item.processed){
+          res.json({ statusCode: 200, url: req.url, transactions: [] });
+          return;
+        }
+        let transaction = Object.keys(item).reduce((accumulator, key) => {
+          if(key !== "id" && key !== "owner" && key !== "league" && key !=="entryTime" && key !=="processed"){
+            let addedPlayer = key.split("#")[0];
+            let droppedPlayer = key.split("#")[1];
+            accumulator.push({
+              "add":Buffer.from(addedPlayer).toString("utf-8"),
+              "drop":Buffer.from(droppedPlayer).toString("utf-8"),
+              "amount":item[key]})
+          }
+          return accumulator;
+        }, []);
+        transactions.push(transaction);
+      }
+      res.json({ statusCode: 200, url: req.url, transactions: transactions });
+    }
+  });
+  //res.json({ statusCode: 200, url: req.url, transactions: transactions.Item }); 
+});
+
 app.get('/fantasyTeams/*', async function(req, res) {
   let pathParam = req.apiGateway.event.pathParameters.proxy;
   if(!pathParam){
