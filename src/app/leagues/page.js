@@ -62,7 +62,10 @@ export default function Home() {
                             <TableCell>{standing.manager}</TableCell>
                             <TableCell>{Buffer.from(standing.captain,'base64').toString("utf-8").split('-')[1]}</TableCell>
                             <TableCell>{Buffer.from(standing.vicecaptain,'base64').toString("utf-8").split('-')[1]}</TableCell>
-                            <TableCell>{standing.phasebooster}</TableCell>
+                            <TableCell><CheckboxField name="booster" checked={standing.phaseBooster} 
+                                isIndeterminate={!standing.phaseBooster} 
+                                isReadOnly={true} 
+                                isDisabled={!standing.phaseBooster}/></TableCell>
                             <TableCell>{standing.leaguepoints}</TableCell>
                             <TableCell>{standing.phase1points}</TableCell>
                             <TableCell>${standing.fa}</TableCell>
