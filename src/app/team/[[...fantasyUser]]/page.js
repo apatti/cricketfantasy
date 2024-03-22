@@ -427,7 +427,7 @@ export default function Home({params}) {
                                             <TableCell>{extractTransactionPlayer(transaction.add)}</TableCell>
                                             <TableCell>{extractTransactionPlayer(transaction.drop)}</TableCell>
                                             <TableCell>{transaction.amount}</TableCell>
-                                            <TableCell>{Buffer.from(transaction.entryTime, 'base64').toString('ascii')}</TableCell>
+                                            <TableCell>{transaction.entryTime}</TableCell>
                                         </TableRow>
                                     ))))}
                             </TableBody>

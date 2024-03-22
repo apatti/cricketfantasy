@@ -492,8 +492,8 @@ app.put('/fantasyTeams/*', async function(req, res) {
               },
               ReturnValues: "ALL_NEW",
               UpdateExpression: `SET ${faKeys.map((k, index) =>`#field${index} = :value${index}`).join(', ')}, entryTime = :entryTime`,
-              ExpressionAttributeNames: faKeys.reduce((accumulator, k, index) => ({ ...accumulator, [`#field${index}`]: `${faChanges[k].toAdd}#${k}#${faEntryTime}` }), {}),
-              ExpressionAttributeValues: faKeys.reduce((accumulator, k, index) => ({ ...accumulator, [`:value${index}`]: faChanges[k].amount }), {':entryTime':entryTime.toISOString()})
+              ExpressionAttributeNames: faKeys.reduce((accumulator, k, index) => ({ ...accumulator, [`#field${index}`]: `${faChanges[k].toAdd}#${k}` }), {}),
+              ExpressionAttributeValues: faKeys.reduce((accumulator, k, index) => ({ ...accumulator, [`:value${index}`]: `${faChanges[k].amount}#${faEntryTime}` }), {':entryTime':entryTime.toISOString()})
             }
             console.log("FA Update:",JSON.stringify(faUpdateParams));
             await dynamodb.update(faUpdateParams, function(err, data) {
