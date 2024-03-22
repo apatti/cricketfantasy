@@ -51,6 +51,7 @@ export default function Home() {
                         <TableCell>Phase Booster</TableCell>
                         <TableCell>League points</TableCell>
                         <TableCell>Phase 1 points</TableCell>
+                        <TableCell>Waiver budget</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -59,11 +60,12 @@ export default function Home() {
                             <TableCell>{index+1}</TableCell>
                             <TableCell>{standing.teamName}</TableCell>
                             <TableCell>{standing.manager}</TableCell>
-                            <TableCell>{standing.captain}</TableCell>
-                            <TableCell>{standing.vicecaptain}</TableCell>
+                            <TableCell>{Buffer.from(standing.captain,'base64').toString("utf-8").split('-')[1]}</TableCell>
+                            <TableCell>{Buffer.from(standing.vicecaptain,'base64').toString("utf-8").split('-')[1]}</TableCell>
                             <TableCell>{standing.phasebooster}</TableCell>
                             <TableCell>{standing.leaguepoints}</TableCell>
                             <TableCell>{standing.phase1points}</TableCell>
+                            <TableCell>${standing.fa}</TableCell>
                         </TableRow>
                     ))}
                     </TableBody>

@@ -44,10 +44,9 @@ app.get('/league', function(req, res) {
 app.get('/league/standings/*', async function(req, res) {
   // Add your code here
   let params = { TableName: fantasyTeamTable,
-                  IndexName: "league-owner-index",
-                  KeyConditionExpression: "league = :v_league AND #owner = :v_purpose", 
+                  IndexName: "owner-id-index",
+                  KeyConditionExpression: "#owner = :v_purpose", 
                   ExpressionAttributeValues: {
-                    ":v_league": req.params[0],
                     ":v_purpose": "meta"
                   },
                   ExpressionAttributeNames:{
