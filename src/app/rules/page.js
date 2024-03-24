@@ -37,14 +37,14 @@ export default function Home() {
                 </TableHead>
                 <TableBody>
                     <TableRow>
-                        <TableCell colSpan={2} textAlign={"center"}>MOM</TableCell>
+                        <TableCell colSpan={2} textAlign={"center"} backgroundColor={"grey"}>MOM</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell>Official Man of the Match</TableCell>
                         <TableCell>50</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell colSpan={2} textAlign={"center"} >Batting</TableCell>
+                        <TableCell colSpan={2} textAlign={"center"} backgroundColor={"grey"}>Batting</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell>Run scored</TableCell>
@@ -231,7 +231,149 @@ export default function Home() {
                         <TableCell>On reaching 100 runs (Default : 100)</TableCell>
                         <TableCell>40</TableCell>
                     </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={2} textAlign={"center"} backgroundColor={"grey"} >Bowling</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Wicket</TableCell>
+                        <TableCell>30</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Dot Balls</TableCell>
+                        <TableCell>1</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Maiden over</TableCell>
+                        <TableCell>25</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={2} textAlign={"center"} >Economy Rate Bonus</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Minimum overs to be bowled by the bowler for scoring bonus</TableCell>
+                        <TableCell>2</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Between 0 and 3.99 runs per over</TableCell>
+                        <TableCell>30</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Between 4 and 5.99 runs per over:</TableCell>
+                        <TableCell>20</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Between 6 and 6.99 runs per over:</TableCell>
+                        <TableCell>10</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Between 7 and 7.99 runs per over:</TableCell>
+                        <TableCell>0</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Between 8 and 8.99 runs per over:</TableCell>
+                        <TableCell>-5</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Between 9 and 9.99 runs per over:</TableCell>
+                        <TableCell>-10</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>10 and above runs per over:</TableCell>
+                        <TableCell>-20</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={2} textAlign={"center"}  >Milestone bonus</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>On taking  2  wickets (Default : 2)</TableCell>
+                        <TableCell>10</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>On taking  3  wickets (Default : 3)</TableCell>
+                        <TableCell>15</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>On taking  4  wickets (Default : 4)</TableCell>
+                        <TableCell>20</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>On taking  5  wickets (Default : 5)</TableCell>
+                        <TableCell>25</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>On taking  6  or more wickets (Default : 6)</TableCell>
+                        <TableCell>40</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={2} textAlign={"center"} backgroundColor={"grey"}>Fielding</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Catch</TableCell>
+                        <TableCell>10</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Stumping</TableCell>
+                        <TableCell>20</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Run out</TableCell>
+                        <TableCell>10</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={2} textAlign={"center"}>Bonus for fielders taking X no. of fielding dismissals</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Minimum number of fielding dismissals by the fielder for scoring bonus</TableCell>
+                        <TableCell>2</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Points for taking the above mentioned minimum fielding dismissals</TableCell>
+                        <TableCell>10</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={2} textAlign={"center"} backgroundColor={"grey"}>Captain & Vice Captain</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Captain - Points earned by your captain get multiplied by x</TableCell>
+                        <TableCell>2</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Vice Captain - Points earned by your vice-captain get multiplied by x</TableCell>
+                        <TableCell>1.5</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={2} textAlign={"center"} backgroundColor={"grey"}>Power Play: Phase Booster (One game per Phase)</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Phase Booster Captain - Points earned by your captain get multiplied by x</TableCell>
+                        <TableCell>3</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Phase Booster Vice Captain - Points earned by your vice-captain get multiplied by x</TableCell>
+                        <TableCell>2</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Points earned by every other player in fantasy team (Other than Captain & Vice-Captain) get multiplied by x</TableCell>
+                        <TableCell>1.5</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>If Phase Booster Power Play is not picked by fantasy participant for 9 games of phase, then 10th game (last game of phase) will be auto picked for Phase Booster Power Play for that participant.</TableCell>
+                    </TableRow>
                 </TableBody>
+                <TableFoot>
+                    <TableRow>
+                        <TableCell backgroundColor={"grey"} colspan={2}></TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={2}>* Substitute : If any substitute player takes a catch, or effects run out, their points will not be counted in the fantasy scoring.</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={2}>* Super Over : Fantasy scores are counted till the last ball of the regulation game. Super over activities are not counted in fantasy scoring.</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={2}>* Points will be allotted for players who have performed even in No Result games.</TableCell>
+                    </TableRow>
+                </TableFoot>
             </Table>
         );
     }

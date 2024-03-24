@@ -43,7 +43,7 @@ def getBattingnHowOut(soup):
     #didnot bat
     didnotBat = soup.findAll(string="Did not bat: ")
     for dnb in didnotBat:
-        players.extend([player.get_text(strip=True) for player in dnb.parent.next_siblings])
+        players.extend([player.get_text(strip=True).replace(',','').replace('†','').replace('(c)','')  for player in dnb.parent.next_siblings])
     
     return batting,howOut
     
