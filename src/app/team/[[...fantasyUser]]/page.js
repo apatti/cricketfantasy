@@ -25,7 +25,6 @@ export default function Home({params}) {
     const router = useRouter();
     const [formData, setFormData] = useState({
         id:"",
-        phaseBooster: false,
         captain: "TBD",
         vicecaptain: "TBD",
         fa: 0,
@@ -287,7 +286,7 @@ export default function Home({params}) {
                         ))}
                 </SelectField>
                 <SwitchField
-                    isDisabled={!enableEdit || formData.phaseBooster}
+                    isDisabled={!enableEdit || formData.phaseBooster==true}
                     label="Phase Booster:"
                     labelPosition="start"
                     trackCheckedColor='red'
@@ -295,7 +294,7 @@ export default function Home({params}) {
                     isChecked={formData.phaseBooster}
                     onChange={(e)=>{
                         e.preventDefault();
-                        setFormData({...formData, changes:{...formData.changes, phaseBooster:e.target.checked}});
+                        setFormData({...formData, changes:{...formData.changes, phaseBooster:e.target.checked}, phaseBooster:e.target.checked});
                     }}
                     ></SwitchField>
                 <Label htmlFor="fa_amount">FA Budget:</Label>
