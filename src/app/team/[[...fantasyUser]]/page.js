@@ -2,12 +2,13 @@
 
 import { Flex, Authenticator, Loader, TableHead,TableCell,TableRow,TableBody,
         TableFoot,Table, Heading,SelectField,Divider,Grid, Label,Text, 
-        SwitchField, Input,Button, Alert,Accordion } from '@aws-amplify/ui-react';
+        SwitchField, Input,Button, Alert,Accordion,Icon } from '@aws-amplify/ui-react';
 import { get,put } from '@aws-amplify/api-rest';
+import { BiSolidSortAlt } from "react-icons/bi";
 
 import { getCurrentUserName } from '@/app/util';
 import { useRouter } from 'next/navigation'
-
+import useSortData from '../../../hooks/useSortData';
 
 
 import { useState, useEffect } from 'react';
@@ -36,6 +37,8 @@ export default function Home({params}) {
     });
     const [pendingTransactions, setPendingTransactions] = useState([]);
     const [completedTransactions, setCompletedTransactions] = useState([]);
+
+    const { completedSortedTransactions, requestSort } = useSortData(completedTransactions,'completedSortedTransactions');
 
     const getUserName = async() =>{
         const username = await getCurrentUserName();
@@ -141,7 +144,7 @@ export default function Home({params}) {
           const response = await restOperation.response;
           const completedTransactionsResponse = await response.body.json()
           //data.players 
-          setCompletedTransactions(completedTransactionsResponse.transactions);
+          setCompletedTransactions(completedTransactionsResponse.transactions.flat(1));
           //setIsLoading(false);
     }
 
@@ -411,24 +414,24 @@ export default function Home({params}) {
                             padding="10x" id="completedTransactions" name="completedTransactions">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>#</TableCell>
+                                    <TableCell onClick={()=>requestSort('entryTime')}>#</TableCell>
                                     <TableCell>Player to add</TableCell>
                                     <TableCell>Player to drop</TableCell>
-                                    <TableCell>Amount</TableCell>
-                                    <TableCell>Time</TableCell>
+                                    <TableCell onClick={()=>requestSort('amount')}>Amount <Icon as={BiSolidSortAlt} /></TableCell>
+                                    <TableCell onClick={()=>requestSort('entryTime')}>Time <Icon as={BiSolidSortAlt} /></TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {completedTransactions.map((completedTransaction, index) => (
-                                    completedTransaction.map((transaction, index) => (
+                                {completedSortedTransactions.map((completedTransaction, index) => (
+                                    //completedTransaction.map((transaction, index) => (
                                         <TableRow key={index+1}>
                                             <TableCell>{index+1}</TableCell>
-                                            <TableCell>{extractTransactionPlayer(transaction.add)}</TableCell>
-                                            <TableCell>{extractTransactionPlayer(transaction.drop)}</TableCell>
-                                            <TableCell>{transaction.amount}</TableCell>
-                                            <TableCell>{transaction.entryTime}</TableCell>
+                                            <TableCell>{extractTransactionPlayer(completedTransaction.add)}</TableCell>
+                                            <TableCell>{extractTransactionPlayer(completedTransaction.drop)}</TableCell>
+                                            <TableCell>{completedTransaction.amount}</TableCell>
+                                            <TableCell>{completedTransaction.entryTime}</TableCell>
                                         </TableRow>
-                                    ))))}
+                                    ))}
                             </TableBody>
                         </Table>
                     </Accordion.Content>

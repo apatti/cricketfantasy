@@ -1,9 +1,11 @@
 'use client'
 
-import { Divider, Flex, Heading, TableRow,TableCell, TableBody, Table, Loader, TableHead, CheckboxField } from '@aws-amplify/ui-react';
+import { Divider, Flex, Heading, TableRow,TableCell, TableBody, Table, Loader, TableHead, CheckboxField, Icon } from '@aws-amplify/ui-react';
+import { BiSolidSortAlt } from "react-icons/bi";
 import { get } from '@aws-amplify/api-rest';
 
 import { useRouter } from 'next/navigation'
+import  useSortData  from '@/hooks/useSortData';
 
 import { useState, useEffect } from 'react';
 
@@ -11,6 +13,7 @@ export default function Home() {
     const [isLoading, setIsLoading] = useState(true);
     const [standings, setStandings] = useState([]);
     const router = useRouter()
+    const { items, requestSort } = useSortData(standings,'items');
 
     const getStandings = async () => {
         try {
@@ -39,23 +42,23 @@ export default function Home() {
             <Heading level={3}>Standings</Heading>
             <Table
                 highlightOnHover={true}
-                variation="striped"
+                variation="bordered"
                 padding="10x">
                 <TableHead>
                     <TableRow>
-                        <TableCell>#</TableCell>
-                        <TableCell>Team Name</TableCell>
-                        <TableCell>Manager</TableCell>
+                        <TableCell onClick={()=>requestSort('leaguepoints')}>#</TableCell>
+                        <TableCell onClick={()=>requestSort('teamName')}>Team Name<Icon as={BiSolidSortAlt} /></TableCell>
+                        <TableCell onClick={()=>requestSort('manager')}>Manager<Icon as={BiSolidSortAlt} /></TableCell>
                         <TableCell>Captain</TableCell>
                         <TableCell>Vice Captain</TableCell>
-                        <TableCell>Phase Booster</TableCell>
-                        <TableCell>League points</TableCell>
-                        <TableCell>Phase 1 points</TableCell>
-                        <TableCell>Waiver budget</TableCell>
+                        <TableCell onClick={()=>requestSort('phaseBooster')}>Phase Booster<Icon as={BiSolidSortAlt} /></TableCell>
+                        <TableCell onClick={()=>requestSort('leaguepoints')}>League points<Icon as={BiSolidSortAlt} /></TableCell>
+                        <TableCell onClick={()=>requestSort('phase1points')}>Phase 1 points<Icon as={BiSolidSortAlt} /></TableCell>
+                        <TableCell onClick={()=>requestSort('fa')}>Waiver budget<Icon as={BiSolidSortAlt} /></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {standings.map((standing, index) => (
+                    {items.map((standing, index) => (
                         <TableRow key={standing.teamName} onClick={()=>router.push(`/team/${standing.manager}`)}>
                             <TableCell>{index+1}</TableCell>
                             <TableCell>{standing.teamName}</TableCell>
