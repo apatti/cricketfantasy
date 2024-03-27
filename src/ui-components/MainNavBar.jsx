@@ -150,6 +150,20 @@ export default function MainNavBar(props) {
           shrink="0"
           position="relative"
           padding="8px 16px 8px 16px"
+          label="Live Score"
+          {...getOverrideProps(overrides, "Live Score")}
+        ></Buttondefaultfalselink>
+        <Buttondefaultfalselink
+          display="flex"
+          gap="10px"
+          direction="row"
+          width="unset"
+          height="unset"
+          justifyContent="center"
+          alignItems="center"
+          shrink="0"
+          position="relative"
+          padding="8px 16px 8px 16px"
           label="Rules"
           {...getOverrideProps(overrides, "Rules")}
         ></Buttondefaultfalselink>

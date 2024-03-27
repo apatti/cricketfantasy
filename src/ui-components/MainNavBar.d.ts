@@ -29,6 +29,7 @@ export declare type MainNavBarOverridesProps = {
     Leagues?: ButtondefaultfalselinkProps;
     Team?: ButtondefaultfalselinkProps;
     Players?: ButtondefaultfalselinkProps;
+    "Live Score"?: ButtondefaultfalselinkProps;
     Rules?: ButtondefaultfalselinkProps;
     profileItems?: PrimitiveOverrideProps<ViewProps>;
     LoggedInUser?: LoggedInUserProps;
