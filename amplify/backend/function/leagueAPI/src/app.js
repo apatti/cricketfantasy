@@ -16,6 +16,8 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 var tableName = "iplfantasy-league";
 var fantasyTeamTable = "fantasyTeam";
+var liveScoreTable = "livescore";
+
 if (process.env.ENV && process.env.ENV !== "NONE") {
   fantasyTeamTable = fantasyTeamTable + '-' + process.env.ENV;
 }
@@ -39,6 +41,23 @@ app.use(function(req, res, next) {
 app.get('/league', function(req, res) {
   // Add your code here
   res.json({success: 'get call succeed!', url: req.url});
+});
+
+app.get('/league/livescore/*', async function(req, res) {
+  let params = { TableName: liveScoreTable,
+    KeyConditionExpression: "#teamId = :teamId", 
+    ExpressionAttributeValues: {
+      ":teamId": "team#3277"
+    },
+    ExpressionAttributeNames:{
+      "#teamId": "teamId"
+    },
+    "ScanIndexForward": false
+  };
+  let liveScore = await dynamodb.query(params).promise();
+  console.log(liveScore);
+  
+  res.json({ statusCode: 200, url: req.url, liveScore: liveScore.Items });
 });
 
 app.get('/league/standings/*', async function(req, res) {

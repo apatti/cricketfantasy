@@ -81,6 +81,7 @@ export default function RootLayout({ children,modal }) {
               "Players":{style:{cursor:"grab"}, "onClick":useNavigateAction({ type: "url", url: "/players" })},
               "Leagues":{style:{cursor:"grab"}, "onClick":useNavigateAction({ type: "url", url: "/leagues" })},
               "Team":{style:{cursor:"grab"}, "onClick":useNavigateAction({ type: "url", url: "/team" })},
+              "Live Score":{style:{cursor:"grab"}, "onClick":useNavigateAction({ type: "url", url: "/livescore" })},
               "Rules":{style:{cursor:"grab"}, "onClick":useNavigateAction({ type: "url", url: "/rules" })},
               "loginBtnName":{style:{cursor:"grab"},"onClick":loginBtnOnClick},
               "LoggedInUser":{"userName":user.username,overrides:{
