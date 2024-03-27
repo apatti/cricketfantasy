@@ -9,7 +9,8 @@ export default function Home() {
       <Flex direction="column" justifyContent="center" gap="20px"
       alignItems="left">
         <h2>Welcome to Dukes IPL Fantasy 2024</h2>
-        Draft results and summary would be out soon <br/>
+        For 3:00am PST game, points would be updated at 8:00 am PST <br/>
+        For 7:00am PST game, points would be updated at 12:00 pm PST <br/>
         <p>Best of luck!!</p>
       </Flex>
       <Divider width="100%"/>
