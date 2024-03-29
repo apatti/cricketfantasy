@@ -46,7 +46,7 @@ export default function Home() {
                 padding="10x">
                 <TableHead>
                     <TableRow>
-                        <TableCell onClick={()=>requestSort('leaguepoints')}>#</TableCell>
+                        <TableCell onClick={()=>requestSort('phase2points')}>#</TableCell>
                         <TableCell onClick={()=>requestSort('teamName')}>Team Name<Icon as={BiSolidSortAlt} /></TableCell>
                         <TableCell onClick={()=>requestSort('manager')}>Manager<Icon as={BiSolidSortAlt} /></TableCell>
                         <TableCell>Captain</TableCell>
@@ -54,6 +54,7 @@ export default function Home() {
                         <TableCell onClick={()=>requestSort('phaseBooster')}>Phase Booster<Icon as={BiSolidSortAlt} /></TableCell>
                         <TableCell onClick={()=>requestSort('leaguepoints')}>League points<Icon as={BiSolidSortAlt} /></TableCell>
                         <TableCell onClick={()=>requestSort('phase1points')}>Phase 1 points<Icon as={BiSolidSortAlt} /></TableCell>
+                        <TableCell onClick={()=>requestSort('phase2points')}>Phase 2 points<Icon as={BiSolidSortAlt} /></TableCell>
                         <TableCell onClick={()=>requestSort('fa')}>Waiver budget<Icon as={BiSolidSortAlt} /></TableCell>
                     </TableRow>
                 </TableHead>
@@ -71,6 +72,7 @@ export default function Home() {
                                 isDisabled={!standing.phaseBooster}/></TableCell>
                             <TableCell>{standing.leaguepoints}</TableCell>
                             <TableCell>{standing.phase1points}</TableCell>
+                            <TableCell>{standing.phase2points}</TableCell>
                             <TableCell>${standing.fa}</TableCell>
                         </TableRow>
                     ))}

@@ -44,10 +44,18 @@ app.get('/league', function(req, res) {
 });
 
 app.get('/league/livescore/*', async function(req, res) {
+
+  let entryTime = new Date();
+  entryTime.setHours(entryTime.getHours()-7);
+  let hourKey = '7';
+  if(entryTime.getHours()>2 && entryTime.getHours()<7){
+    hourKey = '3';
+  }
+  let faKey = `team#${entryTime.getMonth()+1}${entryTime.getDate()}${hourKey}`
   let params = { TableName: liveScoreTable,
     KeyConditionExpression: "#teamId = :teamId", 
     ExpressionAttributeValues: {
-      ":teamId": "team#3277"
+      ":teamId": faKey
     },
     ExpressionAttributeNames:{
       "#teamId": "teamId"
