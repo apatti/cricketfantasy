@@ -96,6 +96,39 @@ app.get('/league/standings/*', async function(req, res) {
   res.json({ statusCode: 200, url: req.url, standings: league.Items });
 });
 
+app.get('/league/transactions/*', async function(req, res) {
+  if(!req.query || req.query.eventTime==null || req.query.eventTime==''){
+    res.json({ statusCode: 400, url: req.url, error: "eventTime is required" });
+    return;
+  }
+
+  let eventTime = req.query.eventTime;
+  let params = { TableName: "freeAgencyHistory", 
+    Key: { 
+      eventTime: eventTime,
+    }
+  };
+
+  await dynamodb.get(params, function(err, data) {
+    if (err) {
+      res.json({ statusCode: 400, url: req.url, error: err });
+    } else {
+      let transactions = [];
+      transactions.processingTime = data.Item.eventCreationString;
+      let finalTransactions = data.Item.finalTransactions;
+      let allTransactions = data.Item.allBids;
+
+      for(let i=0;i<finalTransactions.length;i++){
+        let transaction = {win:finalTransactions[i]};
+        transaction.bids = allTransactions.filter(bid=>bid.add==finalTransactions[i].addPlayer&&bid.drop!=finalTransactions[i].dropPlayer);
+        transactions.push(transaction);
+      }
+      res.json({ statusCode: 200, url: req.url, transactions: transactions });
+    }
+  });
+
+});
+
 app.get('/league/*', async function(req, res) {
   // Add your code here
   let params = { TableName: tableName, 
