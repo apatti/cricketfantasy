@@ -87,7 +87,8 @@ const FATransactions = () => {
                             <TableCell>
                                 <Flex direction="column" gap="10px">
                                     <View>{transaction.win.addPlayerString.split('-')[1]}</View>
-                                    <View>(Successful bid: ${transaction.win.amount})</View>
+                                    <View>(Dropped: {transaction.win.dropPlayer.split('-')[1]})</View>
+                                    <View>${transaction.win.amount} Winning Bid</View>
                                     <Divider width="100%"/>
                                     {transaction.bids.map((bid,index) => (
                                         <View key={index}>{bid.team} bid ${bid.amount} to drop {bid.drop.split('-')[1]} failed</View>

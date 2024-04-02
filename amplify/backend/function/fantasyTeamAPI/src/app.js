@@ -135,13 +135,14 @@ app.get('/fantasyTeams/completedFATransactions/*', async function(req, res) {
       '#owner': 'owner'
     }
   };
-
+  console.log("Completed transactions query:",JSON.stringify(params)); 
   await dynamodb.query(params, function(err, data) {
     //console.log("Completed data:",JSON.stringify(data));
     if(err){
       res.json({ statusCode: 200, error: err.message, url: req.url, transactions: [] });
     }
     else{
+      console.log("Completed data:",JSON.stringify(data));
       if(data.Items === undefined){
         res.json({ statusCode: 200, url: req.url, transactions: [] });
         return;
@@ -155,7 +156,7 @@ app.get('/fantasyTeams/completedFATransactions/*', async function(req, res) {
         }
         let transaction = Object.keys(item).reduce((accumulator, key) => {
           if(key !== "id" && key !== "owner" && key !== "league" && key !=="entryTime" && key !=="processed"){
-            console.log(key);
+            //console.log(key);
             let addedPlayer = key.split("#")[0];
             let droppedPlayer = key.split("#")[1];
             let faEntryTime = item[key].split("#")[1];
