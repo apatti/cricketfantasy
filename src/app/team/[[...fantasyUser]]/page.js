@@ -175,6 +175,21 @@ export default function Home({params}) {
         if(!fantasyUser){
             fantasyUser = userName;
         }
+        if(formData.changes.faChanges){
+            let faError = Object.keys(formData.changes.faChanges).reduce((acc,curr)=>{
+                let change = formData.changes.faChanges[curr];
+                if(isNaN(change.amount) || change.amount<0 || change.amount>formData.fa){
+                    acc=true;
+                }
+                return acc;
+            },false);
+
+            if(faError){
+                setFaAmountHasError(true);
+                setGeneralUserErrorMessage(`Error: Invalid FA amount entered. Please check and try again.`);
+                return;
+            }
+        }
         try{
             if(formData.changes.captain && ((formData.changes.captain==formData.vicecaptain)||(formData.changes.captain==formData.vicecaptain))){
                 setCaptainError(true);
@@ -347,7 +362,7 @@ export default function Home({params}) {
                                                 setFaAmountHasError(true);
                                                 return;
                                             }
-                                            setFormData({...formData, changes:{...formData.changes, faChanges:{...formData.changes.faChanges,[player.id]:{...formData.changes.faChanges[[player.id]],amount:e.currentTarget.value}} }});
+                                            setFormData({...formData, changes:{...formData.changes, faChanges:{...formData.changes.faChanges,[player.id]:{...formData.changes.faChanges[[player.id]],amount:e.currentTarget.value}}}});
                                             setFABudgetVariation(false);
                                         }}/>
                                     </TableCell>}
