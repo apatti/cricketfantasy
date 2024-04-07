@@ -38,9 +38,21 @@ app.use(function(req, res, next) {
  * Example get method *
  **********************/
 
-app.get('/league', function(req, res) {
+app.get('/league', async function(req, res) {
   // Add your code here
-  res.json({success: 'get call succeed!', url: req.url});
+  let news = [];
+  let params = { TableName: "dailyNews" };
+    let items;
+    do {
+      items = await dynamodb.scan(params).promise();
+      items.Items.forEach((item) => news.push(item));
+      params.ExclusiveStartKey = items.LastEvaluatedKey;
+  } while (typeof items.LastEvaluatedKey != "undefined");
+  news.sort((a,b) => {
+    return parseInt(b.id) - parseInt(a.id);
+  });
+    
+  res.json({ statusCode: 200, url: req.url, news: news });
 });
 
 app.get('/league/livescore/*', async function(req, res) {
