@@ -54,15 +54,15 @@ export default function Home() {
                             padding="10x">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell onClick={()=>requestSort('phase3points')}>#</TableCell>
+                                    <TableCell onClick={()=>requestSort('phase5points')}>#</TableCell>
                                     <TableCell onClick={()=>requestSort('teamName')}>Team Name<Icon as={BiSolidSortAlt} /></TableCell>
                                     <TableCell onClick={()=>requestSort('manager')}>Manager<Icon as={BiSolidSortAlt} /></TableCell>
                                     <TableCell>Captain</TableCell>
                                     <TableCell>Vice Captain</TableCell>
                                     <TableCell onClick={()=>requestSort('phaseBooster')}>Phase Booster<Icon as={BiSolidSortAlt} /></TableCell>
                                     <TableCell onClick={()=>requestSort('leaguepoints')}>League points<Icon as={BiSolidSortAlt} /></TableCell>
-                                    <TableCell onClick={()=>requestSort('phase3points')}>Phase 3 points<Icon as={BiSolidSortAlt} /></TableCell>
                                     <TableCell onClick={()=>requestSort('phase4points')}>Phase 4 points<Icon as={BiSolidSortAlt} /></TableCell>
+                                    <TableCell onClick={()=>requestSort('phase5points')}>Phase 5 points<Icon as={BiSolidSortAlt} /></TableCell>
                                     <TableCell onClick={()=>requestSort('fa')}>Waiver budget<Icon as={BiSolidSortAlt} /></TableCell>
                                 </TableRow>
                             </TableHead>
@@ -79,8 +79,8 @@ export default function Home() {
                                             isReadOnly={true} 
                                             isDisabled={!standing.phaseBooster}/></TableCell>
                                         <TableCell>{standing.leaguepoints}</TableCell>
-                                        <TableCell>{standing.phase3points}</TableCell>
                                         <TableCell>{standing.phase4points}</TableCell>
+                                        <TableCell>{standing.phase5points}</TableCell>
                                         <TableCell>${standing.fa}</TableCell>
                                     </TableRow>
                                 ))}
