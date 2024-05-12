@@ -34,7 +34,7 @@
         },
         "leagueAPI": {
           "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
-          "s3Key": "amplify-builds/leagueAPI-544b394f4b434c6c3971-build.zip"
+          "s3Key": "amplify-builds/leagueAPI-762b483841494e4d7236-build.zip"
         },
         "playersAPI": {
           "deploymentBucketName": "amplify-iplfantasy-staging-00931-deployment",
