@@ -10,7 +10,8 @@ export default function Home() {
                 <View as="li">Top 5 participants will get season prizes. Top 2 participants will get phase prizes. </View>
                 <View as="li">Fantasy team owner need to pick Captain & Vice Captain for each game. Captain will 2x points & vice captain will get 1.5x points in each game. There are two powerplay options. One powerplay option is per phase & second powerplay option is once in the season.</View>
                 <View as="li">There is no bench option, all 6 players are eligible for scoring. </View>
-                <View as="li">Players have option to trade players from Free Agency. Each participant has $200 virtual money ($50 actual money) alloted for trading. All bid amount will be contributing to overall pot. </View>
+                <View as="li">Players have option to trade players from Free Agency. Each participant has $250 virtual money ($50 actual money) alloted for trading. All bid amount will be contributing to overall pot. FA money is non-refundable - use it or lose it. Minimum bid for Free Agency player is $1.
+                </View>
                 <View as="li">There is no limit on bids for free agency throughout season. But Free agency amount for every partiticpant is $200 & min bid is $1.  </View>
                 <View as="li">Cutoff time for bidding on players daily is 7 PM PST. All winning bids & every bid will be shown in Transaction tab in website.</View>
                 <View as="li">Winning bid in case if two teams are tied is based on reverse ranking of the fantasy team in standing.</View>
@@ -18,6 +19,14 @@ export default function Home() {
                 <View as="li">Any changes made to team (changing c/vc) will be considered for next game after current game start time i.e., 7 AM PST & 3 AM PST.</View>
                 <View as="li">Orange Cap, Purple Cap, Emerging Player awards will be awarded by IPL after IPL final game is completed.  </View>
                 <View as="li">All free agency bids are blind bids (No one will be able to see them till cuto off time 7 PM PST) is over. </View>
+                <View as="li">Each fantasy team should have below team combo:
+                    <ul>
+                        <li>Batsmen - min 2, max 3</li>
+                        <li>Bowlers - min 2, max 3</li>
+                        <li>All Rounders - min 1, max 3</li>
+                        <li>Wicket Keepers - max 2</li>
+                    </ul>
+                </View>
             </Flex>
         );
     }
@@ -101,21 +110,6 @@ export default function Home() {
                     </TableRow>
                     <TableRow>
                         <TableCell>Between  0 and  100 runs per 100 balls:</TableCell>
-                        <TableCell>-20</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell colSpan={2}></TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell>Minimum runs to be scored by the batsmen for scoring bonus</TableCell>
-                        <TableCell>15</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell>Minimum balls to be faced by the batsmen for scoring bonus</TableCell>
-                        <TableCell>0</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell>Between 101 and 120 runs per 100 balls:</TableCell>
                         <TableCell>-10</TableCell>
                     </TableRow>
                     <TableRow>
@@ -130,8 +124,23 @@ export default function Home() {
                         <TableCell>0</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell>Between 101 and 120 runs per 100 balls:</TableCell>
-                        <TableCell>-10</TableCell>
+                        <TableCell>Between 101 and 110 runs per 100 balls:</TableCell>
+                        <TableCell>-5</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={2}></TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Minimum runs to be scored by the batsmen for scoring bonus</TableCell>
+                        <TableCell>15</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Minimum balls to be faced by the batsmen for scoring bonus</TableCell>
+                        <TableCell>0</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Between 111 and 120 runs per 100 balls:</TableCell>
+                        <TableCell>0</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell colSpan={2}></TableCell>
@@ -146,7 +155,7 @@ export default function Home() {
                     </TableRow>
                     <TableRow>
                         <TableCell>Between 121 and 140 runs per 100 balls:</TableCell>
-                        <TableCell>0</TableCell>
+                        <TableCell>5</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell colSpan={2}></TableCell>
@@ -206,30 +215,26 @@ export default function Home() {
                     </TableRow>
                     <TableRow>
                         <TableCell>200 and above runs per 100 balls:</TableCell>
-                        <TableCell>30</TableCell>
+                        <TableCell>25</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell colSpan={2}>Milestone bonus</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell>On reaching 25 runs (Default : 25)</TableCell>
+                        <TableCell>On reaching 25 runs</TableCell>
                         <TableCell>10</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell>On reaching 40 runs (Default : 40)</TableCell>
+                        <TableCell>On reaching 50 runs</TableCell>
                         <TableCell>15</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell>On reaching 60 runs (Default : 60)</TableCell>
+                        <TableCell>On reaching 75 runs</TableCell>
                         <TableCell>20</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell>On reaching 80 runs (Default : 80)</TableCell>
+                        <TableCell>On reaching 100 runs</TableCell>
                         <TableCell>25</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell>On reaching 100 runs (Default : 100)</TableCell>
-                        <TableCell>40</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell colSpan={2} textAlign={"center"} backgroundColor={"grey"} >Bowling</TableCell>
@@ -240,11 +245,11 @@ export default function Home() {
                     </TableRow>
                     <TableRow>
                         <TableCell>Dot Balls</TableCell>
-                        <TableCell>1</TableCell>
+                        <TableCell>3</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell>Maiden over</TableCell>
-                        <TableCell>25</TableCell>
+                        <TableCell>30</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell colSpan={2} textAlign={"center"} >Economy Rate Bonus</TableCell>
@@ -254,54 +259,54 @@ export default function Home() {
                         <TableCell>2</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell>Between 0 and 3.99 runs per over</TableCell>
-                        <TableCell>30</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell>Between 4 and 5.99 runs per over:</TableCell>
-                        <TableCell>20</TableCell>
+                        <TableCell>Between 0 and 5.99 runs per over:</TableCell>
+                        <TableCell>25</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell>Between 6 and 6.99 runs per over:</TableCell>
-                        <TableCell>10</TableCell>
+                        <TableCell>20</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell>Between 7 and 7.99 runs per over:</TableCell>
-                        <TableCell>0</TableCell>
+                        <TableCell>15</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell>Between 8 and 8.99 runs per over:</TableCell>
-                        <TableCell>-5</TableCell>
+                        <TableCell>10</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell>Between 9 and 9.99 runs per over:</TableCell>
-                        <TableCell>-10</TableCell>
+                        <TableCell>5</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell>10 and above runs per over:</TableCell>
-                        <TableCell>-20</TableCell>
+                        <TableCell>Between 10 and 10.99 runs per over:</TableCell>
+                        <TableCell>0</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Between 11 and 11.99 runs per over:</TableCell>
+                        <TableCell>-5</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>12 and above runs per over:</TableCell>
+                        <TableCell>-10</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell colSpan={2} textAlign={"center"}  >Milestone bonus</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell>On taking  2  wickets (Default : 2)</TableCell>
-                        <TableCell>10</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell>On taking  3  wickets (Default : 3)</TableCell>
-                        <TableCell>15</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell>On taking  4  wickets (Default : 4)</TableCell>
-                        <TableCell>20</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell>On taking  5  wickets (Default : 5)</TableCell>
+                        <TableCell>On taking  2  wickets</TableCell>
                         <TableCell>25</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell>On taking  6  or more wickets (Default : 6)</TableCell>
+                        <TableCell>On taking  3  wickets</TableCell>
+                        <TableCell>30</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>On taking  4  wickets</TableCell>
+                        <TableCell>35</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>On taking  5  wickets</TableCell>
                         <TableCell>40</TableCell>
                     </TableRow>
                     <TableRow>
@@ -357,7 +362,7 @@ export default function Home() {
                         <TableCell>1.5</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell>If Phase Booster Power Play is not picked by fantasy participant for 9 games of phase, then 10th game (last game of phase) will be auto picked for Phase Booster Power Play for that participant.</TableCell>
+                        <TableCell>If Phase Booster Power Play is not picked by fantasy participant for 6 games of phase, then 7th game (last game of phase) will be auto picked for Phase Booster Power Play for that participant.</TableCell>
                     </TableRow>
                 </TableBody>
                 <TableFoot>
@@ -392,39 +397,51 @@ export default function Home() {
             <TableBody>
                 <TableRow>
                     <TableCell>1</TableCell>
-                    <TableCell>Schedule is divided into 7 phases. Each phase will have 10 games (Going this way because full schedule is not provided by IPL). Topper(s) of each phase will get phase winner prize(s). </TableCell>
+                    <TableCell>Schedule is divided into 10 phases. Each phase will have 7 games. Topper of each phase will get phase winner prize. </TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell>2</TableCell>
-                    <TableCell>Top 2 participants will get season prizes. Top 2 participants will get phase prizes. </TableCell>
+                    <TableCell>Fantasy team which gets the most points in those 7 games in each phase will be the phase winner. Only one prize per phase. </TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell>3</TableCell>
-                    <TableCell><b>Phase 1</b> ends on Fri, Mar, 29 </TableCell>
+                    <TableCell><b>Phase 1</b> ends on Thursday, Mar, 27 </TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell>4</TableCell>
-                    <TableCell><b>Phase 2</b> ends on Sun, Apr 7 (3 AM)</TableCell>
+                    <TableCell><b>Phase 2</b> ends on Wednesday, Apr, 2</TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell>5</TableCell>
-                    <TableCell><b>Phase 3</b> ends on TBD</TableCell>
+                    <TableCell><b>Phase 3</b> ends on Monday, Apr, 7</TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell>6</TableCell>
-                    <TableCell><b>Phase 4</b> ends on TBD</TableCell>
+                    <TableCell><b>Phase 4</b> ends on Sunday, Apr, 13</TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell>7</TableCell>
-                    <TableCell><b>Phase 5</b> ends on TBD</TableCell>
+                    <TableCell><b>Phase 5</b> ends on Saturday, Apr, 19</TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell>8</TableCell>
-                    <TableCell><b>Phase 6</b> ends on TBD</TableCell>
+                    <TableCell><b>Phase 6</b> ends on Thursday, Apr, 24</TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell>9</TableCell>
-                    <TableCell><b>Phase 7</b> ends on TBD</TableCell>
+                    <TableCell><b>Phase 7</b> ends on Wednesday, Apr, 30</TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>9</TableCell>
+                    <TableCell><b>Phase 8</b> ends on Tuesday, May, 6</TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>9</TableCell>
+                    <TableCell><b>Phase 9</b> ends on Monday, May, 12</TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>9</TableCell>
+                    <TableCell><b>Phase 10</b> ends on Sunday, May, 18</TableCell>
                 </TableRow>
             </TableBody>
         </Table>
@@ -447,11 +464,11 @@ export default function Home() {
                     <TableBody>
                         <TableRow>
                             <TableCell>Winner</TableCell>
-                            <TableCell>23%</TableCell>
+                            <TableCell>20%</TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Runner Up</TableCell>
-                            <TableCell>17%</TableCell>
+                            <TableCell>16%</TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>3rd place</TableCell>
@@ -459,74 +476,70 @@ export default function Home() {
                         </TableRow>
                         <TableRow>
                             <TableCell>4th place</TableCell>
-                            <TableCell>7%</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell>5th place</TableCell>
-                            <TableCell>3%</TableCell>
+                            <TableCell>8%</TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Phase 1 Winner</TableCell>
                             <TableCell>3%</TableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>Phase 1 Runnerup</TableCell>
-                            <TableCell>2%</TableCell>
-                        </TableRow>
-                        <TableRow>
                             <TableCell>Phase 2 Winner</TableCell>
                             <TableCell>3%</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell>Phase 2 Runnerup</TableCell>
-                            <TableCell>2%</TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Phase 3 Winner</TableCell>
                             <TableCell>3%</TableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>Phase 3 Runnerup</TableCell>
-                            <TableCell>2%</TableCell>
-                        </TableRow>
-                        <TableRow>
                             <TableCell>Phase 4 Winner</TableCell>
                             <TableCell>3%</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell>Phase 4 Runnerup</TableCell>
-                            <TableCell>2%</TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Phase 5 Winner</TableCell>
                             <TableCell>3%</TableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>Phase 5 Runnerup</TableCell>
-                            <TableCell>2%</TableCell>
-                        </TableRow>
-                        <TableRow>
                             <TableCell>Phase 6 Winner</TableCell>
                             <TableCell>3%</TableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>Phase 6 Runnerup</TableCell>
-                            <TableCell>2%</TableCell>
+                            <TableCell>Phase 7 Winner</TableCell>
+                            <TableCell>3%</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>Phase 8 Winner</TableCell>
+                            <TableCell>3%</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>Phase 9 Winner</TableCell>
+                            <TableCell>3%</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>Phase 10 Winner</TableCell>
+                            <TableCell>3%</TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Orange Cap (IPL)</TableCell>
-                            <TableCell>2%</TableCell>
+                            <TableCell>2.5%</TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Purple Cap (IPL)</TableCell>
-                            <TableCell>2%</TableCell>
+                            <TableCell>2.5%</TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Emerging Player (IPL)</TableCell>
-                            <TableCell>2%</TableCell>
+                            <TableCell>2.5%</TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>MVP (IPL)</TableCell>
+                            <TableCell>2.5%</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>Most Dots</TableCell>
+                            <TableCell>2%</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>Most Boundaries</TableCell>
                             <TableCell>2%</TableCell>
                         </TableRow>
                     </TableBody>
@@ -556,43 +569,15 @@ export default function Home() {
             <TableBody>
                 <TableRow>
                     <TableCell>1</TableCell>
-                    <TableCell>Each fantasy team owner has $1000 virtual money ($250 actual money) for auction as buy-in. Total 243 players are available in auction to pick. Players will be picked from auction from 3 tiers.</TableCell>
+                    <TableCell>Each fantasy team owner has $1000 virtual money ($250 actual money) for auction as buy-in. Total 229 players are available in auction to pick.</TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell>2</TableCell>
-                    <TableCell>Tier 1 has 42 players. Starting price of player in Tier 1 is $100. Increment of $5. Order will be through random generator.</TableCell>
+                    <TableCell>Each fantasy team owner has to pick 8 players from auction. </TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell>3</TableCell>
-                    <TableCell>Tier 2 has 66 players. Starting price of player in Tier 2 is $35. Increment of $1. </TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell>4</TableCell>
-                    <TableCell>Tier 3 has 133 players. Starting price of player in Tier 3 is $10. Increment of $1. </TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell>5</TableCell>
-                    <TableCell>For 16 participants league, pick max 3 from Tier 1, Tier 2 & Tier 3; pick min 1 players from Tier 2 & Tier 3. </TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell>6</TableCell>
-                    <TableCell>Each participant should have 6 players in their squad after auction. </TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell>7</TableCell>
-                    <TableCell>If any player is unsold in Tier 1 (minimum base price $100), then at end of Tier 1 players, we will re-auction that player with reduced price ($50).</TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell>8</TableCell>
-                    <TableCell>Same with Tier 2 player, we will re-auction at the end of Tier 2 list for reduced price ($20).</TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell>9</TableCell>
-                    <TableCell>Participants need to nominate Tier 3 players, they won’t be picked in random order. That way if any one picks Tier 3 player, he will be sold for sure (even for base price).</TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell>10</TableCell>
-                    <TableCell>Once any participant reaches max limit to auction players in any tier, they wont be allowed to bid for other players in that particular tier for rest of auction. </TableCell>
+                    <TableCell>Each fantasy team should have required team structure at end of draft.</TableCell>
                 </TableRow>
             </TableBody>
         </Table>

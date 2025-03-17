@@ -9,7 +9,6 @@ console.log('Loading function');
 export const handler = async (event, context) => {
 
     let teams = [
-        'angrez1',
         'Chintala9',
         'DMK',
         'JanasenaTDP',
