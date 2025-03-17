@@ -7,5 +7,8 @@
       "authiplfantasy",
       "Outputs.UserPoolId"
     ]
-  }
+  },
+  "AuthModeLastUpdated": "2025-03-17T10:29:04.093Z",
+  "APIKeyExpirationEpoch": -1,
+  "CreateAPIKey": -1
 }
