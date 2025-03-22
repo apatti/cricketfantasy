@@ -40,7 +40,7 @@ export default function Home() {
     return(
         <Flex direction="column" justifyContent="center" gap="20px" width="100%" padding="30px">
             {(isLoading) && <Loader width="5rem" height="5rem"/>}
-            <Heading level={1}>Dukes IPL Fantasy 2024</Heading>
+            <Heading level={1}>Dukes IPL Fantasy 2025</Heading>
             <Divider width="100%" />
             <Tabs value={tab} onValueChange={(tab) => setTab(tab)}
                 items={[

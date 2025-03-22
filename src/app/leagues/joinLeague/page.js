@@ -75,7 +75,7 @@ export default function Home() {
             <Heading level={2}>Welcome to {data.league.name}</Heading>
             <Divider label="League details" size="large"/>
             <View>  Tournament Type: <b>Draft</b></View>
-            <View>  Draft date: <b>03/17/2024</b> </View>
+            <View>  Draft date: <b>03/16/2025</b> </View>
             <View>  Draft time: <b>12pm</b> </View>
             <View>  Max fantasy teams: <b>{data.league.maxTeamCount}</b></View>
             <View>  Max players per team: <b>{data.league.maxPlayers}</b></View>

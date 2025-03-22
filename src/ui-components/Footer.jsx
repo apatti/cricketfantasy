@@ -45,7 +45,7 @@ export default function Footer(props) {
         left="589px"
         padding="0px 0px 0px 0px"
         whiteSpace="pre-wrap"
-        children="© 2024-2025 All Rights Reserved"
+        children="© 2025-2026 All Rights Reserved"
         {...getOverrideProps(overrides, "footerText")}
       ></Text>
     </View>

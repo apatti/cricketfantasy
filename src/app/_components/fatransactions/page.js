@@ -19,7 +19,7 @@ const FATransactions = () => {
 
     const getDates = () => {
         let dates = [];
-        let startDate = new Date("2024-03-29");
+        let startDate = new Date("2025-03-21");
         let today = new Date();
         while(startDate < today){
             dates.push({value:startDate.getMonth()+1+""+startDate.getDate(),label:startDate.toDateString()});
