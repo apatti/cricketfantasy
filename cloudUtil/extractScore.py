@@ -1,20 +1,36 @@
 import re
 import requests
 from bs4 import BeautifulSoup
+import datetime
 
 # URL of the scorecard
 #url = "https://www.espncricinfo.com/series/indian-premier-league-2024-1410320/chennai-super-kings-vs-royal-challengers-bengaluru-1st-match-1422119/full-scorecard"
 players = []
+allPlayers = []
 def getPOTM(soup):
     # Find the PLAYER OF THE MATCH details
     potmSoup = soup.find(string='Player Of The Match')
-    return potmSoup.parent.next_sibling.a.get_text(strip=True)
+    if potmSoup is not None:
+        return potmSoup.parent.next_sibling.a.get_text(strip=True)
+    else:
+        return None
+
+def getAllPlayers(soup):
+    global allPlayers
+    allPlayers = [p.get_text(strip=True).replace(',','').replace('†','').replace('(c)','') for p in soup.find_all(lambda tag: tag.name == "a" and "cricketers" in tag.get('href'))]
+    #allPlayers
     
 def getWinningTeam(soup):
     # Find the winning team name
-    matchWinnerSoup = soup.find("p", class_="ds-text-tight-s ds-font-medium ds-truncate ds-text-typo").get_text(strip=True)
-    result = re.search(r"([A-Za-z]+) won by", matchWinnerSoup)
-    matchWinner = result.group(1)
+    matchWinnerSoup = soup.find("p", class_="ds-text-tight-s ds-font-medium ds-truncate ds-text-typo")
+    if matchWinnerSoup is None:
+        return None
+    matchWinnerText = matchWinnerSoup.get_text(strip=True)
+    result = re.search(r"([A-Za-z]+) won by", matchWinnerText)
+    if result is not None:
+        return result.group(1)
+    else:
+        return None
 
 def getBattingnHowOut(soup):
     #batting
@@ -26,7 +42,7 @@ def getBattingnHowOut(soup):
         batRows = batSoup.parent.parent.parent.next_sibling.find_all("tr",class_="")
         for batRow in batRows:
             batColumns = batRow.find_all("td")
-            if(batColumns[0].text.startswith('Fall') or batColumns[0].text.startswith('TOTAL')):
+            if(batColumns[0].text.startswith('Fall') or batColumns[0].text.startswith('TOTAL') or batColumns[0].text.startswith('DRS')):
                 continue
             playerName = batColumns[0].get_text(strip=True).replace('†','').replace('(c)','')
             players.append(playerName)
@@ -70,17 +86,20 @@ def getBowlers(soup):
     return bowling
 
 def getFieldName(shortName):
-    global players
+    global allPlayers
     if shortName == "VR Iyer":
             return "Venkatesh Iyer"
     if shortName == "SS Iyer":
             return "Shreyas Iyer"
-    for p in players:
+    if shortName == "JM Sharma":
+            return "Jitesh Sharma"
+    for p in allPlayers:
         if p == shortName or re.search(' '+shortName,p):
             return p
     return shortName
     
 def getFielders(howOut):
+    global players
     #fielders
     fieldDismissalsMatch = [re.search("^c\\s+([^#]+)|(.*)\/(.*)|^st\\s+([^#]+)|(\w+)",h.replace('c & b ','c ').replace('run out (','').replace('†','').replace(')','').replace(' b ',"#").replace('sub (','')) for h in howOut if not h.startswith(('b','not'))]
     fielders = {}
@@ -98,6 +117,8 @@ def getFielders(howOut):
         
         if fielderName not in fielders:
             fielders[fielderName]=0
+            if fielderName not in players:
+                players.append(fielderName)
         fielders[fielderName]+=1
         if dismissal.group(0).startswith("st "):
             fielders[fielderName]+=1
@@ -106,16 +127,43 @@ def getFielders(howOut):
     
 def lambda_handler(event, context):
     global players
+    matchInputKey = "";
     # Send a GET request to the URL
     url = event.get('url')
+    if(url is None):
+        currentDate = datetime.datetime.now()
+        currentDate = currentDate + datetime.timedelta(hours=-7)
+        #dayCode = "7"
+        threeAM = event.get("team#"+currentDate.strftime("%-m%-d")+"3")
+        if threeAM is None:
+            matchInputKey = "team#"+currentDate.strftime("%-m%-d")+"7"
+        else:
+            #print(threeAM)
+            live = threeAM.get('live')
+            if live is not None and currentDate.hour<7:
+                matchInputKey = "team#"+currentDate.strftime("%-m%-d")+"3"
+            if live is not None and currentDate.hour>=7:
+                matchInputKey = "team#"+currentDate.strftime("%-m%-d")+"7"
+            if live is None and currentDate.hour==8:
+                matchInputKey = "team#"+currentDate.strftime("%-m%-d")+"3"
+            if live is None and currentDate.hour>8:
+                matchInputKey = "team#"+currentDate.strftime("%-m%-d")+"7"
+        
+        #matchInputKey = "team#"+currentDate.strftime("%-m%-d")+dayCode
+        #print(matchInputKey)
+        url = event.get(matchInputKey).get("url")
+        event = event.get(matchInputKey)
+        
     response = requests.get(url)
 
     # Parse the HTML content using BeautifulSoup    
     soup = BeautifulSoup(response.content, "html.parser")
+    #allPlayers
+    getAllPlayers(soup)
     #POTM
     potm = getPOTM(soup)
     #match winner
-    matchWinner = getWinningTeam(soup)
+    #matchWinner = getWinningTeam(soup)
     #players,batting
     batting,howOut = getBattingnHowOut(soup)
     print(players)

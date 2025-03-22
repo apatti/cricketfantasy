@@ -4,14 +4,23 @@ import { QueryCommand,DynamoDBDocument,UpdateCommand,PutCommand,GetCommand } fro
 const dynamodb = DynamoDBDocument.from(new DynamoDB());
 
 
-console.log('Loading function');
+
 
 export const handler = async (event, context) => {
-    
+    console.log("EVENT REC:",event);
+    //event = JSON.parse(event.Records[0].body);
+    if("requestContext" in event && event.requestContext.functionArn.includes('ExtractScoreCard') && event.requestContext.condition=="Success"){
+        event = event.responsePayload;
+    }
+    if("Records" in event){
+        event = JSON.parse(event.Records[0].body);
+    }
     let points = {};
+    let score = event.score;
+    let meta = event.meta;
     
-    for(const playerName of Object.keys(event)){
-        let player = event[playerName];
+    for(const playerName of Object.keys(score)){
+        let player = score[playerName];
         
         let playerPoints = {
             potm:0
@@ -35,13 +44,16 @@ export const handler = async (event, context) => {
             playerPoints.srr=0;
             if(playerPoints.runs>=15){
                 if(srr<=100){
-                    playerPoints.srr = -20;
+                    playerPoints.srr = -10;
                 }
-                if(srr>100 && srr<=120){
-                    playerPoints.srr = -15;
+                if(srr>100 && srr<=110){
+                    playerPoints.srr = -5;
+                }
+                if(srr>110 && srr<=120){
+                    playerPoints.srr=0;
                 }
                 if(srr>120 && srr<=140){
-                    playerPoints.srr=0;
+                    playerPoints.srr=5;
                 }
                 if(srr>140 && srr<=160){
                     playerPoints.srr=10;
@@ -53,24 +65,21 @@ export const handler = async (event, context) => {
                     playerPoints.srr=20;
                 }
                 if(srr>200){
-                    playerPoints.srr=30;
+                    playerPoints.srr=25;
                 }
             }
             playerPoints.milestone=0;
-            if(playerPoints.runs>=25 && playerPoints.runs<40){
+            if(playerPoints.runs>=25 && playerPoints.runs<50){
                 playerPoints.milestone=10
             }
-            if(playerPoints.runs>=40 && playerPoints.runs<60){
+            if(playerPoints.runs>=50 && playerPoints.runs<75){
                 playerPoints.milestone=15
             }
-            if(playerPoints.runs>=60 && playerPoints.runs<80){
+            if(playerPoints.runs>=75 && playerPoints.runs<100){
                 playerPoints.milestone=20
             }
-            if(playerPoints.runs>=80 && playerPoints.runs<100){
-                playerPoints.milestone=25
-            }
             if(playerPoints.runs>=100){
-                playerPoints.milestone=30
+                playerPoints.milestone=25
             }
         
         }
@@ -80,49 +89,49 @@ export const handler = async (event, context) => {
             let bowling = player.bowling;
             let wickets = parseInt(bowling.wickets);
             playerPoints.wickets = wickets*30;
-            playerPoints.dots = parseInt(bowling.dots);
-            playerPoints.maidens = parseInt(bowling.maidens)*25;
+            playerPoints.dots = parseInt(bowling.dots)*3;
+            playerPoints.maidens = parseInt(bowling.maidens)*30;
             playerPoints.eco=0;
             let overs = parseFloat(bowling.overs);
             if(overs>=2){
                 let eco = parseFloat(bowling.eco);
-                if(eco<4){
-                    playerPoints.eco = 30;
-                }
-                if(eco>=4 && eco<6){
-                    playerPoints.eco = 20;
+                if(eco<6){
+                    playerPoints.eco = 25;
                 }
                 if(eco>=6 && eco<7){
-                    playerPoints.eco = 10;
+                    playerPoints.eco = 20;
                 }
                 if(eco>=7 && eco<8){
-                    playerPoints.eco = 0;
+                    playerPoints.eco = 15;
                 }
                 if(eco>=8 && eco<9){
-                    playerPoints.eco = -5;
+                    playerPoints.eco = 10;
                 }
                 if(eco>=9 && eco<10){
-                    playerPoints.eco = -10;
+                    playerPoints.eco = 5;
                 }
-                if(eco>=10){
-                    playerPoints.eco = -20;
+                if(eco>=10 && eco<11){
+                    playerPoints.eco = 0;
+                }
+                if(eco>=11 && eco<12){
+                    playerPoints.eco = -5;
+                }
+                if(eco>=12){
+                    playerPoints.eco = -10;
                 }
             }
             playerPoints.bowlingmilestone=0;
             switch(wickets){
                 case 2:
-                    playerPoints.bowlingmilestone=10;
-                    break;
-                case 3:
-                    playerPoints.bowlingmilestone=15;
-                    break;
-                case 4:
-                    playerPoints.bowlingmilestone=20;
-                    break;
-                case 5:
                     playerPoints.bowlingmilestone=25;
                     break;
-                case 6:
+                case 3:
+                    playerPoints.bowlingmilestone=30;
+                    break;
+                case 4:
+                    playerPoints.bowlingmilestone=35;
+                    break;
+                case 5:
                     playerPoints.bowlingmilestone=40;
                     break;
             }
@@ -138,28 +147,32 @@ export const handler = async (event, context) => {
         }
         
         points[playerName]=playerPoints;
+        
+        console.log({
+              matchid: meta.matchId,
+              playername:playerName,
+              ...playerPoints
+            });
+        
         //console.log("Writing todb");
-        const dbCommand = new PutCommand({
+        /*const dbCommand = new PutCommand({
             TableName: "match-points",
             Item: {
-              matchid: "1",
+              matchid: "3",
               playername:playerName,
               ...playerPoints
             },
           });
 
-        const response = await dynamodb.send(dbCommand);
-    //console.log(response)
+        //const response = await dynamodb.send(dbCommand);
+        */
     }
     
     let teamPoints = {};
     
     //teams
     let teams = [
-        'angrez1',
         'Chintala9',
-        'DMK',
-        'JanasenaTDP',
         'Khansaarboyz',
         'Kiran',
         'Mirchi',
@@ -170,16 +183,16 @@ export const handler = async (event, context) => {
         'Sabarishvr',
         'SherKhan',
         'Supi5',
-        'WorthVarma',
         'sagar1221'
         ];
-    //teams = ['WorthVarma'];
+    //teams = ['Khansaarboyz'];
     
     //getTeam Players
     
     let tableName = 'fantasyTeam-staging';
     for(let tp=0;tp<teams.length;tp++){
         let team = teams[tp];
+        console.debug("Processing for:",team);
         teamPoints[team]={teamTotalPoints:0};
         
         
@@ -187,17 +200,25 @@ export const handler = async (event, context) => {
         let teamParams = { TableName: tableName,
                     Key: {
                         id: team,
-                        "owner":"team#3227"
+                        "owner":meta.matchKey
                     },
                   };
 
         let teamCommand = new GetCommand(teamParams);
         let teamDetail = await dynamodb.send(teamCommand);
-        let captain = Buffer.from(teamDetail.Item.captain,'base64').toString('ascii').split('-')[1];
-        let vicecaptain = Buffer.from(teamDetail.Item.vicecaptain,'base64').toString('ascii').split('-')[1];
+        //console.log(teamCommand);
+        //console.log(teamDetail);
+        let captain = Buffer.from(teamDetail.Item.captain,'base64').toString('ascii').split('-').slice(1).join('-');
+        let vicecaptain = Buffer.from(teamDetail.Item.vicecaptain,'base64').toString('ascii').split('-').slice(1).join('-');
         let phaseBooster = false;
+        let phaseBoosterAccounted=false;
+        //console.log("TEAM DETAILS:",JSON.stringify(teamDetail.Item));
         if(teamDetail.Item.phaseBooster){
             phaseBooster=teamDetail.Item.phaseBooster;
+        }
+        if(teamDetail.Item.phaseBoosterAccounted){
+            phaseBoosterAccounted=teamDetail.Item.phaseBoosterAccounted;
+            phaseBooster=false;
         }
         
         //Get current day FA transactions
@@ -224,7 +245,7 @@ export const handler = async (event, context) => {
             
             if(teamPlayerName in points){
                 let playerPoint = points[teamPlayerName];
-                console.log(`Calculating points for ${teamPlayerName}`);
+                //console.log(`Calculating points for ${teamPlayerName}`);
                 if("runs" in playerPoint){
                     teamPlayerPoints += playerPoint.runs;
                 }
@@ -286,35 +307,79 @@ export const handler = async (event, context) => {
             }
             teamPoints[team][teamPlayers[p].name]=teamPlayerPoints;
             teamPoints[team].teamTotalPoints +=teamPlayerPoints;
+            
+            if(meta.live && meta.live==true && teamPlayerName in score){
+            
+                const dbLiveCommand = new UpdateCommand({
+                    TableName: "livescore",
+                    Key: {
+                        teamId: meta.matchKey,
+                        matchId:teamPlayers[p].name
+                    },
+                    UpdateExpression: "SET #fieldowner = :owner, #fieldPoints = :points",
+                    ExpressionAttributeValues: {
+                        ":points": teamPlayerPoints,
+                        ":owner":team
+                    },
+                    ExpressionAttributeNames:{
+                        "#fieldPoints" : "points" ,
+                        "#fieldowner" : "owner"
+                    },
+                    ReturnValues: "ALL_NEW",
+                });
+            
+            //console.log("writing to match points for:",team);
+                const response = await dynamodb.send(dbLiveCommand);
+            }   
+            
         }
         
+        if(meta.live && meta.live==true){
+            continue;
+        }
         const dbCommand = new PutCommand({
             TableName: "match-points",
             Item: {
-              matchid: "1",
+              matchid: meta.matchId,
               playername:team,
               ...teamPoints[team]
             },
           });
-        const response = await dynamodb.send(dbCommand);
         
+        if(meta.writeDB==true){  
+            console.log("writing to match points for:",team);
+            const response = await dynamodb.send(dbCommand);
+        }
+        if(phaseBooster==true&&!phaseBoosterAccounted)
+        {
+            phaseBoosterAccounted=true;
+        }
         const updatePtsCommand = new UpdateCommand({
             TableName: tableName,
             Key: {
                 id: team,
                 owner:"meta"
             },
-            UpdateExpression: "ADD leaguepoints :points,phase1points :points",
+            UpdateExpression: "ADD leaguepoints :points,phase7points :points SET phaseBoosterAccounted = :phaseBoosterAccounted",
             ExpressionAttributeValues: {
                 ":points": teamPoints[team].teamTotalPoints,
+                ":phaseBoosterAccounted":phaseBoosterAccounted
             },
             ReturnValues: "ALL_NEW",
         });
-    
-        const updatePts = await dynamodb.send(updatePtsCommand);
+        
+        if(meta.writeDB==true){
+            console.log("Writing to teamtable for:",team);
+            const updatePts = await dynamodb.send(updatePtsCommand);
+            //console.log("WRITING PTS TO DB");
+        }
         //console.log(JSON.stringify(addCommand))
     }
-    
+    console.log("Final Points summary:",JSON.stringify(teamPoints));
+    console.log({
+              matchid: meta.matchId,
+              ...teamPoints
+            });
     return teamPoints;  // Echo back the first key value
     // throw new Error('Something went wrong');
 };

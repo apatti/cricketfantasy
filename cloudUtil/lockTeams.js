@@ -10,8 +10,6 @@ export const handler = async (event, context) => {
 
     let teams = [
         'Chintala9',
-        'DMK',
-        'JanasenaTDP',
         'Khansaarboyz',
         'Kiran',
         'Mirchi',
@@ -22,11 +20,10 @@ export const handler = async (event, context) => {
         'Sabarishvr',
         'SherKhan',
         'Supi5',
-        'WorthVarma',
         'sagar1221'
         ];
         
-    //let teams = ['angrez1'];
+    //let teams = ['sagar1221'];
     let tableName = 'fantasyTeam-staging';
     
     for(const team of teams){
@@ -82,7 +79,8 @@ export const handler = async (event, context) => {
               captain:teamDetail.Item.captain,
               vicecaptain:teamDetail.Item.vicecaptain,
               fa:teamDetail.Item.fa,
-              phaseBooster:teamDetail.Item.phaseBooster
+              phaseBooster:teamDetail.Item.phaseBooster,
+              phaseBoosterAccounted:lockTeam.Attributes.phaseBoosterAccounted
             },
         });
         const bkpLockTeam = await dynamodb.send(teamPutCommand);
