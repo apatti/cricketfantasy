@@ -482,8 +482,10 @@ app.put('/fantasyTeams/*', async function(req, res) {
           console.log("PutItem succeeded:", tid);
           if("faChanges" in changes && Object.keys(changes.faChanges).length > 0){
             let faChanges = changes.faChanges;
+            let rosterCountMap = JSON.stringify(changes.rosterCount);
             //faChanges['entryTime']=entryTime.toISOString();
             let faEntryTime = Buffer.from(entryTime.toISOString()).toString('base64');
+            let rosterCountMapString = Buffer.from(rosterCountMap).toString('base64');
             var faKeys = Object.keys(faChanges);
             let faUpdateParams = {
               TableName: tableName,
@@ -494,7 +496,7 @@ app.put('/fantasyTeams/*', async function(req, res) {
               ReturnValues: "ALL_NEW",
               UpdateExpression: `SET ${faKeys.map((k, index) =>`#field${index} = :value${index}`).join(', ')}, entryTime = :entryTime`,
               ExpressionAttributeNames: faKeys.reduce((accumulator, k, index) => ({ ...accumulator, [`#field${index}`]: `${faChanges[k].toAdd}#${k}` }), {}),
-              ExpressionAttributeValues: faKeys.reduce((accumulator, k, index) => ({ ...accumulator, [`:value${index}`]: `${faChanges[k].amount}#${faEntryTime}` }), {':entryTime':entryTime.toISOString()})
+              ExpressionAttributeValues: faKeys.reduce((accumulator, k, index) => ({ ...accumulator, [`:value${index}`]: `${faChanges[k].amount}#${faEntryTime}#${rosterCountMapString}` }), {':entryTime':entryTime.toISOString()},{':rosterCountMap':rosterCountMapString})
             }
             console.log("FA Update:",JSON.stringify(faUpdateParams));
             await dynamodb.update(faUpdateParams, function(err, data) {

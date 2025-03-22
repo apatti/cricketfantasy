@@ -68,8 +68,10 @@ export default function Home({params}) {
             const teamResponse = await response.body.json()
             setIsLoading(false);
             var teamData = teamResponse.team.team;
+            var rosterCount = {BATSMAN:0,BOWLER:0,ALL_ROUNDER:0,WICKET_KEEPER:0};
             var teamRoster = teamData.map(item=>{
                 var teamMeta = item.split("#");
+                rosterCount[teamMeta[2]]++;
                 return {
                     id:teamMeta[0],
                     name:teamMeta[1],
@@ -94,7 +96,8 @@ export default function Home({params}) {
                 captain: teamResponse.team.captain,
                 vicecaptain: teamResponse.team.vicecaptain,
                 fa: teamResponse.team.fa,
-                teamRoster: teamRoster
+                teamRoster: teamRoster,
+                changes:{...formData.changes, rosterCount:rosterCount}
             });
           } catch (e) {
             console.log('GET call failed: ', e);
@@ -347,11 +350,11 @@ export default function Home({params}) {
                                             placeholder="Select replacement player"
                                             onChange={(e) => {
                                                 e.preventDefault();
-                                                setFormData({...formData, changes:{...formData.changes, faChanges:{...formData.changes.faChanges,[player.id]:{...formData.changes.faChanges[[player.id]],toAdd:e.target.value}} }});
+                                                setFormData({...formData, changes:{...formData.changes, faChanges:{...formData.changes.faChanges,[`${player.id}#${player.role}`]:{...formData.changes.faChanges[[`${player.id}#${player.role}`]],toAdd:e.target.value}} }});
                                             }}
                                             >
                                                 {faList.map((player, index) => (
-                                                    <option value={player.id}>{player.name}</option>
+                                                    <option value={`${player.id}#${player.role}`}>{player.name}</option>
                                                 ))}
                                         </SelectField>
                                     </TableCell>}
@@ -362,7 +365,7 @@ export default function Home({params}) {
                                                 setFaAmountHasError(true);
                                                 return;
                                             }
-                                            setFormData({...formData, changes:{...formData.changes, faChanges:{...formData.changes.faChanges,[player.id]:{...formData.changes.faChanges[[player.id]],amount:e.currentTarget.value}}}});
+                                            setFormData({...formData, changes:{...formData.changes, faChanges:{...formData.changes.faChanges,[`${player.id}#${player.role}`]:{...formData.changes.faChanges[[`${player.id}#${player.role}`]],amount:e.currentTarget.value}}}});
                                             setFABudgetVariation(false);
                                         }}/>
                                     </TableCell>}
