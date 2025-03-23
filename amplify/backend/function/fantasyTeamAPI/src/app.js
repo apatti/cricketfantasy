@@ -91,7 +91,7 @@ app.get('/fantasyTeams/faTransactions/*', async function(req, res) {
       let transactions = Object.keys(item).reduce((accumulator, key) => {
         if(key !== "id" && key !== "owner" && key !== "league" && key !=="entryTime" && key !=="processed"){
           let addedPlayer = key.split("#")[0];
-          let droppedPlayer = key.split("#")[1];
+          let droppedPlayer = key.split("#")[2];
           let faEntryTime = item[key].split("#")[1];
           let amount = item[key].split("#")[0];
           
