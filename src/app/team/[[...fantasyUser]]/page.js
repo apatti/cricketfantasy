@@ -354,7 +354,7 @@ export default function Home({params}) {
                                             }}
                                             >
                                                 {faList.map((player, index) => (
-                                                    <option value={`${player.id}#${player.role}`}>{player.name}</option>
+                                                    <option value={`${player.id}#${player.role}`}>{player.name} - {player.role}</option>
                                                 ))}
                                         </SelectField>
                                     </TableCell>}

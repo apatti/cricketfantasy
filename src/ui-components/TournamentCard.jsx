@@ -85,7 +85,7 @@ export default function TournamentCard(props) {
             position="relative"
             padding="0px 0px 0px 0px"
             whiteSpace="pre-wrap"
-            children="IPL 2025"
+            children="IPL 2024"
             {...getOverrideProps(overrides, "Tournament Name")}
           ></Text>
           <Text
@@ -108,7 +108,7 @@ export default function TournamentCard(props) {
             position="relative"
             padding="0px 0px 0px 0px"
             whiteSpace="pre-wrap"
-            children="Indian Premier League 2025 - 03/22 to 05/28."
+            children="Indian Premier League 2024 - 03/22 to 05/28."
             {...getOverrideProps(
               overrides,
               "Information about this tournament"
