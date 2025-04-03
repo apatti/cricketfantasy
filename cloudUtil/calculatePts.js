@@ -360,7 +360,7 @@ export const handler = async (event, context) => {
                 id: team,
                 owner:"meta"
             },
-            UpdateExpression: "ADD leaguepoints :points,phase2points :points SET phaseBoosterAccounted = :phaseBoosterAccounted",
+            UpdateExpression: "ADD leaguepoints :points,phase3points :points SET phaseBoosterAccounted = :phaseBoosterAccounted",
             ExpressionAttributeValues: {
                 ":points": teamPoints[team].teamTotalPoints,
                 ":phaseBoosterAccounted":phaseBoosterAccounted
