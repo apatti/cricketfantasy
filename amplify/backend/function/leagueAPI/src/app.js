@@ -102,7 +102,7 @@ app.get('/league/standings/*', async function(req, res) {
       return -1;
     }
     if(b.leaguepoints==a.leaguepoints){
-      return (a.phase3points < b.phase3points) ? 1 : -1;
+      return (a.phase4points < b.phase4points) ? 1 : -1;
     } 
   });
   res.json({ statusCode: 200, url: req.url, standings: league.Items });
