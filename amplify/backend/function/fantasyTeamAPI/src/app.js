@@ -158,7 +158,7 @@ app.get('/fantasyTeams/completedFATransactions/*', async function(req, res) {
           if(key !== "id" && key !== "owner" && key !== "league" && key !=="entryTime" && key !=="processed"){
             //console.log(key);
             let addedPlayer = key.split("#")[0];
-            let droppedPlayer = key.split("#")[1];
+            let droppedPlayer = key.split("#")[2];
             let faEntryTime = item[key].split("#")[1];
             let amount = item[key].split("#")[0];
             if(!faEntryTime){
