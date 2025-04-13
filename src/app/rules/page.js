@@ -417,27 +417,27 @@ export default function Home() {
                 </TableRow>
                 <TableRow>
                     <TableCell>6</TableCell>
-                    <TableCell><b>Phase 4</b> ends on Sunday, Apr, 13</TableCell>
+                    <TableCell><b>Phase 4</b> ends on Saturday, Apr, 12</TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell>7</TableCell>
-                    <TableCell><b>Phase 5</b> ends on Saturday, Apr, 19</TableCell>
+                    <TableCell><b>Phase 5</b> ends on Friday, Apr, 18</TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell>8</TableCell>
-                    <TableCell><b>Phase 6</b> ends on Thursday, Apr, 24</TableCell>
+                    <TableCell><b>Phase 6</b> ends on Wednesday, Apr, 23</TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell>9</TableCell>
-                    <TableCell><b>Phase 7</b> ends on Wednesday, Apr, 30</TableCell>
+                    <TableCell><b>Phase 7</b> ends on Tuesday, Apr, 29</TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell>9</TableCell>
-                    <TableCell><b>Phase 8</b> ends on Tuesday, May, 6</TableCell>
+                    <TableCell><b>Phase 8</b> ends on Monday, May, 5</TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell>9</TableCell>
-                    <TableCell><b>Phase 9</b> ends on Monday, May, 12</TableCell>
+                    <TableCell><b>Phase 9</b> ends on Sunday, May, 11</TableCell>
                 </TableRow>
                 <TableRow>
                     <TableCell>9</TableCell>
