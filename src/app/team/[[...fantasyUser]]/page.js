@@ -113,6 +113,16 @@ export default function Home({params}) {
           const response = await restOperation.response;
           const faResponse = await response.body.json()
           //data.players 
+          //sort faResponse.players by role, team, name
+          faResponse.players.sort((a,b)=>{
+            if(a.role==b.role){
+                if(a.team==b.team){
+                    return a.name.localeCompare(b.name);
+                }
+                return a.team.localeCompare(b.team);
+            }
+            return a.role.localeCompare(b.role);
+          });
           setFAList(faResponse.players);
           setIsLoading(false);
     }
