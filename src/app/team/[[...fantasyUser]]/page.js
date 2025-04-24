@@ -181,7 +181,7 @@ export default function Home({params}) {
         if(formData.changes.faChanges){
             let faError = Object.keys(formData.changes.faChanges).reduce((acc,curr)=>{
                 let change = formData.changes.faChanges[curr];
-                if(isNaN(change.amount) || change.amount<0 || change.amount>formData.fa){
+                if(isNaN(change.amount) || change.amount<0 || change.amount>formData.fa || change.toAdd==null || change.toAdd==""){
                     acc=true;
                 }
                 return acc;
@@ -189,7 +189,7 @@ export default function Home({params}) {
 
             if(faError){
                 setFaAmountHasError(true);
-                setGeneralUserErrorMessage(`Error: Invalid FA amount entered. Please check and try again.`);
+                setGeneralUserErrorMessage(`Error: Invalid FA changes entered. Please check and try again.`);
                 return;
             }
         }
@@ -350,6 +350,11 @@ export default function Home({params}) {
                                             placeholder="Select replacement player"
                                             onChange={(e) => {
                                                 e.preventDefault();
+                                                if(e.target.value==null || e.target.value=="")
+                                                {
+                                                    setGeneralUserErrorMessage("Please select a replacement player");
+                                                    return;
+                                                }
                                                 setFormData({...formData, changes:{...formData.changes, faChanges:{...formData.changes.faChanges,[`${player.id}#${player.role}`]:{...formData.changes.faChanges[[`${player.id}#${player.role}`]],toAdd:e.target.value}} }});
                                             }}
                                             >
