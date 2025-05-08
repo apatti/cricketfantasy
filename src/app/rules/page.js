@@ -7,9 +7,9 @@ export default function Home() {
     const generalContent = ()=>{
         return(
             <Flex direction="column" width="fit">
-                <View as="li">Top 5 participants will get season prizes. Top 2 participants will get phase prizes. </View>
+                <View as="li">Top 4 participants will get season prizes. Top 1 participant will get phase prizes. </View>
                 <View as="li">Fantasy team owner need to pick Captain & Vice Captain for each game. Captain will 2x points & vice captain will get 1.5x points in each game. There are two powerplay options. One powerplay option is per phase & second powerplay option is once in the season.</View>
-                <View as="li">There is no bench option, all 6 players are eligible for scoring. </View>
+                <View as="li">There is no bench option, all 8 players are eligible for scoring. </View>
                 <View as="li">Players have option to trade players from Free Agency. Each participant has $250 virtual money ($50 actual money) alloted for trading. All bid amount will be contributing to overall pot. FA money is non-refundable - use it or lose it. Minimum bid for Free Agency player is $1.
                 </View>
                 <View as="li">There is no limit on bids for free agency throughout season. But Free agency amount for every partiticpant is $200 & min bid is $1.  </View>
@@ -19,6 +19,7 @@ export default function Home() {
                 <View as="li">Any changes made to team (changing c/vc) will be considered for next game after current game start time i.e., 7 AM PST & 3 AM PST.</View>
                 <View as="li">Orange Cap, Purple Cap, Emerging Player awards will be awarded by IPL after IPL final game is completed.  </View>
                 <View as="li">All free agency bids are blind bids (No one will be able to see them till cuto off time 7 PM PST) is over. </View>
+                <View as="li">If IPL is cancelled, then Vivek is delcared to be winner for being consistent over the years. </View>
                 <View as="li">Each fantasy team should have below team combo:
                     <ul>
                         <li>Batsmen - min 2, max 3</li>
